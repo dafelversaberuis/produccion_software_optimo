@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formFirmaCalibracion">
+
+		<p:dialog header="#{mensaje.firmaAutorizacionCalibracion}" width="450"
+			height="400" widgetVar="panelFirmaCalibracion" resizable="true"
+			closable="false" responsive="true">
+			<p:panel id="pnlFirmaCalibracion">
+
+				<p:signature id="sigFirma" style="width:400px; height:200px"
+					widgetVar="firma" value="#{administrarHojaVida.calibracionTransaccion.firmaClienteMomento}"
+					label="#{mensaje.firma}" guideline="true" readonly="true"/>
+
+
+
+
+
+				<br />
+				<div align="center">
+
+					<p:commandButton id="btnFirmaCalibracion"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{consultarFuncionesAPI.cerrarModal('panelFirmaCalibracion')}"
+						process="@this" value="#{mensaje.cerrar}" update="@this" />
+
+				</div>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

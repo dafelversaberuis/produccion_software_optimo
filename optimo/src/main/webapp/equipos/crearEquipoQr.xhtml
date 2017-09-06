@@ -1,0 +1,1297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principal.xhtml">
+
+	<ui:define name="body">
+		<h:form id="form">
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+
+			<p:remoteCommand name="onload" process="@this"
+				action="#{administrarSesionCliente.getNoRolAdmitido('EQUIPOS')}"
+				autoRun="true" />
+
+			<div class="row x_title">
+				<div class="col-md-6">
+
+					<h2 class="project-title">#{mensaje.moduloEquipos}:
+						#{mensaje.hojasVidaEquipos}</h2>
+
+				</div>
+			</div>
+
+			<div align="center" class="titulo"></div>
+			<p:outputPanel id="pnlCasoUso">
+				<p:spacer height="10" />
+				<p:accordionPanel id="pnlCrearCasoUso" activeIndex="1"
+					rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}">
+					<p:tab title="#{mensaje.crearHojaVida}" titleStyle="font-size:16px"
+						closable="true">
+
+
+
+
+
+
+						<p:tabView>
+							<p:tab title="#{mensaje.datosIdentificacion}">
+
+								<p:panelGrid columns="6" cellpadding="0" cellspacing="0"
+									style="width:100%" styleClass="ui-panelgrid-blank"
+									layout="grid">
+
+
+									<p:outputLabel for="txtCliente"
+										value="#{mensaje.clienteNormal}"
+										style="font-weight:bold; font-size:14px; " />
+									<p:autoComplete id="txtCliente" required="true"
+										placeholder="#{mensaje.escribaMinimoTres}"
+										style="font-size:14px; width:100%; height:20px"
+										forceSelection="true" minQueryLength="3"
+										label="#{mensaje.clienteNormal}" panelStyle="width:350px"
+										value="#{administrarHojaVida.equipo.cliente.tClienteAutocompletado}"
+										completeMethod="#{administrarHojaVida.usarAutocompletar}">
+
+										<p:ajax event="itemSelect"
+											listener="#{administrarHojaVida.onItemSelect}" update="@this"
+											process="@this" />
+
+									</p:autoComplete>
+									<p:outputLabel for="lstClaseEquipo"
+										value="#{mensaje.claseEquipo}"
+										style="font-weight:bold; font-size:14px" />
+									<p:selectOneMenu label="#{mensaje.claseEquipo}"
+										style="width:100%; font-size:14px;" id="lstClaseEquipo"
+										required="true"
+										value="#{administrarHojaVida.equipo.equipoBiomedico}">
+										<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+										<f:selectItem itemValue="S" itemLabel="#{mensaje.biomedico}" />
+										<f:selectItem itemValue="N" itemLabel="#{mensaje.otro}" />
+
+										<p:ajax event="change" process="@this"
+											update="#{administrarHojaVida.panelesUpdateEquipoBiomedico}" />
+
+									</p:selectOneMenu>
+									<p:outputLabel value="#{mensaje.idCodigoQr}"
+										style="font-weight:bold; font-size:14px" />
+									<p:outputLabel value="#{mensaje.seGeneraGuardar}"
+										style="font-size:14px" />
+
+
+									<p:spacer width="1" />
+									<p:message for="txtCliente" />
+									<p:spacer width="1" />
+									<p:message for="lstClaseEquipo" />
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+
+
+
+									<p:outputLabel for="txtNombreEquipo"
+										value="#{mensaje.nombreEquipo}"
+										style="font-weight:bold; font-size:14px" />
+									<p:inputText id="txtNombreEquipo"
+										value="#{administrarHojaVida.equipo.nombreEquipo}"
+										required="true" label="#{mensaje.nombreEquipo}"
+										style="width:100%; font-size:14px; " />
+									<p:outputLabel for="txtNumeroInventario"
+										value="#{mensaje.numeroInventario}"
+										style="font-weight:bold; font-size:14px" />
+									<p:inputText id="txtNumeroInventario"
+										value="#{administrarHojaVida.equipo.numeroInventario}"
+										required="true" label="#{mensaje.numeroInventario}"
+										style="width:100%; font-size:14px; " />
+									<p:outputLabel for="txtMarca" value="#{mensaje.marca}"
+										style="font-weight:bold; font-size:14px" />
+									<p:inputText id="txtMarca"
+										value="#{administrarHojaVida.equipo.marca}" required="true"
+										label="#{mensaje.marca}" style="width:100%; font-size:14px; " />
+
+
+									<p:spacer width="1" />
+									<p:message for="txtNombreEquipo" />
+									<p:spacer width="1" />
+									<p:message for="txtNumeroInventario" />
+									<p:spacer width="1" />
+									<p:message for="txtMarca" />
+
+
+									<p:outputLabel for="txtModelo" value="#{mensaje.modelo}"
+										style="font-weight:bold; font-size:14px" />
+									<p:inputText id="txtModelo"
+										value="#{administrarHojaVida.equipo.modelo}" required="true"
+										label="#{mensaje.modelo}" style="width:100%; font-size:14px; " />
+									<p:outputLabel for="txtNumeroSerie"
+										value="#{mensaje.numeroSerie}"
+										style="font-weight:bold; font-size:14px" />
+									<p:inputText id="txtNumeroSerie"
+										value="#{administrarHojaVida.equipo.numeroSerie}"
+										required="true" label="#{mensaje.numeroSerie}"
+										style="width:100%; font-size:14px; " />
+									<p:outputLabel for="lstIndicativo" value="#{mensaje.estado}"
+										style="font-weight:bold; font-size:14px;" />
+									<p:selectOneMenu id="lstIndicativo" required="true"
+										style="font-size:14px;"
+										value="#{administrarHojaVida.equipo.estado}"
+										label="#{mensaje.estado}">
+										<f:selectItems value="#{consultarFuncionesAPI.itemsEstados}" />
+									</p:selectOneMenu>
+
+
+									<p:spacer width="1" />
+									<p:message for="txtModelo" />
+									<p:spacer width="1" />
+									<p:message for="txtNumeroSerie" />
+									<p:spacer width="1" />
+									<p:message for="lstIndicativo" />
+
+									<p:outputPanel id="pnlBiomedico1">
+
+										<p:outputLabel for="txtServicio" value="#{mensaje.servicio}"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											style="font-weight:bold; font-size:14px" />
+
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico2">
+										<p:inputText id="txtServicio"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											value="#{administrarHojaVida.equipo.servicio}"
+											placeholder="#{mensaje.areaEj}" required="true"
+											label="#{mensaje.servicio}"
+											style="width:100%; font-size:14px; " />
+
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico3">
+										<p:outputLabel for="lstEquipo" value="#{mensaje.equipo}"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											style="font-weight:bold; font-size:14px" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico4">
+										<p:selectOneMenu label="#{mensaje.equipo}"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											style="width:100%; font-size:14px;" id="lstEquipo"
+											required="true" value="#{administrarHojaVida.equipo.equipo}">
+											<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+											<f:selectItem itemValue="M" itemLabel="#{mensaje.movil}" />
+											<f:selectItem itemValue="F" itemLabel="#{mensaje.fijo}" />
+										</p:selectOneMenu>
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico5">
+										<p:outputLabel for="lstClaseSoporte"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											value="#{mensaje.soporte}"
+											style="font-weight:bold; font-size:14px" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico6">
+										<p:selectOneMenu label="#{mensaje.soporte}"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											style="width:100%; font-size:14px;" id="lstClaseSoporte"
+											required="true"
+											value="#{administrarHojaVida.equipo.claseSoporteBiomedico.id}">
+											<f:selectItems
+												value="#{administrarHojaVida.itemsClasesSoporteActivos}" />
+										</p:selectOneMenu>
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico7">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico8">
+										<p:message for="txtServicio"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico9">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico10">
+										<p:message for="lstEquipo"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico11">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico12">
+										<p:message for="lstClaseSoporte"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+
+
+									<p:outputPanel id="pnlBiomedico13">
+										<p:outputLabel for="txtRegistroInvima"
+											value="#{mensaje.registroInvima}"
+											style="font-weight:bold; font-size:14px"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico14">
+										<p:inputText id="txtRegistroInvima"
+											value="#{administrarHojaVida.equipo.registroInvima}"
+											required="true" label="#{mensaje.registroInvima}"
+											style="width:100%; font-size:14px; "
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico15">
+										<p:outputLabel for="lstClasificacionBiomedica"
+											value="#{mensaje.clasificacionBiomedica}"
+											style="font-weight:bold; font-size:14px"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico16">
+										<p:selectOneMenu label="#{mensaje.clasificacionBiomedica}"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											style="width:100%; font-size:14px;"
+											id="lstClasificacionBiomedica" required="true"
+											value="#{administrarHojaVida.equipo.clasificacionBiomedica.id}">
+											<f:selectItems
+												value="#{administrarHojaVida.itemsClasificacionesBiomedicasActivas}" /> />
+									</p:selectOneMenu>
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico17">
+										<p:outputLabel for="lstClasificacionRiesgo"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											value="#{mensaje.clasificacionRiesgo}"
+											style="font-weight:bold; font-size:14px" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico18">
+										<p:selectOneMenu label="#{mensaje.clasificacionRiesgo}"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											style="width:100%; font-size:14px;"
+											id="lstClasificacionRiesgo" required="true"
+											value="#{administrarHojaVida.equipo.clasificacionRiesgo.id}">
+											<f:selectItems
+												value="#{administrarHojaVida.itemsClasificacionesRiesgoActivas}" /> />
+									</p:selectOneMenu>
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico19">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico20">
+										<p:message for="txtRegistroInvima"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico21">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico22">
+										<p:message for="lstClasificacionBiomedica"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico23">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico24">
+										<p:message for="lstClasificacionRiesgo"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+
+
+									<p:outputPanel id="pnlBiomedico25">
+										<p:outputLabel for="txtProveedor" value="#{mensaje.proveedor}"
+											style="font-weight:bold; font-size:14px"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico26">
+										<p:inputText id="txtProveedor"
+											value="#{administrarHojaVida.equipo.proveedor}"
+											required="true" label="#{mensaje.registroInvima}"
+											style="width:100%; font-size:14px; "
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico27">
+										<p:outputLabel for="txtTelefono"
+											value="#{mensaje.telefonoProveedor}"
+											style="font-weight:bold; font-size:14px"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico28">
+										<p:inputText id="txtTelefono"
+											value="#{administrarHojaVida.equipo.telefono}"
+											required="true" label="#{mensaje.telefonoProveedor}"
+											style="width:100%; font-size:14px; "
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico29">
+										<p:outputLabel for="txtCorreo"
+											value="#{mensaje.correoProveedor}"
+											style="font-weight:bold; font-size:14px"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico30">
+										<p:inputText id="txtCorreo"
+											value="#{administrarHojaVida.equipo.correoElectronico}"
+											required="true" label="#{mensaje.correoProveedor}"
+											style="width:100%; font-size:14px; "
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+
+
+
+
+									<p:outputPanel id="pnlBiomedico31">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico32">
+										<p:message for="txtProveedor"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico33">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico34">
+										<p:message for="txtTelefono"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico35">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico36">
+										<p:message for="txtCorreo"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico37">
+										<p:outputLabel for="txtDescripcion"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											value="#{mensaje.breveDescripcionEquipo}"
+											style="font-weight:bold; font-size:14px" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico38">
+										<p:inputTextarea rows="5" style="width:100%; font-size:14px"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}"
+											value="#{administrarHojaVida.equipo.descripcionEquipo}"
+											required="true" id="txtDescripcion" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico39">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico40">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico41">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico42">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico43">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico44">
+										<p:message for="txtDescripcion"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'}" />
+									</p:outputPanel>
+
+
+
+								</p:panelGrid>
+
+							</p:tab>
+
+							<p:tab title="#{mensaje.datosEspecializados}">
+
+
+								<p:panelGrid columns="6" cellpadding="0" cellspacing="0"
+									style="width:100%" styleClass="ui-panelgrid-blank"
+									layout="grid">
+
+
+									<p:outputLabel for="lstRequiereCalibracion"
+										value="#{mensaje.requiereCalibracion}"
+										style="font-weight:bold; font-size:14px" />
+									<p:selectOneMenu label="#{mensaje.requiereCalibracion}"
+										style="width:100%; font-size:14px;"
+										id="lstRequiereCalibracion" required="true"
+										value="#{administrarHojaVida.equipo.requiereCalibracion}">
+										<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+										<f:selectItem itemValue="S" itemLabel="#{mensaje.SI}" />
+										<f:selectItem itemValue="N" itemLabel="#{mensaje.NO}" />
+
+									</p:selectOneMenu>
+
+
+
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+
+									<p:spacer width="1" />
+									<p:message for="lstRequiereCalibracion" />
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+
+
+
+
+									<p:outputLabel for="lstMediciones"
+										value="#{mensaje.mediciones}"
+										style="font-weight:bold; font-size:14px" />
+									<p:selectOneMenu label="#{mensaje.mediciones}"
+										style="width:100%; font-size:14px;" id="lstMediciones"
+										required="true"
+										value="#{administrarHojaVida.equipo.mediciones}">
+										<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+										<f:selectItem itemValue="S" itemLabel="#{mensaje.aplican}" />
+										<f:selectItem itemValue="N" itemLabel="#{mensaje.noAplican}" />
+
+									</p:selectOneMenu>
+
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+
+									<p:spacer width="1" />
+									<p:message for="lstMediciones" />
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+
+
+									<p:outputLabel for="lstBaterias" value="#{mensaje.baterias}"
+										style="font-weight:bold; font-size:14px" />
+
+
+									<p:selectOneMenu label="#{mensaje.baterias}"
+										style="width:100%; font-size:14px;" id="lstBaterias"
+										required="true"
+										value="#{administrarHojaVida.equipo.contieneBaterias}">
+										<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+										<f:selectItem itemValue="S" itemLabel="#{mensaje.aplican}" />
+										<f:selectItem itemValue="N" itemLabel="#{mensaje.noAplican}" />
+
+										<p:ajax event="change" process="@this"
+											update="@this, pnlBaterias1, pnlBaterias2, pnlBaterias3" />
+
+									</p:selectOneMenu>
+
+									<p:outputPanel id="pnlBaterias1">
+										<p:outputLabel for="txtNumeroBaterias"
+											rendered="#{administrarHojaVida.equipo.contieneBaterias=='S'}"
+											value="#{mensaje.numeroBaterias}"
+											style="font-weight:bold; font-size:14px" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBaterias2">
+										<p:inputText id="txtNumeroBaterias"
+											rendered="#{administrarHojaVida.equipo.contieneBaterias=='S'}"
+											value="#{administrarHojaVida.equipo.numeroBaterias}"
+											required="true" label="#{mensaje.numeroBaterias}"
+											style="width:100%; font-size:14px; " />
+									</p:outputPanel>
+
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+
+									<p:spacer width="1" />
+									<p:message for="lstBaterias" />
+									<p:spacer width="1" />
+									<p:outputPanel id="pnlBaterias3">
+										<p:message for="txtNumeroBaterias"
+											rendered="#{administrarHojaVida.equipo.contieneBaterias=='S'}" />
+									</p:outputPanel>
+									<p:spacer width="1" />
+									<p:spacer width="1" />
+
+
+
+									<p:outputLabel for="lstDatosTecnicos"
+										value="#{mensaje.datosTecnicos}"
+										style="font-weight:bold; font-size:14px" />
+
+
+									<p:selectOneMenu label="#{mensaje.datosTecnicos}"
+										style="width:100%; font-size:14px;" id="lstDatosTecnicos"
+										required="true"
+										value="#{administrarHojaVida.equipo.datosTecnicos}">
+										<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+										<f:selectItem itemValue="S" itemLabel="#{mensaje.aplican}" />
+										<f:selectItem itemValue="N" itemLabel="#{mensaje.noAplican}" />
+
+										<p:ajax event="change" process="@this"
+											update="#{administrarHojaVida.panelesUpdateDatosTecnicos}" />
+
+									</p:selectOneMenu>
+
+									<p:outputPanel id="pnlTecnicos1">
+										<p:outputLabel for="txPotencia" value="#{mensaje.potencia}"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}"
+											style="font-weight:bold; font-size:14px" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos2">
+										<p:inputText id="txPotencia"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}"
+											value="#{administrarHojaVida.equipo.potencia}"
+											required="true" label="#{mensaje.potencia}"
+											style="width:100%; font-size:14px; " />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlTecnicos3">
+										<p:outputLabel for="txtVoltaje" value="#{mensaje.voltaje}"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}"
+											style="font-weight:bold; font-size:14px" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos4">
+										<p:inputText id="txtVoltaje"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}"
+											value="#{administrarHojaVida.equipo.voltaje}" required="true"
+											label="#{mensaje.voltaje}"
+											style="width:100%; font-size:14px; " />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlTecnicos5">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos6">
+										<p:message for="lstDatosTecnicos"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos7">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos8">
+										<p:message for="txPotencia"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos9">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos10">
+										<p:message for="txtVoltaje"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+
+
+									<p:outputPanel id="pnlTecnicos11">
+										<p:outputLabel for="txtCorriente" value="#{mensaje.corriente}"
+											style="font-weight:bold; font-size:14px"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos12">
+										<p:inputText id="txtCorriente"
+											value="#{administrarHojaVida.equipo.corriente}"
+											required="true" label="#{mensaje.corriente}"
+											style="width:100%; font-size:14px; "
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+
+
+									<p:outputPanel id="pnlTecnicos13">
+										<p:outputLabel for="txtNumeroFases"
+											value="#{mensaje.numeroFases}"
+											style="font-weight:bold; font-size:14px"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos14">
+										<p:inputText id="txtNumeroFases"
+											value="#{administrarHojaVida.equipo.numeroFases}"
+											required="true" label="#{mensaje.numeroFases}"
+											style="width:100%; font-size:14px; "
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico45">
+
+										<p:outputLabel for="txtFrecuencia"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}"
+											value="#{mensaje.frecuencia}"
+											style="font-weight:bold; font-size:14px" />
+
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico46">
+										<p:inputText id="txtFrecuencia"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S'  and administrarHojaVida.equipo.datosTecnicos == 'S'}"
+											value="#{administrarHojaVida.equipo.frecuencia}"
+											required="true" label="#{mensaje.frecuencia}"
+											style="width:100%; font-size:14px; " />
+									</p:outputPanel>
+
+
+									<p:outputPanel id="pnlTecnicos15">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos16">
+										<p:message for="txtCorriente"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlTecnicos17">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlTecnicos18">
+										<p:message for="txtNumeroFases"
+											rendered="#{administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico47">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico48">
+										<p:message for="txtFrecuencia"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+
+
+									<p:outputPanel id="pnlBiomedico49">
+										<p:outputLabel value="#{mensaje.presion}"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}"
+											for="txtMinimaPresion"
+											style="font-weight:bold; font-size:14px" />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico50">
+
+										<p:panelGrid columns="3" style="width:100%"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}"
+											styleClass="ui-panelgrid-blank">
+
+
+
+											<p:inputText id="txtMinimaPresion"
+												value="#{administrarHojaVida.equipo.minimoPresion}"
+												required="true" label="#{mensaje.minimo}"
+												style="width:100%; font-size:14px; " />
+
+
+											<p:outputLabel value=" - " style="font-size:14px;" />
+
+											<p:inputText id="txtMaximoPresion"
+												value="#{administrarHojaVida.equipo.maximoPresion}"
+												required="true" label="#{mensaje.maxima}"
+												style="width:100%; font-size:14px; " />
+
+										</p:panelGrid>
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico51">
+										<p:outputLabel value="#{mensaje.temperatura}"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}"
+											for="txtMinimaPresion"
+											style="font-weight:bold; font-size:14px" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico52">
+
+										<p:panelGrid columns="3" style="width:100%"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}"
+											styleClass="ui-panelgrid-blank">
+
+
+
+											<p:inputText id="txtMinimaTemperatura"
+												value="#{administrarHojaVida.equipo.minimoTemperatura}"
+												required="true" label="#{mensaje.minimo}"
+												style="width:100%; font-size:14px; " />
+
+
+											<p:outputLabel value=" - " style="font-size:14px;" />
+
+											<p:inputText id="txtMaximoTemperatura"
+												value="#{administrarHojaVida.equipo.maximoTemperatura}"
+												required="true" label="#{mensaje.maxima}"
+												style="width:100%; font-size:14px; " />
+
+										</p:panelGrid>
+									</p:outputPanel>
+
+
+									<p:outputPanel id="pnlBiomedico53">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico54">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico55">
+
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico56">
+										<p:message for="txtMinimaPresion"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico57">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico58">
+										<p:message for="txtMinimaTemperatura"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+
+									<p:outputPanel id="pnlBiomedico59">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+									<p:outputPanel id="pnlBiomedico60">
+										<p:spacer width="1"
+											rendered="#{administrarHojaVida.equipo.equipoBiomedico=='S' and administrarHojaVida.equipo.datosTecnicos == 'S'}" />
+									</p:outputPanel>
+
+								</p:panelGrid>
+
+
+
+
+
+							</p:tab>
+						</p:tabView>
+
+
+						<p:spacer height="10" />
+						<div align="center">
+
+
+							<p:commandButton id="btnCrearCasoUso"
+								action="#{administrarHojaVida.crearEquipo()}"
+								style="font-size:14px" process=":form:pnlCrearCasoUso"
+								value="#{mensaje.guardar}"
+								update=":form:pnlCrearCasoUso, :form:pnlConsultar, :form:pnlDtlEquipos, :form:messages" />
+							<p:spacer width="10" />
+							<p:commandButton id="btnBorrarCasoUso"
+								action="#{administrarHojaVida.cancelarEquipo()}"
+								style="font-size:14px; font-weight: normal !important;"
+								process="@this" value="#{mensaje.cancelar}"
+								update=":form:pnlCrearCasoUso">
+								<p:resetInput target=":form:pnlCasoUso" />
+							</p:commandButton>
+
+						</div>
+						<p:outputLabel value="#{mensaje.informacionRequerida}"
+							style="font-size:10px" />
+						<p:blockUI block=":form:pnlCrearCasoUso"
+							trigger="btnCrearCasoUso, btnBorrarCasoUso">
+							<p:graphicImage value="../imagenes/cargando.gif" />
+						</p:blockUI>
+					</p:tab>
+				</p:accordionPanel>
+				<p:spacer height="30" />
+				<p:outputPanel id="pnlConsultar">
+					<p:accordionPanel activeIndex="0">
+						<p:tab title="#{mensaje.consultarEquipos}"
+							titleStyle="font-size:16px" closable="true">
+
+							<p:outputLabel
+								value="#{administrarHojaVida.getAsignacionQrConsultarHojaVida()}" />
+
+							<p:panelGrid columns="6" cellpadding="0" cellspacing="0"
+								style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+
+
+								<p:outputLabel value="#{mensaje.clienteNormal}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}"
+									style="font-weight:bold; font-size:14px" for="lstClienteSesion" />
+
+
+								<p:selectOneMenu label="#{mensaje.clienteNormal}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}"
+									required="true" style="width:100%; font-size:14px;"
+									id="lstClienteSesion"
+									value="#{administrarHojaVida.equipoConsulta.cliente.id}">
+									<f:selectItems
+										value="#{administrarSesionCliente.itemsClientes}" />
+								</p:selectOneMenu>
+
+								<p:outputLabel value="#{mensaje.idCodigoQr}"
+									style="font-weight:bold; font-size:14px" />
+
+
+								<p:inputText id="txtQr2"
+									value="#{administrarHojaVida.equipoConsulta.codigoQr}"
+									label="#{mensaje.idCodigoQr}"
+									style="width:100%; font-size:14px; " />
+
+
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+
+
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}" />
+								<p:message for="lstClienteSesion"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}" />
+								<p:outputLabel value="" />
+								<p:message for="txtQr2" />
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+
+								<p:outputLabel for="txtNit2" value="#{mensaje.nitParte}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNit2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="#{administrarHojaVida.equipoConsulta.cliente.nit}"
+									label="#{mensaje.nitParte}"
+									style="width:100%; font-size:14px; " />
+								<p:outputLabel for="txtCliente2" value="#{mensaje.clienteParte}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtCliente2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="#{administrarHojaVida.equipoConsulta.cliente.cliente}"
+									label="#{mensaje.clienteParte}"
+									style="width:100%; font-size:14px; " />
+								<p:outputLabel for="txtUbicacion2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="#{mensaje.ubicacionParte}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtUbicacion2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="#{administrarHojaVida.equipoConsulta.cliente.ubicacion}"
+									label="#{mensaje.ubicacionParte}"
+									style="width:100%; font-size:14px; " />
+
+
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:message for="txtNit2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:message for="txtCliente2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:message for="txtUbicacion2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+
+
+								<p:outputLabel for="txtNombreEquipo2"
+									value="#{mensaje.nombreEquipoParte}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNombreEquipo2"
+									value="#{administrarHojaVida.equipoConsulta.nombreEquipo}"
+									label="#{mensaje.nombreEquipoParte}"
+									style="width:100%; font-size:14px; " />
+
+								<p:outputLabel for="txtNumeroInventario2"
+									value="#{mensaje.numeroInventario}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNumeroInventario2"
+									value="#{administrarHojaVida.equipoConsulta.numeroInventario}"
+									label="#{mensaje.numeroInventario}"
+									style="width:100%; font-size:14px; " />
+
+								<p:outputLabel for="txtNumeroSerie2"
+									value="#{mensaje.numeroSerie}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNumeroSerie2"
+									value="#{administrarHojaVida.equipoConsulta.numeroSerie}"
+									label="#{mensaje.numeroSerie}"
+									style="width:100%; font-size:14px; " />
+
+								<p:outputLabel value="" />
+								<p:message for="txtNombreEquipo2" />
+								<p:outputLabel value="" />
+								<p:message for="txtNumeroInventario2" />
+								<p:outputLabel value="" />
+								<p:message for="txtNumeroSerie2" />
+
+
+								<p:outputLabel for="lstClaseEquipo2"
+									value="#{mensaje.claseEquipo}"
+									style="font-weight:bold; font-size:14px" />
+								<p:selectOneMenu label="#{mensaje.claseEquipo}"
+									style="width:100%; font-size:14px;" id="lstClaseEquipo2"
+									value="#{administrarHojaVida.equipoConsulta.equipoBiomedico}">
+									<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+									<f:selectItem itemValue="S" itemLabel="#{mensaje.biomedico}" />
+									<f:selectItem itemValue="N" itemLabel="#{mensaje.otro}" />
+
+								</p:selectOneMenu>
+
+
+								<p:outputLabel for="lstDatosTecnicos2"
+									value="#{mensaje.datosTecnicos}"
+									style="font-weight:bold; font-size:14px" />
+
+
+								<p:selectOneMenu label="#{mensaje.datosTecnicos}"
+									style="width:100%; font-size:14px;" id="lstDatosTecnicos2"
+									value="#{administrarHojaVida.equipoConsulta.datosTecnicos}">
+									<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+									<f:selectItem itemValue="S" itemLabel="#{mensaje.aplican}" />
+									<f:selectItem itemValue="N" itemLabel="#{mensaje.noAplican}" />
+
+
+
+								</p:selectOneMenu>
+
+
+								<p:outputLabel for="lstRequiereCalibracion2"
+									value="#{mensaje.requiereCalibracion}"
+									style="font-weight:bold; font-size:14px" />
+								<p:selectOneMenu label="#{mensaje.requiereCalibracion}"
+									style="width:100%; font-size:14px;"
+									id="lstRequiereCalibracion2"
+									value="#{administrarHojaVida.equipoConsulta.requiereCalibracion}">
+									<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+									<f:selectItem itemValue="S" itemLabel="#{mensaje.SI}" />
+									<f:selectItem itemValue="N" itemLabel="#{mensaje.NO}" />
+
+								</p:selectOneMenu>
+
+
+								<p:outputLabel value="" />
+								<p:message for="lstClaseEquipo2" />
+								<p:outputLabel value="" />
+								<p:message for="lstDatosTecnicos2" />
+								<p:outputLabel value="" />
+								<p:message for="lstRequiereCalibracion2" />
+
+
+							</p:panelGrid>
+							<p:spacer height="10" />
+							<div align="center">
+								<p:commandButton id="btnConsultar" style="font-size:14px; "
+									action="#{administrarHojaVida.consultarEquipos()}"
+									value="#{mensaje.consultar}"
+									update=":form:pnlConsultar, :form:pnlDtlEquipos"
+									process=":form:pnlConsultar" />
+
+								<p:spacer width="10" />
+								<p:commandButton id="btnBorrar"
+									style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+									action="#{administrarHojaVida.cancelarConsulta()}"
+									process="@this" value="#{mensaje.cancelar}"
+									update=":form:pnlConsultar, :form:pnlDtlEquipos">
+
+									<p:resetInput target=":form:pnlConsultar" />
+
+								</p:commandButton>
+
+							</div>
+
+							<p:blockUI block=":form:pnlConsultar"
+								trigger="btnConsultar, btnBorrar">
+
+								<p:graphicImage value="../imagenes/cargando.gif" />
+
+
+							</p:blockUI>
+
+						</p:tab>
+
+
+
+					</p:accordionPanel>
+				</p:outputPanel>
+
+				<p:spacer height="30" />
+				<p:accordionPanel id="pnlDtlEquipos">
+					<p:tab title="#{mensaje.listadoEquipos}"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:dataTable var="loc" id="dtlEquipos" widgetVar="dtlRegistros"
+							value="#{administrarHojaVida.equipos}" reflow="true" rows="10"
+							paginator="true" paginatorPosition="bottom"
+							draggableColumns="true"
+							emptyMessage="#{mensaje.noExistenciaEquipos}">
+
+							<f:facet name="header">
+								<p:outputPanel style="text-align:right">
+									<p:inputText id="globalFilter" immediate="true"
+										onkeyup="PF('dtlRegistros').filter()" style="width:150px; "
+										placeholder="#{mensaje.palabrasClave}" />
+								</p:outputPanel>
+							</f:facet>
+
+							<p:column headerText="#{mensaje.idCodigoQr}"
+								filterBy="#{loc.codigoQr}" filterMatchMode="contains"
+								filterStyle="display:none" sortBy="#{loc.codigoQr}"
+								style="font-size:14px; width:100px">
+								<p:outputLabel value="#{loc.codigoQr}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.nombreEquipo}"
+								filterBy="#{loc.nombreEquipo}" filterMatchMode="contains"
+								filterStyle="display:none" sortBy="#{loc.nombreEquipo}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.nombreEquipo}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+							<p:column headerText="#{mensaje.numeroSerie}" 
+								filterStyle="display:none" filterMatchMode="contains"
+								filterBy="#{loc.numeroSerie}" sortBy="#{loc.numeroSerie}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.numeroSerie}"
+									style="font-weight:normal; font-size:12px" />
+
+							</p:column>
+							<p:column headerText="#{mensaje.claseEquipo}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.equipoBiomedico}"
+								filterBy="#{loc.equipoBiomedico}" style="font-size:14px">
+								<p:outputLabel rendered="#{loc.equipoBiomedico == 'S'}"
+									value="#{mensaje.biomedico}"
+									style="font-weight:normal; font-size:12px" />
+
+								<p:outputLabel rendered="#{loc.equipoBiomedico == 'N'}"
+									value="#{mensaje.otro}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.estadoEquipo}"
+								filterMatchMode="contains" filterBy="#{loc.estado}"
+								sortBy="#{loc.estado}" style="font-size:14px; width:100px"
+								filterStyle="display:none">
+								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estado == 'A'}" />
+								<p:outputLabel value="#{mensaje.ESTADO_INACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estado == 'I'}" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.nit}" filterMatchMode="contains"
+								filterBy="#{loc.cliente.nit}" filterStyle="display:none"
+								sortBy="#{loc.cliente.nit}" style="font-size:14px">
+								<p:outputLabel value="#{loc.cliente.nit}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.cliente}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.cliente.cliente} #{loc.cliente.ubicacion}"
+								filterBy="#{loc.cliente.cliente} #{loc.cliente.ubicacion}"
+								style="font-size:14px">
+								<p:outputLabel
+									value="#{loc.cliente.cliente}, #{loc.cliente.ubicacion}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+
+							<p:column headerText="#{mensaje.estadoCliente}"
+								filterMatchMode="contains"
+								filterBy="#{loc.cliente.estadoVigencia}"
+								filterStyle="display:none"
+								sortBy="#{loc.cliente.estadoVigencia}"
+								style="font-size:14px; width:100px">
+								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.cliente.estadoVigencia == 'A'}" />
+								<p:outputLabel value="#{mensaje.ESTADO_INACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.cliente.estadoVigencia == 'I'}" />
+							</p:column>
+
+
+
+
+
+							<p:column headerText="#{mensaje.acciones}"
+								style="font-size:12px; text-align:center;">
+
+
+								<p:commandButton id="btnIrEditar"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									style="background-origin: content-box; background-image: url('../imagenes/editar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarEquipo(loc,'MODAL_EDITAR_EQUIPO')}"
+									value="" process=":form:pnlDtlEquipos" update=":formEditar" />
+
+
+								<p:tooltip for="btnIrEditar" value="#{mensaje.editar}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									trackMouse="true" />
+
+
+								<p:commandButton id="btnIrEliminar"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarEquipo(loc,'MODAL_ELIMINAR_EQUIPO')}"
+									value="" process=":form:pnlDtlEquipos" update=":formEliminar" />
+
+
+								<p:tooltip for="btnIrEliminar" value="#{mensaje.eliminar}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									trackMouse="true" />
+
+
+								<p:commandButton id="btnIrClonar"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									style="background-origin: content-box; background-image: url('../imagenes/clonar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarEquipo(loc,'MODAL_CLONAR')}"
+									value="" process=":form:pnlDtlEquipos" update=":formClonar" />
+
+
+								<p:tooltip for="btnIrClonar" value="#{mensaje.clonarEquipo}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									trackMouse="true" />
+
+								<p:commandButton id="btnIrActividades"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									style="background-origin: content-box; background-image: url('../imagenes/a_mayuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarEquipo(loc,'MODAL_VER_ACTIVIDADES')}"
+									value="" process=":form:pnlDtlEquipos" update=":formActividad" />
+
+
+								<p:tooltip for="btnIrActividades"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="#{mensaje.actividadesEquipo}" trackMouse="true" />
+
+
+								<p:commandButton id="btnIrDocumentos"
+									style="background-origin: content-box; background-image: url('../imagenes/d_mayuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarEquipo(loc,'MODAL_VER_DOCUMENTOS')}"
+									value="" process=":form:pnlDtlEquipos" update=":formDocumento" />
+
+
+								<p:tooltip for="btnIrDocumentos"
+									value="#{mensaje.documentosSoporte}" trackMouse="true" />
+
+
+								<p:commandButton id="btnIrCalibraciones"
+									rendered="#{loc.requiereCalibracion=='S'}"
+									style="background-origin: content-box; background-image: url('../imagenes/c_mayuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarEquipo(loc,'MODAL_VER_CALIBRACIONES')}"
+									value="" process=":form:pnlDtlEquipos"
+									update=":formCalibracion" />
+
+
+								<p:tooltip for="btnIrCalibraciones"
+									rendered="#{loc.requiereCalibracion=='S'}"
+									value="#{mensaje.calibraciones}" trackMouse="true" />
+
+
+								<p:commandButton id="btnIrFotosOrigninales"
+									style="background-origin: content-box; background-image: url('../imagenes/f_minuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarEquipo(loc,'MODAL_VER_FOTOS')}"
+									value="" process=":form:pnlDtlEquipos" update=":formDocumento" />
+
+
+								<p:tooltip for="btnIrFotosOrigninales"
+									value="#{mensaje.fotosOriginales}" trackMouse="true" />
+
+
+								<p:commandButton id="btnIrRepuestos"
+									style="background-origin: content-box; background-image: url('../imagenes/r_mayuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarEquipo(loc,'MODAL_VER_REPUESTOS')}"
+									value="" process=":form:pnlDtlEquipos" update=":formFoto" />
+
+
+								<p:tooltip for="btnIrRepuestos"
+									value="#{mensaje.repuestosPartes}" trackMouse="true" />
+
+
+								<p:commandButton id="btnIrHistorial"
+									style="background-origin: content-box; background-image: url('../imagenes/h_mayuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{realizarMantenimiento.verHistorialMantenimiento(loc)}"
+									value="" process=":form:pnlDtlEquipos" update=":formHistorial" />
+
+
+								<p:tooltip for="btnIrHistorial"
+									value="#{mensaje.historialIntervencionesEquipo}"
+									trackMouse="true" />
+
+								<p:commandButton id="btnIrVerEquipo"
+									style="background-origin: content-box; background-image: url('../imagenes/buscar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarEquipo(loc,'MODAL_VER_EQUIPO')}"
+									value="" process=":form:pnlDtlEquipos" update=":formVerEquipo" />
+
+
+								<p:tooltip for="btnIrVerEquipo" value="#{mensaje.verEquipo}"
+									trackMouse="true" />
+
+
+
+
+
+
+
+							</p:column>
+
+
+						</p:dataTable>
+						<br />
+						<br />
+						<div align="center">
+							<p:commandButton id="btnQr" style="font-size:14px; "
+								rendered="#{administrarHojaVida.equipos!=null and administrarHojaVida.equipos.size()>0}"
+								action="#{administrarHojaVida.imprimirQrs()}" immediate="true"
+								ajax="false" value="#{mensaje.imprimirTarjetasQr}"
+								process="@this" update=":formVerDocumento, :form:messages" />
+
+
+							<p:blockUI block=":form" trigger="btnQr">
+								<p:graphicImage value="../imagenes/cargando.gif" />
+							</p:blockUI>
+
+
+
+						</div>
+
+					</p:tab>
+				</p:accordionPanel>
+
+			</p:outputPanel>
+		</h:form>
+
+		<ui:include src="/equipos/editarEquipo.xhtml" />
+		<ui:include src="/equipos/eliminarEquipo.xhtml" />
+		<ui:include src="/equipos/crearRespuesto.xhtml" />
+		<ui:include src="/equipos/editarRepuesto.xhtml" />
+		<ui:include src="/equipos/eliminarRepuesto.xhtml" />
+		<ui:include src="/equipos/crearDocumento.xhtml" />
+		<ui:include src="/equipos/eliminarDocumento.xhtml" />
+		<ui:include src="/equipos/crearFoto.xhtml" />
+		<ui:include src="/equipos/eliminarFoto.xhtml" />
+		<ui:include src="/equipos/crearActividad.xhtml" />
+		<ui:include src="/equipos/editarActividad.xhtml" />
+		<ui:include src="/equipos/eliminarActividad.xhtml" />
+		<ui:include src="/equipos/verHistorialMantenimiento.xhtml" />
+		<ui:include src="/equipos/crearCalibracion.xhtml" />
+		<ui:include src="/equipos/eliminarCalibracion.xhtml" />
+		<ui:include src="/equipos/verFirmaCalibracion.xhtml" />
+		<ui:include src="/equipos/verEquipo.xhtml" />
+		<ui:include src="/equipos/verDocumentoSeleccionado.xhtml" />
+		<ui:include src="/equipos/clonarEquipo.xhtml" />
+		<p:spacer height="1000" />
+
+
+	</ui:define>
+</ui:composition>

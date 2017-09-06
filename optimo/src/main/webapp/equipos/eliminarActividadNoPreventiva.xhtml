@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formEliminarActividadNoPreventiva">
+
+		<p:dialog header="#{mensaje.eliminarActividad}" width="600" height="500"
+			widgetVar="panelEliminacionActividadNoPreventiva" resizable="true" closable="false"
+			responsive="true">
+			<p:panel id="pnlEliminarActividad">
+
+				<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+					styleClass="ui-panelgrid-blank" layout="grid">
+
+					<p:outputLabel for="txtActividad" value="#{mensaje.actividad}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:inputTextarea id="txtActividad" rows="3" 
+						autoResize="false" readonly="true"
+						value="#{realizarMantenimiento.actividadNoPreventiva.descripcionActividad}"
+						required="true" label="#{mensaje.actividad}"
+						style="width:100%; font-size:14px; background-color:#D3D3D3" />
+
+
+
+				
+
+
+					<p:outputLabel for="lstEstadoInicial"
+						value="#{mensaje.estadoInicial}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:selectOneMenu label="#{mensaje.estadoInicial}" disabled="true"
+						style="width:100%; font-size:14px" id="lstEstadoInicial"
+						value="#{realizarMantenimiento.actividadNoPreventiva.estadoInicial}"
+						>
+						<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+						<f:selectItem itemValue="B" itemLabel="#{mensaje.bueno}" />
+						<f:selectItem itemValue="R" itemLabel="#{mensaje.regular}" />
+						<f:selectItem itemValue="M" itemLabel="#{mensaje.malo}" />
+					</p:selectOneMenu>
+				
+
+					<p:outputLabel for="txtObservaciones" value="#{mensaje.observacionesActividad}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:inputTextarea id="txtObservaciones" rows="3" cols="5"
+						autoResize="false" readonly="true"
+						value="#{realizarMantenimiento.actividadNoPreventiva.observaciones}"
+						label="#{mensaje.observacionesActividad}"
+						style="width:100%; font-size:14px; background-color:#D3D3D3" />
+
+				
+				
+
+					<p:outputLabel for="lstEstadoFinal" value="#{mensaje.estadoFinal}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:selectOneMenu label="#{mensaje.estadoFinal}" disabled="true"
+						style="width:100%; font-size:14px" id="lstEstadoFinal"
+						value="#{realizarMantenimiento.actividadNoPreventiva.estadoFinal}"
+						required="true">
+						<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+						<f:selectItem itemValue="O" itemLabel="#{mensaje.operativo}" />
+						<f:selectItem itemValue="N" itemLabel="#{mensaje.noOperativo}" />
+
+					</p:selectOneMenu>
+				
+
+
+				
+
+
+				</p:panelGrid>
+				
+
+
+				<br />
+				<div align="center">
+					<p:commandButton id="btnEliminarActividad" style="font-size:14px"
+						action="#{realizarMantenimiento.eliminarActividadNoPreventiva()}"
+						value="#{mensaje.eliminar}"
+						process=":formEliminarActividadNoPreventiva:pnlEliminarActividad"
+						update=":formEliminarActividadNoPreventiva:pnlEliminarActividad, :form:pnlDltRegistros:dtlRegistros2a, :form:messages" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEliminacionActividad"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{realizarMantenimiento.cancelarEdicionActividadNoPreventiva('eliminacion')}"
+						process="@this" value="#{mensaje.cancelar}"
+						update=":form:pnlDltRegistros:dtlRegistros2a">
+						<p:resetInput target=":formEliminarActividadNoPreventiva" />
+					</p:commandButton>
+
+				</div>
+
+				<p:outputLabel value="#{mensaje.informacionRequerida}"
+					style="font-size:10px" />
+				<p:blockUI block=":formEliminarActividadNoPreventiva:pnlEliminarActividad"
+					trigger="btnEliminarActividad, btnCancelarEliminacionActividad">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

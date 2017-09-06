@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="imprimirQr" language="groovy" columnCount="2" printOrder="Horizontal" pageWidth="612" pageHeight="792" columnWidth="286" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8df0788f-7ab8-406f-adfe-05ed95f82602">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="pUrl" class="java.lang.String"/>
+	<parameter name="pUrlTarjeta" class="java.lang.String"/>
+	<field name="codigoQr" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="173" splitType="Stretch">
+			<image onErrorType="Blank">
+				<reportElement uuid="65914d3f-750a-4994-8280-4edc8d4b1e57" x="19" y="14" width="100" height="100"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.qrcode.QRCodeWriter().encode($P{pUrl}+"?e="+$F{codigoQr}, com.google.zxing.BarcodeFormat.QR_CODE, 200, 200))]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="6d457a80-76bb-4e5e-895b-13935c10f621" x="15" y="120" width="260" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pUrlTarjeta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0c3b5bbb-8925-45fc-b6e4-64075f2710d7" x="24" y="139" width="252" height="33"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Escanee el QR ó ingrese a la URL y con el código identifique el equipo]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="0ba91b76-1156-40d2-afd4-b6c428d01647" x="126" y="40" width="147" height="51"/>
+				<textElement textAlignment="Center">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigoQr}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="fa804ee6-4e0d-43cc-9ce6-2b7aca7c4d89" x="0" y="172" width="287" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="3c73656d-8e42-44e1-afe6-3696cd5f1ee1" x="287" y="0" width="1" height="172">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 !=0]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="1.25" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

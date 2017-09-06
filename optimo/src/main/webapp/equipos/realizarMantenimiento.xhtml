@@ -1,0 +1,1135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principal.xhtml">
+
+	<ui:define name="body">
+		<style type="text/css">
+.columna1 {
+	width: 50%;
+	vertical-align: top;
+}
+
+.columna2 {
+	width: 50%;
+	vertical-align: top;
+}
+
+.columnaA {
+	text-align: left;
+	vertical-align: middle;
+}
+
+.columnaB {
+	text-align: right;
+	vertical-align: middle;
+}
+
+input[disabled] {
+	background-color: #D3D3D3 color: #000000;
+}
+</style>
+
+		<h:form id="form">
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+
+			<p:remoteCommand name="onload" process="@this"
+				action="#{administrarSesionCliente.getNoRolAdmitido('INFORME_MANTENIMIENTO')}"
+				autoRun="true" />
+
+
+			<div class="row x_title">
+				<div class="col-md-6">
+
+					<h2 class="project-title">#{mensaje.moduloEquipos}:
+						#{mensaje.realizarInformeMantenimiento}</h2>
+
+
+				</div>
+			</div>
+
+			<div align="center" class="titulo"></div>
+			<p:outputPanel id="pnlCasoUso">
+				<p:spacer height="10" />
+
+				<p:panel>
+					<p:outputPanel id="pnlCriteriosConsulta">
+						<div align="left">
+
+							<p:panelGrid columns="6" styleClass="ui-panelgrid-blank"
+								layout="grid" cellpadding="0">
+								<p:outputLabel value="#{mensaje.clienteNormal}"
+									style="font-weight:bold; font-size:14px" />
+
+
+								<p:selectOneMenu label="#{mensaje.clienteNormal}"
+									style="width:100%; font-size:14px;" id="lstCliente"
+									value="#{realizarMantenimiento.cliente.id}">
+									<f:selectItems value="#{realizarMantenimiento.itemsClientes}" />
+
+									<p:ajax event="change" process="@this"
+										listener="#{realizarMantenimiento.cambiarCliente()}"
+										update=":form:pnlCriteriosConsulta, :form:pnlEstructuraMantenimiento" />
+
+								</p:selectOneMenu>
+
+								<p:outputLabel value="#{mensaje.equipo}"
+									style="font-weight:bold; font-size:14px" />
+
+
+								<p:selectOneMenu label="#{mensaje.equipo}"
+									style="width:100%; font-size:14px;" id="lstEquipo"
+									value="#{realizarMantenimiento.equipo.id}">
+
+
+									<f:selectItems value="#{realizarMantenimiento.itemsEquipos}" />
+
+									<p:ajax event="change" process="@this"
+										listener="#{realizarMantenimiento.cambiarEquipo()}"
+										update=":form:pnlCriteriosConsulta, :form:pnlEstructuraMantenimiento" />
+
+
+
+
+								</p:selectOneMenu>
+
+
+								<p:outputLabel value="#{mensaje.cronograma}"
+									style="font-weight:bold; font-size:14px" />
+
+
+								<p:selectOneMenu label="#{mensaje.cronograma}"
+									style="width:100%; font-size:14px;" id="lstProyecto"
+									value="#{realizarMantenimiento.cronograma.id}">
+
+
+									<f:selectItems
+										value="#{realizarMantenimiento.itemsCronogramas}" />
+
+									<p:ajax event="change" process="@this"
+										update="#{realizarMantenimiento.getUpdateCamposMantenimiento()}"
+										listener="#{realizarMantenimiento.consultarDatosParaMantenimiento()}" />
+
+
+
+								</p:selectOneMenu>
+								<p:outputPanel id="pnlInformacion1">
+									<p:outputLabel value="#{mensaje.marca}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										style="font-weight:bold; font-size:14px" />
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion2">
+									<p:outputLabel
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										value="#{realizarMantenimiento.informeMantenimiento.cronograma.equipo.marca}"
+										style="font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion3">
+									<p:outputLabel value="#{mensaje.modelo}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										style="font-weight:bold; font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion4">
+									<p:outputLabel
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										value="#{realizarMantenimiento.informeMantenimiento.cronograma.equipo.modelo}"
+										style="font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion5">
+									<p:outputLabel value="#{mensaje.numeroSerie}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										style="font-weight:bold; font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion6">
+									<p:outputLabel
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										value="#{realizarMantenimiento.informeMantenimiento.cronograma.equipo.numeroSerie}"
+										style="font-size:14px" />
+
+								</p:outputPanel>
+
+
+								<p:outputPanel id="pnlInformacion7">
+									<p:outputLabel value="#{mensaje.numeroInventario}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										style="font-weight:bold; font-size:14px" />
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion8">
+									<p:outputLabel
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										value="#{realizarMantenimiento.informeMantenimiento.cronograma.equipo.numeroInventario}"
+										style="font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion9">
+									<p:outputLabel value="#{mensaje.tecnicoEjecutor}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										style="font-weight:bold; font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion10">
+
+									<p:outputLabel
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										value="#{realizarMantenimiento.informeMantenimiento.cronograma.tecnico.nombres}"
+										style="font-size:14px" />
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion11">
+									<p:outputLabel value="#{mensaje.consecutivo}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										style="font-weight:bold; font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion12">
+									<p:outputLabel
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										value="#{realizarMantenimiento.informeMantenimiento.cronograma.id}"
+										style="font-size:14px" />
+
+								</p:outputPanel>
+
+
+								<p:outputPanel id="pnlInformacion13">
+									<p:outputLabel value="#{mensaje.registroInvima}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.equipo.equipoBiomedico=='S'}"
+										style="font-weight:bold; font-size:14px" />
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion14">
+									<p:outputLabel
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.equipo.equipoBiomedico=='S'}"
+										value="#{realizarMantenimiento.informeMantenimiento.cronograma.equipo.registroInvima}"
+										style="font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion15">
+									<p:outputLabel value="#{mensaje.clasificacionBiomedica}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.equipo.equipoBiomedico=='S'}"
+										style="font-weight:bold; font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion16">
+
+									<p:outputLabel
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.equipo.equipoBiomedico=='S'}"
+										value="#{realizarMantenimiento.informeMantenimiento.cronograma.equipo.clasificacionBiomedica.nombre}"
+										style="font-size:14px" />
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion17">
+									<p:outputLabel value="#{mensaje.clasificacionRiesgo}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.equipo.equipoBiomedico=='S'}"
+										style="font-weight:bold; font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion18">
+									<p:outputLabel
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.equipo.equipoBiomedico=='S'}"
+										value="#{realizarMantenimiento.informeMantenimiento.cronograma.equipo.clasificacionRiesgo.nombre}"
+										style="font-size:14px" />
+
+								</p:outputPanel>
+
+								<p:outputPanel id="pnlInformacion19">
+									<p:outputLabel value="#{mensaje.estadoActualMantenimiento}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										style="font-weight:bold; font-size:14px" />
+								</p:outputPanel>
+
+								<p:outputPanel id="pnlInformacion20">
+									<p:outputLabel value="#{mensaje.programado}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.estado=='P'}"
+										style="font-size:14px" />
+									<p:outputLabel value="#{mensaje.diligenciado}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.estado=='D'}"
+										style="font-size:14px" />
+
+									<p:outputLabel
+										value="#{mensaje.atendido} #{consultarFuncionesAPI.getFechaHoraColombia(realizarMantenimiento.informeMantenimiento.cronograma.fechaHoraAtencion)}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.estado=='T'}"
+										style="font-size:14px" />
+
+									<p:outputLabel
+										value="#{mensaje.aprobado} #{consultarFuncionesAPI.getFechaHoraColombia(realizarMantenimiento.informeMantenimiento.cronograma.fechaHoraAprobacionCliente)}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+										style="font-size:14px" />
+
+								</p:outputPanel>
+								<p:outputPanel id="pnlInformacion21">
+									<p:outputLabel value="#{mensaje.informacionCompletaEquipo}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										style="font-weight:bold; font-size:14px" />
+								</p:outputPanel>
+
+								<p:outputPanel id="pnlInformacion22">
+									<p:commandButton id="btnIrVerEquipo"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										style="background-origin: content-box; background-image: url('../imagenes/buscar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										action="#{administrarHojaVida.asignarEquipo(realizarMantenimiento.informeMantenimiento.cronograma.equipo,'MODAL_VER_EQUIPO_INFORME')}"
+										value="" process="@this" update=":formVer" />
+
+
+									<p:tooltip for="btnIrVerEquipo"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null}"
+										value="#{mensaje.informacionCompletaEquipo}" trackMouse="true" />
+								</p:outputPanel>
+
+
+								<p:outputPanel id="pnlInformacion23">
+									<p:outputLabel value="#{mensaje.reporteFallaAsociado}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null and realizarMantenimiento.informeMantenimiento.cronograma.tipoMantenimiento=='C'}"
+										style="font-weight:bold; font-size:14px" />
+								</p:outputPanel>
+
+								<p:outputPanel id="pnlInformacion24">
+									<p:commandButton id="btnInformeFalla"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null  and realizarMantenimiento.informeMantenimiento.cronograma.tipoMantenimiento=='C'}"
+										style="background-origin: content-box; background-image: url('../imagenes/buscar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										action="#{reportarFalla.verReporteFalla(realizarMantenimiento.informeMantenimiento.cronograma.reporteFalla)}"
+										value="" process="@this" update=":formInformacionFalla" />
+
+
+									<p:tooltip for="btnInformeFalla"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.id!=null  and realizarMantenimiento.informeMantenimiento.cronograma.tipoMantenimiento=='C'}"
+										value="#{mensaje.reporteFallaAsociado}" trackMouse="true" />
+								</p:outputPanel>
+
+
+
+							</p:panelGrid>
+						</div>
+					</p:outputPanel>
+				</p:panel>
+
+				<p:spacer height="30" />
+				<p:outputPanel id="pnlEstructuraMantenimiento">
+					<p:accordionPanel id="pnlDltRegistros" prependId="true"
+						rendered="#{realizarMantenimiento.cronograma!=null and realizarMantenimiento.cronograma.id!=null and realizarMantenimiento.cronograma.tipoMantenimiento!=null and (realizarMantenimiento.cronograma.tipoMantenimiento!='P'  or (realizarMantenimiento.cronograma.tipoMantenimiento=='P' and realizarMantenimiento.informeMantenimiento.tActividades!=null and realizarMantenimiento.informeMantenimiento.tActividades.size()>0))}">
+						<p:tab title="#{mensaje.informeMantenimiento}"
+							titleStyle="font-size:16px" closable="true">
+
+
+
+							<p:dataTable var="loc" id="dtlRegistros2a"
+								rendered="#{realizarMantenimiento.cronograma.tipoMantenimiento!='P'}"
+								value="#{realizarMantenimiento.informeMantenimiento.tActividadesNoPreventivas}"
+								reflow="true" rows="6" paginator="true"
+								paginatorPosition="bottom"
+								emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+								<f:facet name="header">
+
+									<p:outputPanel>
+										<p:panelGrid style="width:100%" columns="2"
+											columnClasses="columnaA,columnaB"
+											styleClass="ui-panelgrid-blank">
+											<p:outputLabel value="#{mensaje.actividadesMantenimiento} *"
+												style="font-weight:bold; color:white" />
+
+											<p:commandButton id="btnIrCrear"
+												title="#{mensaje.crearActividad}"
+												rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+												style="background-origin: content-box; background-image: url('../imagenes/agregar_detalle.png'); background-size: cover; background-repeat:no-repeat; width:18px; height:18px; vertical-align:bottom; border:0; background-color:transparent"
+												action="#{realizarMantenimiento.asignarCreacionNuevaActividadNoPreventiva()}"
+												value="" process=":form:pnlDltRegistros:dtlRegistros2a"
+												update=":formEditarActividadNoPreventiva" />
+
+
+
+										</p:panelGrid>
+									</p:outputPanel>
+
+
+
+								</f:facet>
+
+								<p:column style="font-size:12px;" headerText="">
+									<p:commandButton
+										rendered="#{loc.estadoInicial!=null and loc.estadoInicial.trim()!='' and loc.estadoFinal!=null and loc.estadoFinal.trim()!='' and loc.descripcionActividad!=null and loc.descripcionActividad.trim()!='' }"
+										style="background-origin: content-box; background-image: url('../imagenes/pepa_verde.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										value="" />
+									<p:commandButton
+										rendered="#{!(loc.estadoInicial!=null and loc.estadoInicial.trim()!='' and loc.estadoFinal!=null and loc.estadoFinal.trim()!='' and loc.descripcionActividad!=null and loc.descripcionActividad.trim()!='')}"
+										style="background-origin: content-box; background-image: url('../imagenes/pepa_roja.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										value="" />
+
+
+								</p:column>
+
+								<p:column style="font-size:12px; width:35%"
+									headerText="#{mensaje.actividad}">
+									<p:outputLabel value="#{loc.descripcionActividad}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel
+										rendered="#{loc.descripcionActividad==null or loc.descripcionActividad.trim()==''}"
+										value="--" style="font-weight:normal; font-size:12px" />
+								</p:column>
+
+								<p:column style="font-size:12px;"
+									headerText="#{mensaje.estadoInicial}">
+									<p:outputLabel value="#{mensaje.bueno}"
+										rendered="#{loc.estadoInicial=='B'}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel value="#{mensaje.regular}"
+										rendered="#{loc.estadoInicial=='R'}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel value="#{mensaje.malo}"
+										rendered="#{loc.estadoInicial=='M'}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel
+										rendered="#{loc.estadoInicial==null or loc.estadoInicial.trim()==''}"
+										value="--" style="font-weight:normal; font-size:12px" />
+
+								</p:column>
+								<p:column style="font-size:12px; width:35%; height:auto"
+									headerText="#{mensaje.observacionesActividad}">
+
+
+									<p:outputLabel value="#{loc.observaciones}" escape="false"
+										style="font-weight:normal; font-size:12px" />
+
+
+									<p:outputLabel
+										rendered="#{loc.observaciones==null or loc.observaciones.trim()==''}"
+										value="--" style="font-weight:normal; font-size:12px" />
+								</p:column>
+
+
+
+								<p:column style="font-size:12px;"
+									headerText="#{mensaje.estadoFinal}">
+
+									<p:outputLabel value="#{mensaje.operativo}"
+										rendered="#{loc.estadoFinal=='O'}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel value="#{mensaje.noOperativo}"
+										rendered="#{loc.estadoFinal=='N'}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel
+										rendered="#{loc.estadoFinal==null or loc.estadoFinal.trim()==''}"
+										value="--" style="font-weight:normal; font-size:12px" />
+
+								</p:column>
+
+
+								<p:column style="text-align:center; font-size:12px;"
+									rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+									headerText="#{mensaje.acciones}">
+
+
+									<p:commandButton id="btnIrEditar2a"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+										style="background-origin: content-box; background-image: url('../imagenes/editar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										action="#{realizarMantenimiento.asignarAcividadMantenimientoNoPreventiva(loc,'edicion')}"
+										value="" process=":form:pnlDltRegistros:dtlRegistros2a"
+										update=":formEditarActividadNoPreventiva" />
+
+
+									<p:tooltip for="btnIrEditar2a" value="#{mensaje.editar}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+										trackMouse="true" />
+  
+									<p:commandButton id="btnIrEliminar2a"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C' and realizarMantenimiento.informeMantenimiento.tActividadesNoPreventivas!=null and realizarMantenimiento.informeMantenimiento.tActividadesNoPreventivas.size()>1}"
+										style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										action="#{realizarMantenimiento.asignarAcividadMantenimientoNoPreventiva(loc,'eliminacion')}"
+										value="" process=":form:pnlDltRegistros:dtlRegistros2a"
+										update=":formEliminarActividadNoPreventiva" />
+
+
+									<p:tooltip for="btnIrEliminar2a" value="#{mensaje.eliminar}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C' and realizarMantenimiento.informeMantenimiento.tActividadesNoPreventivas!=null and realizarMantenimiento.informeMantenimiento.tActividadesNoPreventivas.size()>1}"
+										trackMouse="true" />
+
+								</p:column>
+
+
+							</p:dataTable>
+
+
+							<p:dataTable var="loc" id="dtlRegistros2"
+								rendered="#{realizarMantenimiento.cronograma.tipoMantenimiento=='P'}"
+								value="#{realizarMantenimiento.informeMantenimiento.tActividades}"
+								reflow="true" rows="6" paginator="true"
+								paginatorPosition="bottom"
+								emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+								<f:facet name="header">
+									<p:outputPanel style="text-align:left;">
+										<p:outputLabel value="#{mensaje.actividadesMantenimiento} *"
+											style="font-weight:bold;" />
+									</p:outputPanel>
+								</f:facet>
+
+								<p:column style="font-size:12px;" headerText="">
+									<p:commandButton
+										rendered="#{loc.estadoInicial!=null and loc.estadoInicial.trim()!='' and loc.estadoFinal!=null and loc.estadoFinal.trim()!=''}"
+										style="background-origin: content-box; background-image: url('../imagenes/pepa_verde.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										value="" />
+									<p:commandButton
+										rendered="#{!(loc.estadoInicial!=null and loc.estadoInicial.trim()!='' and loc.estadoFinal!=null and loc.estadoFinal.trim()!='')}"
+										style="background-origin: content-box; background-image: url('../imagenes/pepa_roja.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										value="" />
+
+
+								</p:column>
+
+								<p:column style="font-size:12px; width:35%"
+									headerText="#{mensaje.actividad}">
+									<p:outputLabel value="#{loc.actividadInformeEquipo.actividad}"
+										style="font-weight:normal; font-size:12px" />
+
+
+								</p:column>
+
+								<p:column style="font-size:12px;"
+									headerText="#{mensaje.estadoInicial}">
+									<p:outputLabel value="#{mensaje.bueno}"
+										rendered="#{loc.estadoInicial=='B'}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel value="#{mensaje.regular}"
+										rendered="#{loc.estadoInicial=='R'}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel value="#{mensaje.malo}"
+										rendered="#{loc.estadoInicial=='M'}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel
+										rendered="#{loc.estadoInicial==null or loc.estadoInicial.trim()==''}"
+										value="--" style="font-weight:normal; font-size:12px" />
+
+								</p:column>
+								<p:column style="font-size:12px; width:35%; height:auto"
+									headerText="#{mensaje.observacionesActividad}">
+
+
+									<p:outputLabel value="#{loc.descripcion}" escape="false"
+										style="font-weight:normal; font-size:12px" />
+
+
+									<p:outputLabel
+										rendered="#{loc.descripcion==null or loc.descripcion.trim()==''}"
+										value="--" style="font-weight:normal; font-size:12px" />
+								</p:column>
+
+
+
+								<p:column style="font-size:12px;"
+									headerText="#{mensaje.estadoFinal}">
+
+									<p:outputLabel value="#{mensaje.operativo}"
+										rendered="#{loc.estadoFinal=='O'}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel value="#{mensaje.noOperativo}"
+										rendered="#{loc.estadoFinal=='N'}"
+										style="font-weight:normal; font-size:12px" />
+
+									<p:outputLabel
+										rendered="#{loc.estadoFinal==null or loc.estadoFinal.trim()==''}"
+										value="--" style="font-weight:normal; font-size:12px" />
+
+								</p:column>
+
+
+								<p:column style="text-align:center; font-size:12px;"
+									rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+									headerText="#{mensaje.acciones}">
+
+
+									<p:commandButton id="btnIrEditarAM"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+										style="background-origin: content-box; background-image: url('../imagenes/editar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										action="#{realizarMantenimiento.asignarAcividadMantenimiento(loc)}"
+										value="" process=":form:pnlDltRegistros:dtlRegistros2"
+										update=":formEditarActividad" />
+
+
+									<p:tooltip for="btnIrEditarAM" value="#{mensaje.editar}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+										trackMouse="true" />
+
+
+
+
+
+
+								</p:column>
+
+
+							</p:dataTable>
+
+
+							<br />
+
+							<p:panelGrid columns="2" style="width:100%" cellpadding="0"
+								cellspacing="0" layout="grid" columnClasses="columna1,columna2">
+								<p:outputPanel>
+									<p:panelGrid columns="2" style="width:100%" cellpadding="0"
+										rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()>0}"
+										cellspacing="0" layout="grid">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="2">
+													<p:outputPanel style="text-align:left">
+														<p:outputLabel value="#{mensaje.mediciones} *"
+															style="font-weight:bold" />
+													</p:outputPanel>
+												</p:column>
+											</p:row>
+										</f:facet>
+
+										<p:outputLabel value="V(F-N)" style="font-weight:normal"
+											for="txtValor1"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}">
+											<p:inputText id="txtValor1" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.voltajeFaseNeutro}"
+												label="#{mensaje.valor}"
+												title="#{mensaje.voltajeFaseNeutro}"
+												style="width:100px; font-size:14px; ; text-align:right">
+
+												<p:ajax event="change" process="@this" />
+
+											</p:inputText>
+											<p:message for="txtValor1" />
+										</p:outputPanel>
+
+										<p:outputLabel value="V(F-T)" style="font-weight:normal"
+											for="txtValor2"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}">
+											<p:inputText id="txtValor2" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.voltajeFaseTierra}"
+												label="#{mensaje.valor}"
+												title="#{mensaje.voltajeFaseTierra}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor2" />
+										</p:outputPanel>
+
+										<p:outputLabel value="V(N-T)" style="font-weight:normal"
+											for="txtValor3"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}">
+											<p:inputText id="txtValor3" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.voltajeNeutroTierra}"
+												label="#{mensaje.valor}"
+												title="#{mensaje.voltajeNeutroTierra}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor3" />
+										</p:outputPanel>
+
+
+										<p:outputLabel value="IF" style="font-weight:normal"
+											for="txtValor4"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}">
+											<p:inputText id="txtValor4" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase}"
+												label="#{mensaje.valor}" title="#{mensaje.corrienteFase}"
+												style="width:100px; font-size:14px; ; text-align:right">
+
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor4" />
+										</p:outputPanel>
+
+
+
+
+
+										<p:outputLabel value="V(F1-F2)" style="font-weight:normal"
+											for="txtValor21"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}">
+											<p:inputText id="txtValor21" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1A2}"
+												label="#{mensaje.valor}" title="#{mensaje.voltajeFase12}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor21" />
+										</p:outputPanel>
+
+										<p:outputLabel value="V(F1-T)" style="font-weight:normal"
+											for="txtValor22"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}">
+											<p:inputText id="txtValor22" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1Tierra}"
+												label="#{mensaje.valor}" title="#{mensaje.voltajeFase1T}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor22" />
+										</p:outputPanel>
+
+										<p:outputLabel value="V(F2-T)" style="font-weight:normal"
+											for="txtValor23"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}">
+											<p:inputText id="txtValor23" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase2Tierra}"
+												label="#{mensaje.valor}" title="#{mensaje.voltajeFase2T}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor23" />
+										</p:outputPanel>
+
+
+										<p:outputLabel value="IF1" style="font-weight:normal"
+											for="txtValor24"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}">
+											<p:inputText id="txtValor24" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase1}"
+												label="#{mensaje.valor}" title="#{mensaje.corrienteFase1}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor24" />
+										</p:outputPanel>
+
+										<p:outputLabel value="IF2" style="font-weight:normal"
+											for="txtValor25"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}">
+											<p:inputText id="txtValor25" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase2}"
+												label="#{mensaje.valor}" title="#{mensaje.corrienteFase2}"
+												style="width:100px; font-size:14px; ; text-align:right">
+
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor25" />
+										</p:outputPanel>
+
+
+
+
+
+										<p:outputLabel value="V(F1-F2)" style="font-weight:normal"
+											for="txtValor31"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
+											<p:inputText id="txtValor31" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1A2}"
+												label="#{mensaje.valor}" title="#{mensaje.voltajeFase12}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor31" />
+										</p:outputPanel>
+
+										<p:outputLabel value="V(F1-F3)" style="font-weight:normal"
+											for="txtValor32"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
+											<p:inputText id="txtValor32" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1A3}"
+												label="#{mensaje.valor}" title="#{mensaje.voltajeFase13}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor32" />
+										</p:outputPanel>
+
+										<p:outputLabel value="V(F2-F3)" style="font-weight:normal"
+											for="txtValor33"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
+											<p:inputText id="txtValor33" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase2A3}"
+												label="#{mensaje.valor}" title="#{mensaje.voltajeFase23}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor33" />
+										</p:outputPanel>
+
+
+										<p:outputLabel value="IF1" style="font-weight:normal"
+											for="txtValor34"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
+											<p:inputText id="txtValor34" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase1}"
+												label="#{mensaje.valor}" title="#{mensaje.corrienteFase1}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor34" />
+										</p:outputPanel>
+
+										<p:outputLabel value="IF2" style="font-weight:normal"
+											for="txtValor35"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
+											<p:inputText id="txtValor35" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase2}"
+												label="#{mensaje.valor}" title="#{mensaje.corrienteFase2}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor35" />
+										</p:outputPanel>
+
+										<p:outputLabel value="IF3" style="font-weight:normal"
+											for="txtValor36"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
+										<p:outputPanel style="text-align:center"
+											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
+											<p:inputText id="txtValor36" required="true"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase3}"
+												label="#{mensaje.valor}" title="#{mensaje.corrienteFase3}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtValor36" />
+										</p:outputPanel>
+
+
+									</p:panelGrid>
+
+								</p:outputPanel>
+								<p:outputPanel>
+									<p:dataTable var="loc" id="dtlRegistros"
+										rendered="#{realizarMantenimiento.informeMantenimiento.tBaterias!=null and realizarMantenimiento.informeMantenimiento.tBaterias.size()>0}"
+										widgetVar="dtlRegistros" editMode="true"
+										value="#{realizarMantenimiento.informeMantenimiento.tBaterias}"
+										reflow="true" rows="6" paginator="true"
+										paginatorPosition="bottom"
+										emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+										<f:facet name="header">
+											<p:outputPanel style="text-align:left">
+												<p:outputLabel value="#{mensaje.baterias} *"
+													style="font-weight:bold" />
+											</p:outputPanel>
+										</f:facet>
+
+										<p:column>
+											<p:outputLabel value="V(B#{loc.numeroBateria})"
+												for="txtVoltaje" style="font-weight:normal" />
+										</p:column>
+
+										<p:column style="text-align:center">
+
+											<p:inputText id="txtVoltaje" value="#{loc.voltaje}"
+												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+												required="true" label="#{mensaje.valorVoltaje}"
+												style="width:100px; font-size:14px; ; text-align:right">
+												<p:ajax event="change" process="@this" />
+											</p:inputText>
+											<p:message for="txtVoltaje" />
+
+										</p:column>
+
+
+
+									</p:dataTable>
+									<br />
+									<p:outputLabel
+										value="* #{mensaje.nubTotales}= #{realizarMantenimiento.informeMantenimiento.tBaterias.size()}"
+										rendered="#{realizarMantenimiento.informeMantenimiento.tBaterias!=null and realizarMantenimiento.informeMantenimiento.tBaterias.size()>0}"
+										style="font-weight:normal" />
+								</p:outputPanel>
+
+
+							</p:panelGrid>
+							<br />
+							<p:panelGrid columns="2" style="width:100%" cellpadding="0"
+								cellspacing="0" layout="grid" columnClasses="columna1,columna2">
+								<p:outputPanel>
+									<p:panelGrid columns="1" style="width:100%" cellpadding="0"
+										cellspacing="0" layout="grid">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="2">
+													<p:outputPanel style="text-align:left">
+														<p:outputLabel value="#{mensaje.recomendaciones}"
+															style="font-weight:bold" />
+													</p:outputPanel>
+												</p:column>
+											</p:row>
+										</f:facet>
+
+										<p:inputTextarea id="txtRecomendacionesGenerales" rows="2"
+											autoResize="false"
+											disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+											value="#{realizarMantenimiento.informeMantenimiento.recomendaciones}"
+											label="#{mensaje.recomendaciones}" style="font-size:14px;" />
+
+										<p:message for="txtRecomendacionesGenerales" />
+
+									</p:panelGrid>
+								</p:outputPanel>
+								<p:outputPanel>
+									<p:panelGrid columns="1" style="width:100%" cellpadding="0"
+										cellspacing="0" layout="grid">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="2">
+													<p:outputPanel style="text-align:left">
+														<p:outputLabel value="#{mensaje.repuestosRequeridos}"
+															style="font-weight:bold" />
+													</p:outputPanel>
+												</p:column>
+											</p:row>
+										</f:facet>
+
+										<p:inputTextarea id="txtRepuestosRequeridos" rows="2"
+											autoResize="false"
+											disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+											value="#{realizarMantenimiento.informeMantenimiento.repuestosRequeridos}"
+											label="#{mensaje.repuestosRequeridos}"
+											style="font-size:14px; color:red; font-weight:bold" />
+
+										<p:message for="txtRepuestosRequeridos" />
+
+
+									</p:panelGrid>
+								</p:outputPanel>
+							</p:panelGrid>
+							<br />
+
+
+							<p:panelGrid columns="2" style="width:100%" cellpadding="0"
+								cellspacing="0" layout="grid" columnClasses="columna1,columna2">
+
+
+								<p:outputPanel>
+
+									<p:dataTable var="loc" id="dtlRegistros2b"
+										value="#{realizarMantenimiento.informeMantenimiento.tMaterialesFotograficos}"
+										reflow="true" rows="6" paginator="true"
+										paginatorPosition="bottom"
+										emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+										<f:facet name="header">
+
+											<p:outputPanel>
+												<p:panelGrid style="width:100%" columns="2"
+													columnClasses="columnaA,columnaB"
+													styleClass="ui-panelgrid-blank">
+													<p:outputLabel value="#{mensaje.materialFotografico}"
+														style="font-weight:bold; color:white" />
+
+													<p:commandButton id="btnIrCrear2b"
+														title="#{mensaje.crearMaterialFotografico}"
+														rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+														style="background-origin: content-box; background-image: url('../imagenes/agregar_detalle.png'); background-size: cover; background-repeat:no-repeat; width:18px; height:18px; vertical-align:bottom; border:0; background-color:transparent"
+														action="#{realizarMantenimiento.asignarCreacionMaterialFotografico()}"
+														value=""
+														process=":form:pnlDltRegistros:dtlRegistros2b"
+														update=":formEditarMaterialFotografico, :form:messages" />
+
+
+
+												</p:panelGrid>
+											</p:outputPanel>
+
+
+
+										</f:facet>
+
+
+										<p:column style="font-size:12px; width:35%"
+											headerText="#{mensaje.tituloLeyenda}">
+											<p:outputLabel value="#{loc.titulo}"
+												style="font-weight:normal; font-size:12px" />
+
+
+										</p:column>
+
+
+
+										<p:column style="text-align:center; font-size:12px;"
+											rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+											headerText="#{mensaje.acciones}">
+
+
+											<p:commandButton id="btnIrEditarFoto"
+												rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+												style="background-origin: content-box; background-image: url('../imagenes/editar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+												action="#{realizarMantenimiento.asignarMaterialFotografico(loc,'edicion')}"
+												value="" process=":form:pnlDltRegistros:dtlRegistros2b"
+												update=":formEditarMaterialFotografico" />
+
+
+											<p:tooltip for="btnIrEditarFoto" value="#{mensaje.editar}"
+												rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+												trackMouse="true" />
+
+
+											<p:commandButton id="btnIrEliminarFoto"
+												rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+												style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+												action="#{realizarMantenimiento.asignarMaterialFotografico(loc,'eliminacion')}"
+												value="" process=":form:pnlDltRegistros:dtlRegistros2b"
+												update=":formEliminarMaterialFotografico" />
+
+
+											<p:tooltip for="btnIrEliminarFoto"
+												value="#{mensaje.eliminar}"
+												rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+												trackMouse="true" />
+
+
+											<p:commandButton id="btnFoto"
+												rendered="#{loc.id!=null and loc.archivo!=null}"
+												style="background-origin: content-box; background-image: url('../imagenes/buscar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+												action="#{realizarMantenimiento.asignarAcividadFotoV2(loc)}"
+												value="" process=":form:pnlDltRegistros:dtlRegistros2b"
+												update=":formFotoActividad" />
+
+
+											<p:tooltip for="btnFoto" value="#{mensaje.verFotoAsociada}"
+												trackMouse="true" />
+
+
+
+										</p:column>
+
+
+									</p:dataTable>
+
+
+								</p:outputPanel>
+
+
+
+								<p:outputPanel>
+									<p:panelGrid columns="1" style="width:100%" cellpadding="0"
+										cellspacing="0" layout="grid">
+										<f:facet name="header">
+											<p:row>
+												<p:column colspan="2">
+													<p:outputPanel style="text-align:left">
+														<p:outputLabel value="#{mensaje.observacionesGenerales} *"
+															style="font-weight:bold" />
+													</p:outputPanel>
+												</p:column>
+											</p:row>
+										</f:facet>
+
+										<p:inputTextarea id="txtObservacionesGenerales" rows="2"
+											autoResize="false"
+											disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+											required="true"
+											value="#{realizarMantenimiento.informeMantenimiento.observacionesGenerales}"
+											label="#{mensaje.observacionesGenerales}"
+											style="font-size:14px;" />
+
+										<p:message for="txtObservacionesGenerales" />
+
+									</p:panelGrid>
+
+								</p:outputPanel>
+							</p:panelGrid>
+
+
+
+
+
+							<br />
+							<p:outputLabel value="#{mensaje.informacionRequerida}"
+								style="font-size:10px" />
+
+							<br />
+							<div align="center">
+								<p:commandButton id="btnGuardarInforme" style="font-size:14px"
+									rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
+									action="#{realizarMantenimiento.guardarInformeMantenimiento()}"
+									value="#{mensaje.guardar}" process=":form"
+									update=":form, :formResumen" />
+
+								<p:spacer width="10" />
+
+
+								<p:commandButton id="btnImprimirAprobadoGeneral"
+									immediate="true" ajax="false"
+									rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+									process="@this" update=":formVerDocumento, :form:messages"
+									style="font-size:16px; font-weight: normal !important;"
+									action="#{realizarMantenimiento.decidirPostGuardado('IMPRIMIR_APROBADO')}"
+									value="#{mensaje.imprimirAprobado}" />
+
+
+
+							</div>
+							<p:blockUI block=":form"
+								trigger="btnGuardarInforme, btnImprimirAprobadoGeneral">
+								<p:graphicImage value="../imagenes/cargando.gif" />
+							</p:blockUI>
+						</p:tab>
+					</p:accordionPanel>
+					<p:spacer height="10" />
+					<div align="center"></div>
+
+				</p:outputPanel>
+
+			</p:outputPanel>
+		</h:form>
+
+		<ui:include src="/equipos/verEquipoEnInforme.xhtml" />
+		<ui:include src="/equipos/editarActividadMantenimiento.xhtml" />
+		<ui:include src="/equipos/editarActividadNoPreventiva.xhtml" />
+		<ui:include src="/equipos/eliminarActividadNoPreventiva.xhtml" />
+		<ui:include src="/equipos/editarMaterialFotografico.xhtml" />
+		<ui:include src="/equipos/eliminarMaterialFotografico.xhtml" />
+		<ui:include src="/equipos/verFotoActividadV2.xhtml" />
+		<ui:include src="/equipos/mostrarResumen.xhtml" />
+		<ui:include src="/equipos/mostrarResumenAprobado.xhtml" />
+		<ui:include src="/equipos/verInformacionFalla.xhtml" />
+		<ui:include src="/equipos/verDocumentoSeleccionado.xhtml" />
+
+	</ui:define>
+</ui:composition>

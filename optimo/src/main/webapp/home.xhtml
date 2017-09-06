@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principal.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="form">
+			<br />
+
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+			<p:panelGrid columns="2" style="width:100%; vertical-align:top"
+				styleClass="ui-panelgrid-blank">  
+				<p:outputPanel style=" vertical-align:top">
+					<div class="col-xs-12">
+						<div class="project-page-header">
+							<h1 class="project-title">#{mensaje.bienvenidoA}</h1>
+							<h1 class="project-title">
+								<p:outputLabel
+									value="#{administrarSesionCliente.personalSesion.nombreCompleto}"
+									rendered="#{administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.id!=null}" />
+									
+								<p:outputLabel
+									value="[#{mensaje.administradorL}]"
+									rendered="#{administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.id!=null and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+									
+								<p:outputLabel
+									value="[#{mensaje.clienteL}]"
+									rendered="#{administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.id!=null and administrarSesionCliente.personalSesion.tipoUsuario=='C'}" />
+									
+								<p:outputLabel
+									value="[#{mensaje.tecnicoL}]"
+									rendered="#{administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.id!=null and administrarSesionCliente.personalSesion.tipoUsuario=='T'}" />			
+							</h1>
+						</div>
+					</div>
+				</p:outputPanel>
+				<p:outputPanel style="text-align:right">
+					<br />
+					<br />
+					<br />
+					<img src="imagenes/home_logo.png" style="width:500px; height:auto"/>
+
+				</p:outputPanel>
+			</p:panelGrid>
+
+
+
+		</h:form>
+
+
+		<p:spacer height="1000" />
+
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+
+	</ui:define>
+</ui:composition>

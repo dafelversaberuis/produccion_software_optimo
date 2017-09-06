@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principal.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="form">
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+			<p:remoteCommand name="onload" process="@this"
+				action="#{administrarSesionCliente.getNoRolAdmitido('ROLES')}"
+				autoRun="true" />
+
+
+			<div class="row x_title">
+				<div class="col-md-6">
+
+					<h2 class="project-title">#{mensaje.moduloPersonal}:
+						#{mensaje.administrarAdministradores}</h2>
+
+
+
+
+				</div>
+			</div>
+
+			<div align="center" class="titulo"></div>
+
+			<p:outputPanel id="pnlAdministrador">
+
+				<p:spacer height="10" />
+
+				<p:accordionPanel id="pnlCrear" activeIndex="1">
+					<p:tab title="#{mensaje.crearAdministrador}"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:panelGrid columns="5" cellpadding="0" cellspacing="0"
+							styleClass="ui-panelgrid-blank">
+
+							<p:outputLabel for="txtNombres" value="#{mensaje.nombres}"
+								style="font-weight:bold; font-size:14px" />
+							<p:inputText id="txtNombres"
+								value="#{administrarRol.administrador.nombres}" required="true"
+								label="#{mensaje.nombres}" style="width:100%; font-size:14px" />
+
+							<p:spacer width="1" />
+							<p:spacer width="1" />
+							<p:message for="txtNombres" />
+
+
+
+
+
+
+							<p:outputLabel for="txtCorreo" value="#{mensaje.correo}"
+								style="font-weight:bold; font-size:14px" />
+							<p:inputText id="txtCorreo"
+								value="#{administrarRol.administrador.correoElectronico}"
+								required="true" label="#{mensaje.correo}"
+								style="width:100%; font-size:14px" />
+
+							<p:graphicImage value="../imagenes/ayuda.png"
+								id="ayudaCorreoAdministrador" />
+							<p:tooltip value="#{mensaje.ayudaCorreoAdministrador}"
+								trackMouse="true" for="ayudaCorreoAdministrador" />
+							<p:message for="txtCorreo" />
+
+
+						</p:panelGrid>
+
+						<p:spacer height="10" />
+						<div align="center">
+							<p:commandButton id="btnCrear" style="font-size:14px;"
+								action="#{administrarRol.crearAdministrador()}"
+								value="#{mensaje.guardar}" update=":form" />
+
+							<p:spacer width="10" />
+							<p:commandButton id="btnBorrar"
+								style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+								action="#{administrarRol.cancelarAdministrador()}"
+								process="@this" value="#{mensaje.cancelar}" update=":form">
+
+								<p:resetInput target=":form:pnlAdministrador" />
+
+							</p:commandButton>
+
+						</div>
+						<p:outputLabel value="#{mensaje.informacionRequerida}"
+							style="font-size:10px" />
+
+						<p:blockUI block=":form:pnlCrear" trigger="btnCrear, btnBorrar">
+
+							<p:graphicImage value="../imagenes/cargando.gif" />
+
+
+						</p:blockUI>
+					</p:tab>
+				</p:accordionPanel>
+
+				<p:spacer height="30" />
+				<p:accordionPanel id="pnlDtlAdministradores">
+					<p:tab title="#{mensaje.listadoAdministradores}"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:dataTable var="loc" id="dtlAdministradores"
+							value="#{administrarRol.administradores}" reflow="true" rows="10"
+							paginator="true" paginatorPosition="bottom"
+							draggableColumns="true"
+							emptyMessage="#{mensaje.noExistenciaAdministradores}">
+							<p:column headerText="#{mensaje.administradorSoftware}"
+								sortBy="#{loc.nombres}" style="font-size:14px">
+								<p:outputLabel value="#{loc.nombres}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+							<p:column headerText="#{mensaje.indicativo}"
+								sortBy="#{loc.estadoVigencia}" style="font-size:14px">
+								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estadoVigencia == 'A'}" />
+								<p:outputLabel value="#{mensaje.ESTADO_INACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estadoVigencia == 'I'}" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.correo}"
+								sortBy="#{loc.correoElectronico}" style="font-size:14px">
+								<p:outputLabel value="#{loc.correoElectronico}"
+									style="font-weight:normal; font-size:12px" />
+
+							</p:column>
+
+
+
+
+							<p:column headerText="#{mensaje.acciones}"
+								style="font-size:14px; text-align:center;">
+
+
+
+								<p:commandButton id="btnIrEditar"
+									style="background-origin: content-box; background-image: url('../imagenes/editar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarRol.asignarAdministrador(loc,'MODAL_EDITAR_ADMINISTRADOR')}"
+									value="" process=":form:pnlDtlAdministradores"
+									update=":formEditar" />
+
+								<p:commandButton id="btnIrEliminar"
+									style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									value=""
+									action="#{administrarRol.asignarAdministrador(loc,'MODAL_ELIMINAR_ADMINISTRADOR')}"
+									process="dtlAdministradores" update=":formEliminar" />
+
+								<p:commandButton id="btnIrClave"
+									style="background-origin: content-box; background-image: url('../imagenes/c_mayuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									value=""
+									action="#{administrarRol.asignarAdministrador(loc,'MODAL_CLAVE_ADMINISTRADOR')}"
+									process="dtlAdministradores" update=":formClave" />
+
+								<p:tooltip for="btnIrEliminar" value="#{mensaje.eliminar}"
+									trackMouse="true" />
+
+								<p:tooltip for="btnIrEditar" value="#{mensaje.editar}"
+									trackMouse="true" />
+
+								<p:tooltip for="btnIrClave"
+									value="#{mensaje.generarClaveAdministrador}" trackMouse="true" />
+
+
+
+
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:tab>
+				</p:accordionPanel>
+
+			</p:outputPanel>
+		</h:form>
+
+		<ui:include src="/roles/editarAdministrador.xhtml" />
+		<ui:include src="/roles/eliminarAdministrador.xhtml" />
+		<ui:include src="/roles/cambiarClaveAdministrador.xhtml" />
+
+
+		<p:spacer height="800" />
+
+	</ui:define>
+</ui:composition>

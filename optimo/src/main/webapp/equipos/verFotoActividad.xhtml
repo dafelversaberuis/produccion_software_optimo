@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formFotoActividad">
+
+		<p:dialog header="#{mensaje.fotoActividad}" width="450" height="400"
+			widgetVar="panelFotoActividad" resizable="true" closable="false"
+			responsive="true">
+			<p:panel id="pnlFotoActividad" rendered="#{realizarMantenimiento.actividadMantenimiento!=null and realizarMantenimiento.actividadMantenimiento.archivo!=null}">
+
+
+
+				<img
+					src="../imagenes/fotosMantenimientos/#{realizarMantenimiento.actividadMantenimiento.tNombreFoto}"
+					style="height: auto; width: 100%" />
+
+
+
+				<br />
+				<div align="center">
+
+					<p:commandButton id="btnFotoActividad"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{consultarFuncionesAPI.cerrarModal('panelFotoActividad')}"
+						process="@this" value="#{mensaje.cerrar}" update="@this" />
+
+				</div>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

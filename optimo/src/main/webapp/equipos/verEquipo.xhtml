@@ -1,0 +1,764 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formVerEquipo">
+
+		<p:dialog header="#{mensaje.verEquipo}" width="600" height="400" 
+			widgetVar="panelVerEquipo" resizable="true" closable="false"
+			responsive="true">
+			
+			 <p:outputPanel id="pnlVerEquipo">
+
+			<p:tabView>
+				<p:tab title="#{mensaje.datosIdentificacion}">
+
+					<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+						style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+
+						<p:outputLabel value="#{mensaje.idCodigoQr}"
+							style="font-weight:bold; font-size:14px" />
+						<p:outputLabel
+							value="#{administrarHojaVida.equipoTransaccion.codigoQr}"
+							style="font-size:14px" />
+						<p:spacer width="1" />
+						<p:spacer width="1" />
+
+						<p:outputLabel for="txtCliente" value="#{mensaje.clienteNormal}"
+							style="font-weight:bold; font-size:14px; " />
+					
+						
+						<p:inputText id="txtCliente" disabled="true"
+							value="#{administrarHojaVida.equipoTransaccion.cliente.tClienteAutocompletado}"
+							required="true" label="#{mensaje.nombreEquipo}"
+							style="width:100%; font-size:14px; " />
+
+						<p:spacer width="1" />
+						<p:message for="txtCliente" />
+
+
+
+						<p:outputLabel for="lstClaseEquipo" value="#{mensaje.claseEquipo}"
+							style="font-weight:bold; font-size:14px" />
+						<p:selectOneMenu label="#{mensaje.claseEquipo}" disabled="true"
+							style="width:100%; font-size:14px;" id="lstClaseEquipo"
+							required="true"
+							value="#{administrarHojaVida.equipoTransaccion.equipoBiomedico}">
+							<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+							<f:selectItem itemValue="S" itemLabel="#{mensaje.biomedico}" />
+							<f:selectItem itemValue="N" itemLabel="#{mensaje.otro}" />
+
+
+						</p:selectOneMenu>
+						
+						
+							
+							
+						<p:spacer width="1" />
+						<p:message for="lstClaseEquipo" />
+
+
+						<p:outputLabel for="txtNombreEquipo"
+							value="#{mensaje.nombreEquipo}"
+							style="font-weight:bold; font-size:14px" />
+						<p:inputText id="txtNombreEquipo" disabled="true"
+							value="#{administrarHojaVida.equipoTransaccion.nombreEquipo}"
+							required="true" label="#{mensaje.nombreEquipo}"
+							style="width:100%; font-size:14px; " />
+
+						<p:spacer width="1" />
+						<p:message for="txtNombreEquipo" />
+
+
+
+						<p:outputLabel for="txtNumeroInventario"
+							value="#{mensaje.numeroInventario}"
+							style="font-weight:bold; font-size:14px" />
+						<p:inputText id="txtNumeroInventario" disabled="true"
+							value="#{administrarHojaVida.equipoTransaccion.numeroInventario}"
+							required="true" label="#{mensaje.numeroInventario}"
+							style="width:100%; font-size:14px; " />
+						<p:spacer width="1" />
+						<p:message for="txtNumeroInventario" />
+
+
+
+
+						<p:outputLabel for="txtMarca" value="#{mensaje.marca}"
+							style="font-weight:bold; font-size:14px" />
+						<p:inputText id="txtMarca" disabled="true"
+							value="#{administrarHojaVida.equipoTransaccion.marca}"
+							required="true" label="#{mensaje.marca}"
+							style="width:100%; font-size:14px; " />
+						<p:spacer width="1" />
+						<p:message for="txtMarca" />
+
+
+
+
+						<p:outputLabel for="txtModelo" value="#{mensaje.modelo}"
+							style="font-weight:bold; font-size:14px" />
+						<p:inputText id="txtModelo" disabled="true"
+							value="#{administrarHojaVida.equipoTransaccion.modelo}"
+							required="true" label="#{mensaje.modelo}"
+							style="width:100%; font-size:14px; " />
+
+						<p:spacer width="1" />
+						<p:message for="txtModelo" />
+
+
+
+						<p:outputLabel for="txtNumeroSerie" value="#{mensaje.numeroSerie}"
+							style="font-weight:bold; font-size:14px" />
+						<p:inputText id="txtNumeroSerie" disabled="true"
+							value="#{administrarHojaVida.equipoTransaccion.numeroSerie}"
+							required="true" label="#{mensaje.numeroSerie}"
+							style="width:100%; font-size:14px; " />
+						<p:spacer width="1" />
+						<p:message for="txtNumeroSerie" />
+
+
+
+						<p:outputLabel for="lstIndicativo" value="#{mensaje.estado}"
+							style="font-weight:bold; font-size:14px;" />
+						<p:selectOneMenu id="lstIndicativo" required="true"
+							style="font-size:14px;" disabled="true"
+							value="#{administrarHojaVida.equipoTransaccion.estado}"
+							label="#{mensaje.estado}">
+							<f:selectItems value="#{consultarFuncionesAPI.itemsEstados}" />
+						</p:selectOneMenu>
+						<p:spacer width="1" />
+						<p:message for="lstIndicativo" />
+
+
+
+						<p:outputPanel id="pnlBiomedico1">
+							<p:outputLabel for="txtServicio" value="#{mensaje.servicio}"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								style="font-weight:bold; font-size:14px" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico2">
+							<p:inputText id="txtServicio" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								value="#{administrarHojaVida.equipoTransaccion.servicio}"
+								placeholder="#{mensaje.areaEj}" required="true"
+								label="#{mensaje.servicio}"
+								style="width:100%; font-size:14px; " />
+						</p:outputPanel>
+
+						<p:outputPanel id="pnlBiomedico3">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico4">
+							<p:message for="txtServicio"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+
+						<p:outputPanel id="pnlBiomedico5">
+							<p:outputLabel for="lstEquipo" value="#{mensaje.equipo}"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								style="font-weight:bold; font-size:14px" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico6">
+							<p:selectOneMenu label="#{mensaje.equipo}" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								style="width:100%; font-size:14px;" id="lstEquipo"
+								required="true"
+								value="#{administrarHojaVida.equipoTransaccion.equipo}">
+								<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+								<f:selectItem itemValue="M" itemLabel="#{mensaje.movil}" />
+								<f:selectItem itemValue="F" itemLabel="#{mensaje.fijo}" />
+							</p:selectOneMenu>
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico7">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico8">
+							<p:message for="lstEquipo"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+
+						<p:outputPanel id="pnlBiomedico9">
+							<p:outputLabel for="lstClaseSoporte"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								value="#{mensaje.soporte}"
+								style="font-weight:bold; font-size:14px" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico10">
+							<p:selectOneMenu label="#{mensaje.soporte}" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								style="width:100%; font-size:14px;" id="lstClaseSoporte"
+								required="true"
+								value="#{administrarHojaVida.equipoTransaccion.claseSoporteBiomedico.id}">
+								<f:selectItems
+									value="#{administrarHojaVida.itemsClasesSoporteEditar}" /> />
+									</p:selectOneMenu>
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlBiomedico11">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico12">
+							<p:message for="lstClaseSoporte"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+
+						<p:outputPanel id="pnlBiomedico13">
+							<p:outputLabel for="txtRegistroInvima"
+								value="#{mensaje.registroInvima}"
+								style="font-weight:bold; font-size:14px"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico14">
+							<p:inputText id="txtRegistroInvima" disabled="true"
+								value="#{administrarHojaVida.equipoTransaccion.registroInvima}"
+								required="true" label="#{mensaje.registroInvima}"
+								style="width:100%; font-size:14px; "
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlBiomedico15">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico16">
+							<p:message for="txtRegistroInvima"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlBiomedico17">
+							<p:outputLabel for="lstClasificacionBiomedica"
+								value="#{mensaje.clasificacionBiomedica}"
+								style="font-weight:bold; font-size:14px"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico18">
+							<p:selectOneMenu label="#{mensaje.clasificacionBiomedica}" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								style="width:100%; font-size:14px;"
+								id="lstClasificacionBiomedica" required="true"
+								value="#{administrarHojaVida.equipoTransaccion.clasificacionBiomedica.id}">
+								<f:selectItems
+									value="#{administrarHojaVida.itemsClasificacionesBiomedicasEditar}" /> />
+									</p:selectOneMenu>
+						</p:outputPanel>
+
+						<p:outputPanel id="pnlBiomedico19">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico20">
+							<p:message for="lstClasificacionBiomedica"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlBiomedico21">
+							<p:outputLabel for="lstClasificacionRiesgo"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								value="#{mensaje.clasificacionRiesgo}"
+								style="font-weight:bold; font-size:14px" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico22"> 
+							<p:selectOneMenu label="#{mensaje.clasificacionRiesgo}" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								style="width:100%; font-size:14px;" id="lstClasificacionRiesgo"
+								required="true"
+								value="#{administrarHojaVida.equipoTransaccion.clasificacionRiesgo.id}">
+								<f:selectItems
+									value="#{administrarHojaVida.itemsClasificacionesRiesgoEditar}" /> />
+									</p:selectOneMenu>
+						</p:outputPanel>
+
+						<p:outputPanel id="pnlBiomedico23">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico24">
+							<p:message for="lstClasificacionRiesgo"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+
+
+						<p:outputPanel id="pnlBiomedico25">
+							<p:outputLabel for="txtProveedor" value="#{mensaje.proveedor}"
+								style="font-weight:bold; font-size:14px"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico26">
+							<p:inputText id="txtProveedor" disabled="true"
+								value="#{administrarHojaVida.equipoTransaccion.proveedor}"
+								required="true" label="#{mensaje.registroInvima}"
+								style="width:100%; font-size:14px; "
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+						<p:outputPanel id="pnlBiomedico27">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico28">
+							<p:message for="txtProveedor"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+
+
+
+						<p:outputPanel id="pnlBiomedico29">
+							<p:outputLabel for="txtTelefono"
+								value="#{mensaje.telefonoProveedor}"
+								style="font-weight:bold; font-size:14px"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico30">
+							<p:inputText id="txtTelefono" disabled="true"
+								value="#{administrarHojaVida.equipoTransaccion.telefono}"
+								required="true" label="#{mensaje.telefonoProveedor}"
+								style="width:100%; font-size:14px; "
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+
+						</p:outputPanel>
+
+						<p:outputPanel id="pnlBiomedico31">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico32">
+							<p:message for="txtTelefono"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+
+						<p:outputPanel id="pnlBiomedico33">
+							<p:outputLabel for="txtCorreo" value="#{mensaje.correoProveedor}"
+								style="font-weight:bold; font-size:14px"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico34">
+							<p:inputText id="txtCorreo" disabled="true"
+								value="#{administrarHojaVida.equipoTransaccion.correoElectronico}"
+								required="true" label="#{mensaje.correoProveedor}"
+								style="width:100%; font-size:14px; "
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico35">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico36">
+							<p:message for="txtCorreo"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlBiomedico37">
+							<p:outputLabel for="txtDescripcion"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								value="#{mensaje.breveDescripcionEquipo}"
+								style="font-weight:bold; font-size:14px" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico38">
+							<p:inputTextarea rows="5" style="width:100%; font-size:14px" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								value="#{administrarHojaVida.equipoTransaccion.descripcionEquipo}"
+								required="true" id="txtDescripcion" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico39">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico40">
+							<p:message for="txtDescripcion"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}" />
+						</p:outputPanel>
+
+
+
+
+
+					</p:panelGrid>
+
+				</p:tab>
+
+				<p:tab title="#{mensaje.datosEspecializados}">
+
+
+					<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+						style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+
+						<p:outputLabel for="lstRequiereCalibracion"
+							value="#{mensaje.requiereCalibracion}"
+							style="font-weight:bold; font-size:14px" />
+						<p:selectOneMenu label="#{mensaje.requiereCalibracion}" disabled="true"
+							style="width:100%; font-size:14px;" id="lstRequiereCalibracion"
+							required="true"
+							value="#{administrarHojaVida.equipoTransaccion.requiereCalibracion}">
+							<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+							<f:selectItem itemValue="S" itemLabel="#{mensaje.SI}" />
+							<f:selectItem itemValue="N" itemLabel="#{mensaje.NO}" />
+
+						</p:selectOneMenu>
+
+						<p:spacer width="1" />
+						<p:message for="lstRequiereCalibracion" />
+
+
+
+
+						<p:outputLabel for="lstMediciones" value="#{mensaje.mediciones}"
+							style="font-weight:bold; font-size:14px" />
+						<p:selectOneMenu label="#{mensaje.mediciones}" disabled="true"
+							style="width:100%; font-size:14px;" id="lstMediciones"
+							required="true"
+							value="#{administrarHojaVida.equipoTransaccion.mediciones}">
+							<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+							<f:selectItem itemValue="S" itemLabel="#{mensaje.aplican}" />
+							<f:selectItem itemValue="N" itemLabel="#{mensaje.noAplican}" />
+
+						</p:selectOneMenu>
+
+
+
+						<p:spacer width="1" />
+						<p:message for="lstMediciones" />
+
+
+
+
+						<p:outputLabel for="lstBaterias" value="#{mensaje.baterias}"
+							style="font-weight:bold; font-size:14px" />
+
+
+						<p:selectOneMenu label="#{mensaje.baterias}"
+							style="width:100%; font-size:14px;" id="lstBaterias"
+							required="true" disabled="true"
+							value="#{administrarHojaVida.equipoTransaccion.contieneBaterias}">
+							<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+							<f:selectItem itemValue="S" itemLabel="#{mensaje.aplican}" />
+							<f:selectItem itemValue="N" itemLabel="#{mensaje.noAplican}" />
+
+							<p:ajax event="change" process="@this"
+								update="@this, pnlBaterias1, pnlBaterias2, pnlBaterias3" />
+
+						</p:selectOneMenu>
+
+						<p:spacer width="1" />
+						<p:message for="lstBaterias" />
+
+						<p:outputPanel id="pnlBaterias1">
+							<p:outputLabel for="txtNumeroBaterias"
+								rendered="#{administrarHojaVida.equipoTransaccion.contieneBaterias=='S'}"
+								value="#{mensaje.numeroBaterias}"
+								style="font-weight:bold; font-size:14px" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBaterias2">
+							<p:inputText id="txtNumeroBaterias" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.contieneBaterias=='S'}"
+								value="#{administrarHojaVida.equipoTransaccion.numeroBaterias}"
+								required="true" label="#{mensaje.numeroBaterias}"
+								style="width:100%; font-size:14px; " />
+						</p:outputPanel>
+
+
+
+
+						<p:spacer width="1" />
+						<p:outputPanel id="pnlBaterias3">
+							<p:message for="txtNumeroBaterias"
+								rendered="#{administrarHojaVida.equipoTransaccion.contieneBaterias=='S'}" />
+						</p:outputPanel>
+
+
+
+						<p:outputLabel for="lstDatosTecnicos"
+							value="#{mensaje.datosTecnicos}"
+							style="font-weight:bold; font-size:14px" />
+
+
+						<p:selectOneMenu label="#{mensaje.datosTecnicos}"
+							style="width:100%; font-size:14px;" id="lstDatosTecnicos"
+							required="true" disabled="true"
+							value="#{administrarHojaVida.equipoTransaccion.datosTecnicos}">
+							<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+							<f:selectItem itemValue="S" itemLabel="#{mensaje.aplican}" />
+							<f:selectItem itemValue="N" itemLabel="#{mensaje.noAplican}" />
+
+						
+
+						</p:selectOneMenu>
+
+						<p:outputPanel id="pnlTecnicos1">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlTecnicos2">
+							<p:message for="lstDatosTecnicos"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+
+
+
+
+						<p:outputPanel id="pnlTecnicos3">
+							<p:outputLabel for="txPotencia" value="#{mensaje.potencia}"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}"
+								style="font-weight:bold; font-size:14px" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlTecnicos4">
+							<p:inputText id="txPotencia" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}"
+								value="#{administrarHojaVida.equipoTransaccion.potencia}"
+								required="true" label="#{mensaje.potencia}"
+								style="width:100%; font-size:14px; " />
+						</p:outputPanel>
+
+						<p:outputPanel id="pnlTecnicos5">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlTecnicos6">
+							<p:message for="txPotencia"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlTecnicos7">
+							<p:outputLabel for="txtVoltaje" value="#{mensaje.voltaje}"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}"
+								style="font-weight:bold; font-size:14px" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlTecnicos8">
+							<p:inputText id="txtVoltaje" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}"
+								value="#{administrarHojaVida.equipoTransaccion.voltaje}"
+								required="true" label="#{mensaje.voltaje}"
+								style="width:100%; font-size:14px; " />
+						</p:outputPanel>
+						<p:outputPanel id="pnlTecnicos9">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlTecnicos10">
+							<p:message for="txtVoltaje" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+
+
+
+						<p:outputPanel id="pnlTecnicos11">
+							<p:outputLabel for="txtCorriente" value="#{mensaje.corriente}"
+								style="font-weight:bold; font-size:14px"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlTecnicos12">
+							<p:inputText id="txtCorriente" disabled="true"
+								value="#{administrarHojaVida.equipoTransaccion.corriente}"
+								required="true" label="#{mensaje.corriente}"
+								style="width:100%; font-size:14px; "
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+
+						<p:outputPanel id="pnlTecnicos13">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlTecnicos14">
+							<p:message for="txtCorriente"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlTecnicos15">
+							<p:outputLabel for="txtNumeroFases"
+								value="#{mensaje.numeroFases}"
+								style="font-weight:bold; font-size:14px"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlTecnicos16">
+							<p:inputText id="txtNumeroFases" disabled="true"
+								value="#{administrarHojaVida.equipoTransaccion.numeroFases}"
+								required="true" label="#{mensaje.numeroFases}"
+								style="width:100%; font-size:14px; "
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlTecnicos17">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlTecnicos18">
+							<p:message for="txtNumeroFases"
+								rendered="#{administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlBiomedico41">
+
+							<p:outputLabel for="txtFrecuencia"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}"
+								value="#{mensaje.frecuencia}"
+								style="font-weight:bold; font-size:14px" />
+
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico42">
+							<p:inputText id="txtFrecuencia" disabled="true"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'  and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}"
+								value="#{administrarHojaVida.equipoTransaccion.frecuencia}"
+								required="true" label="#{mensaje.frecuencia}"
+								style="width:100%; font-size:14px; " />
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlBiomedico43">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico44">
+							<p:message for="txtFrecuencia" 
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+
+
+						<p:outputPanel id="pnlBiomedico45">
+							<p:outputLabel value="#{mensaje.presion}"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}"
+								for="txtMinimaPresion" style="font-weight:bold; font-size:14px" />
+						</p:outputPanel>
+
+						<p:outputPanel id="pnlBiomedico46">
+
+							<p:panelGrid columns="3" style="width:100%"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}"
+								styleClass="ui-panelgrid-blank">
+
+
+
+								<p:inputText id="txtMinimaPresion" disabled="true"
+									value="#{administrarHojaVida.equipoTransaccion.minimoPresion}"
+									required="true" label="#{mensaje.minimo}"
+									style="width:100%; font-size:14px; " />
+
+
+								<p:outputLabel value=" - " style="font-size:14px;" />
+
+								<p:inputText id="txtMaximoPresion" disabled="true"
+									value="#{administrarHojaVida.equipoTransaccion.maximoPresion}"
+									required="true" label="#{mensaje.maxima}"
+									style="width:100%; font-size:14px; " />
+
+							</p:panelGrid>
+						</p:outputPanel>
+
+						<p:outputPanel id="pnlBiomedico47">
+
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico48">
+							<p:message for="txtMinimaPresion"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+
+
+
+						<p:outputPanel id="pnlBiomedico49">
+							<p:outputLabel value="#{mensaje.temperatura}"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}"
+								for="txtMinimaPresion" style="font-weight:bold; font-size:14px" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico50">
+
+							<p:panelGrid columns="3" style="width:100%"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}"
+								styleClass="ui-panelgrid-blank">
+
+
+
+								<p:inputText id="txtMinimaTemperatura" disabled="true"
+									value="#{administrarHojaVida.equipoTransaccion.minimoTemperatura}"
+									required="true" label="#{mensaje.minimo}"
+									style="width:100%; font-size:14px; " />
+
+
+								<p:outputLabel value=" - " style="font-size:14px;" />
+
+								<p:inputText id="txtMaximoTemperatura" disabled="true"
+									value="#{administrarHojaVida.equipoTransaccion.maximoTemperatura}"
+									required="true" label="#{mensaje.maxima}"
+									style="width:100%; font-size:14px; " />
+
+							</p:panelGrid>
+						</p:outputPanel>
+
+
+
+
+						<p:outputPanel id="pnlBiomedico51">
+							<p:spacer width="1"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+						<p:outputPanel id="pnlBiomedico52">
+							<p:message for="txtMinimaTemperatura"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S' and administrarHojaVida.equipoTransaccion.datosTecnicos == 'S'}" />
+						</p:outputPanel>
+
+
+
+
+
+					</p:panelGrid>
+
+
+
+
+
+				</p:tab>
+			</p:tabView>
+
+		</p:outputPanel>
+
+
+
+			<div align="center">
+			
+				<p:commandButton id="btnCancelarEliminacionEquipo"
+					style="font-size:14px; font-weight: normal !important;"
+					action="#{administrarHojaVida.cancelarEquipoTransaccion('MODAL_VER_EQUIPO')}"
+					process="@this" value="#{mensaje.regresar}" update=":form">
+					<p:resetInput target=":formEliminar:pnlEliminarEquipo, :form" />
+				</p:commandButton>
+
+			</div>
+
+			
+
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

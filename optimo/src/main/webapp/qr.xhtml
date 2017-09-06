@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principalLogueo.xhtml">
+
+	<ui:define name="body">
+		<h:form id="formCliente">
+			<f:metadata>
+				<f:viewParam id="e" name="e" value="#{administrarSesionCliente.qr}" />
+
+			</f:metadata>
+
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+			<p:outputPanel id="pnlCuentaExistente">
+
+				<p:panel id="pnlResumen"
+					rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.id!=null}">
+
+					<p:panelGrid styleClass="ui-panelgrid-blank" layout="grid"
+						style="width:100%" cellpadding="0" columns="1">
+
+						<p:commandButton id="btnResumen1" ajax="false"
+							style="font-size:16px; font-weight: normal !important; width:100%"
+							action="/equipos/crearEquipoQr.xhtml?faces-redirect=true"
+							value="#{mensaje.consultarHojaVidaEquipo}" />
+
+						<p:commandButton id="btnResumen2" ajax="false"
+							style="font-size:16px; font-weight: normal !important; width:100%"
+							action="/equipos/crearCronogramaQr.xhtml?faces-redirect=true"
+							value="#{mensaje.consultarCronogramaEquipo}" />
+
+						<p:commandButton id="btnResumen3" ajax="false"
+							style="font-size:16px; font-weight: normal !important; width:100%"
+							action="/equipos/crearReporteFallaQr.xhtml?faces-redirect=true"
+							value="#{mensaje.reportarFallaEquipo}" />
+
+
+
+
+
+
+					</p:panelGrid>
+
+
+
+
+				</p:panel>
+				<p:outputPanel
+					rendered="#{!(administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.id!=null)}">
+
+					<h4>#{mensaje.acceso}</h4>
+					<div class="col-md-12">
+						<p:inputText
+							value="#{administrarSesionCliente.personal.correoElectronico}"
+							class="form-control" placeholder="#{mensaje.correo}"
+							id="txtCorreoExistente" />
+						<p:message for="txtCorreoExistente" />
+					</div>
+
+					<div class="col-md-12">
+						<p:password value="#{administrarSesionCliente.personal.clave}"
+							class="form-control" placeholder="#{mensaje.contrasena}"
+							id="txtClaveExistente" />
+						<p:message for="txtClaveExistente" />
+					</div>
+
+					<div class="col-md-12">
+						<p:selectOneButton label="#{mensaje.rol}"
+							style="width:100%; font-size:14px;" id="lstRol" required="true"
+							value="#{administrarSesionCliente.personal.tipoUsuario}">
+							<f:selectItem itemValue="A" itemLabel="#{mensaje.administardorL}" />
+							<f:selectItem itemValue="C" itemLabel="#{mensaje.clienteL}" />
+							<f:selectItem itemValue="T" itemLabel="#{mensaje.tecnicoL}" />
+
+						</p:selectOneButton>
+
+
+						<p:message for="lstRol" />
+					</div>
+
+					<p>&nbsp;</p>
+
+
+					<!-- Submit Button -->
+					<div id="form_register_btn" class="text-center">
+
+						<p:commandButton value="#{mensaje.acceder}" class="btn btn-theme"
+							action="#{administrarSesionCliente.accederQr()}"
+							process="pnlCuentaExistente" style="color:#FFFFFF"
+							update=":formCliente" />
+
+					</div>
+				</p:outputPanel>
+
+			</p:outputPanel>
+		</h:form>
+
+
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="formEliminar">
+		<p:dialog header="#{mensaje.eliminarAdministrador}" closable="false"
+			widgetVar="panelEliminacionAdministrador" resizable="true"
+			responsive="true">
+			<p:outputPanel id="outputpanelEliminacion">
+
+				<div align="center">
+					<p:panelGrid columns="1" cellpadding="5"
+						styleClass="ui-panelgrid-blank">
+						<p:outputLabel value="#{mensaje.nombres}"
+							style="font-weight:bold; font-size:14px" />  
+						<p:inputText
+							value="#{administrarRol.administradorTransaccion.nombres}"
+							disabled="true" style="font-size:14px; width:100%" />
+
+
+
+
+						<p:outputLabel value="#{mensaje.correo}"
+							style="font-weight:bold; font-size:14px" />
+						<p:inputText
+							value="#{administrarRol.administradorTransaccion.correoElectronico}"
+							disabled="true" style="font-size:14px; width:100%" />
+
+
+						<p:outputLabel value="#{mensaje.indicativo}"
+							style="font-weight:bold; font-size:14px" />
+
+						<p:inputText value="#{mensaje.ESTADO_ACTIVO}"
+							rendered="#{administrarRol.administradorTransaccion.estadoVigencia=='A'}"
+							disabled="true" style="font-size:14px; width:100%" />
+
+						<p:inputText value="#{mensaje.ESTADO_INACTIVO}"
+							rendered="#{administrarRol.administradorTransaccion.estadoVigencia=='I'}"
+							disabled="true" style="font-size:14px; width:100%" />
+
+
+
+
+					</p:panelGrid>
+
+				</div>
+				<p:spacer height="5" />
+				<div align="center">
+
+
+					<p:commandButton value="#{mensaje.eliminar}" style="font-size:14px"
+						action="#{administrarRol.eliminarAdministrador()}"
+						update=":form, :formEliminar" />
+
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEliminarAdministrador"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarRol.cancelarAdministradorTransaccion('MODAL_ELIMINAR_ADMINISTRADOR')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+
+					</p:commandButton>
+
+				</div>
+			</p:outputPanel> 
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

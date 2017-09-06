@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formResumen">
+
+		<p:dialog header="#{mensaje.resumenInforme}" widgetVar="panelResumen"
+			resizable="true" closable="false" responsive="true">
+			<p:panel id="pnlResumen">
+
+				<p:panelGrid styleClass="ui-panelgrid-blank" layout="grid"
+					style="width:100%" cellpadding="0" columns="1">
+
+					<p:commandButton id="btnResumen1" process="@this"
+						update=":form, :formResumen:pnlResumen, :formResumenAprobado"
+						style="font-size:16px; font-weight: normal !important; width:100%"
+						action="#{realizarMantenimiento.decidirPostGuardado('APROBAR_INFORME')}"
+						value="#{mensaje.aprobarInforme}" />
+
+					<p:commandButton id="btnResumen2" process="@this"
+						update=":form, :formResumen:pnlResumen"
+						style="font-size:16px; font-weight: normal !important; width:100%"
+						action="#{realizarMantenimiento.decidirPostGuardado('AVISAR_CLIENTE')}"
+						value="#{mensaje.avisarCliente}" />
+
+					<p:commandButton id="btnResumen3" process="@this" 
+						update=":form, :formResumen:pnlResumen, :formVerDocumento"   immediate="true" ajax="false"
+						style="font-size:16px; font-weight: normal !important; width:100%"
+						action="#{realizarMantenimiento.decidirPostGuardado('IMPRIMIR_NO_APROBADO')}"
+						value="#{mensaje.imprimirNoAprobado}" />
+
+					<p:commandButton id="btnResumen4" process="@this"
+						update=":form, :formResumen:pnlResumen"
+						style="font-size:16px; font-weight: normal !important; width:100%"
+						action="#{realizarMantenimiento.decidirPostGuardado('CERRAR_ELABORAR_NUEVO')}"
+						value="#{mensaje.cerrarElaborarNuevo}" />
+
+					<p:commandButton id="btnResumen5" process="@this"
+						update=":form, :formResumen:pnlResumen"
+						style="font-size:16px; font-weight: normal !important; width:100%"
+						action="#{realizarMantenimiento.decidirPostGuardado('CERRAR')}"
+						value="#{mensaje.cerrarContinuar}" />
+
+
+				</p:panelGrid>
+
+				<p:blockUI block=":formResumen:pnlResumen"
+					trigger="btnResumen1, btnResumen2, btnResumen4, btnResumen5, btnResumen3">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+
+	<display-name>optimo</display-name>
+
+	<!-- MODO DE TRABAJO, DESARROLLO O PRODUCCIÓN , se debe pasara a production 
+		cuando se suba a pre y a apro -->
+	<!-- Development Production -->
+
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Development</param-value>
+	</context-param>
+
+
+	<!-- TEMA DE PRIMEFACES USADO afternoon-->
+
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>blitzer</param-value>
+	</context-param>
+
+
+
+
+
+
+	<!-- EXTENSION A USAR -->
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+
+
+
+
+
+	<!-- PAGINAS DE ERROR -->
+	<error-page>
+		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+		<location>/index.jsf</location>
+	</error-page>
+   
+	<error-page>
+		<error-code>500</error-code>
+		<location>/index.jsf</location>
+	</error-page>
+
+	<error-page>
+		<error-code>400</error-code>
+		<location>/index.jsf</location>
+	</error-page>
+
+
+	<!-- fuentes aewosome -->
+
+	<context-param>
+		<param-name>primefaces.FONT_AWESOME</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<mime-mapping>
+		<extension>xhtml</extension>
+		<mime-type>text/html</mime-type>
+	</mime-mapping>
+	
+	<mime-mapping>
+		<extension>ttf</extension>
+		<mime-type>application/x-font-ttf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>woff</extension>
+		<mime-type>application/x-font-woff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>woff2</extension>
+		<mime-type>application/x-font-woff2</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>eot</extension>
+		<mime-type>application/x-font-eot</mime-type>
+	</mime-mapping>
+
+
+	<!-- TIEMPO SESION -->
+	<session-config>
+		<!-- Session idle timeout in min. -->
+		<session-timeout>60</session-timeout>
+	</session-config>
+
+	<!-- pagina inicial -->
+	<welcome-file-list>
+		<welcome-file>index.jsf</welcome-file>
+	</welcome-file-list>
+
+
+
+</web-app>

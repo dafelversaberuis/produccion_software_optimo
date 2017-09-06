@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formEliminarInforme">
+
+		<p:dialog header="#{mensaje.eliminarInformeMantenimiento}" width="450"
+			widgetVar="panelEliminacionInforme" resizable="true" closable="false"
+			responsive="true">
+			<p:panel id="pnlEliminarInforme">
+
+				<p:panelGrid columns="1" styleClass="ui-panelgrid-blank"
+					layout="grid">
+
+					<p:outputLabel value="#{mensaje.deseaEliminarInforme}"
+						style="font-weight:bold; font-size:14px" />
+
+
+
+
+				</p:panelGrid>
+
+
+
+
+
+				<br />
+				<div align="center">
+					<p:commandButton id="btnEliminarInforme" style="font-size:14px"
+						action="#{administrarCronograma.eliminarMantenimiento()}"
+						value="#{mensaje.eliminar}" process=":formEliminarInforme"
+						update=":formEliminarInforme:pnlEliminarInforme, :form" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEliminacionInforme"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarCronograma.cancelarCronogramaTransaccion('MODAL_ELIMINAR_INFORME')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+						<p:resetInput target=":formEliminar:pnlEliminarCronograma, :form" />
+					</p:commandButton>
+
+				</div>
+
+				<p:blockUI block=":formEliminarInforme:pnlEliminarInforme"
+					trigger="btnEliminarInforme, btnCancelarEliminacionInforme">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

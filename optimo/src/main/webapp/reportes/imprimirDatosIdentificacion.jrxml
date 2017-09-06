@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="imprimirDatosIdentificacion" language="groovy" pageWidth="612" pageHeight="170" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="42db267a-539a-4225-906e-a1d6f19077cf">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="informeMantenimiento" class="java.lang.Object"/>
+	<title>
+		<band height="146" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ef5cc546-598d-47af-9fb2-4ef251a16d53" positionType="Float" x="370" y="24" width="100" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. CONSECUTIVO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f05a3eb6-d330-4ad0-8409-c77932dabaef" positionType="Float" x="370" y="84" width="100" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. SERIAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ed41b8f0-25a6-4d14-927e-e1fc27fe932c" positionType="Float" x="1" y="69" width="100" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UBICACIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c107e697-6037-45c9-9041-5426d2498534" positionType="Float" x="1" y="84" width="275" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MODELO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4eca8219-2888-43a6-9d62-797e996ba866" positionType="Float" x="1" y="99" width="100" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MARCA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8e6ae277-8d86-4a7b-a2d0-1e588ab11ae4" positionType="Float" x="1" y="114" width="128" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TÉCNICO EJECUTOR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c57f6428-eb0e-4d03-861e-016672eab5c2" positionType="Float" x="1" y="39" width="100" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="87efcceb-5f13-414b-b21b-2de3acd3747f" positionType="Float" x="1" y="54" width="100" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EQUIPO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="76021e22-2553-45e0-914a-1c3d5868dcd9" positionType="Float" x="370" y="69" width="100" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. INVENTARIO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5b93ee7c-81a3-4a26-93f1-780dab873d6c" positionType="Float" x="169" y="24" width="127" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO MANTENIMIENTO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f9bf6d65-098c-46ea-8c97-bf540f82b392" positionType="Float" x="1" y="24" width="100" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8e6ae277-8d86-4a7b-a2d0-1e588ab11ae4" positionType="Float" x="1" y="129" width="128" height="15">
+					<printWhenExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.equipoBiomedico.equals("S")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLASIFICACIÓN BIOMÉDICA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="76021e22-2553-45e0-914a-1c3d5868dcd9" positionType="Float" x="370" y="99" width="100" height="15">
+					<printWhenExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.equipoBiomedico.equals("S")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REGISTRO INVIMA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8e6ae277-8d86-4a7b-a2d0-1e588ab11ae4" positionType="Float" x="370" y="129" width="135" height="15">
+					<printWhenExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.equipoBiomedico.equals("S")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLASIFICACIÓN POR RIESGO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fc675568-1232-4455-b64e-736e48626efc" positionType="Float" x="1" y="3" width="241" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DE IDENTIFICACIÓN]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="13c85703-dba0-4e7d-8d84-25f3bb2e39f1" positionType="Float" x="47" y="24" width="158" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.fechaHoraAtencion]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="81487e18-c5a2-46b0-a021-052f079f54c8" positionType="Float" x="47" y="54" width="508" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.nombreEquipo]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="bbd00e03-f614-40f8-a870-e45c974e7116" positionType="Float" x="47" y="99" width="310" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.marca]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3494baef-f57a-4196-b7ae-30a54f347b36" positionType="Float" x="450" y="69" width="161" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.numeroInventario]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="34c69e09-a369-41f0-b45b-3f29f2fbae4f" positionType="Float" x="458" y="99" width="153" height="15">
+					<printWhenExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.equipoBiomedico.equals("S")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.registroInvima]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="ee26b135-e270-4467-84dc-821848a6b7e7" positionType="Float" x="47" y="39" width="508" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.cliente.cliente]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="993f7dfe-0d4a-4a70-8a95-960c9b4c440b" positionType="Float" x="66" y="69" width="291" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.cliente.ubicacion]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="544556f5-2936-4856-a715-d6c728e7b1e1" positionType="Float" x="47" y="84" width="310" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.modelo]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="76a39215-654f-4032-987f-e47c53f9279f" positionType="Float" x="119" y="114" width="492" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.tecnico.nombres]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="76a39215-654f-4032-987f-e47c53f9279f" positionType="Float" x="462" y="24" width="149" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.id]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="76a39215-654f-4032-987f-e47c53f9279f" positionType="Float" x="279" y="24" width="115" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $P{informeMantenimiento}.cronograma.tipoMantenimiento.equals("P") ? "PREVENTIVO" : $P{informeMantenimiento}.cronograma.tipoMantenimiento.equals("C") ? "CORRECTIVO" : $P{informeMantenimiento}.cronograma.tipoMantenimiento.equals("I") ? "INSTALACIÓN" : "DIAGNÓSTICO" )]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="76a39215-654f-4032-987f-e47c53f9279f" positionType="Float" x="445" y="84" width="166" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.numeroSerie]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="76a39215-654f-4032-987f-e47c53f9279f" positionType="Float" x="129" y="129" width="228" height="15">
+					<printWhenExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.equipoBiomedico.equals("S")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.clasificacionBiomedica.nombre]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="76a39215-654f-4032-987f-e47c53f9279f" positionType="Float" x="505" y="129" width="63" height="15">
+					<printWhenExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.equipoBiomedico.equals("S")]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.equipo.clasificacionRiesgo.nombre]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

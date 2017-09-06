@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principal.xhtml">
+
+	<ui:define name="body">
+		<h:form id="form">
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+
+			<p:remoteCommand name="onload" process="@this"
+				action="#{administrarSesionCliente.getNoRolAdmitido('INDICADORES_GESTION')}"
+				autoRun="true" />
+
+
+			<div class="row x_title">
+				<div class="col-md-6">
+
+					<h2 class="project-title">#{mensaje.moduloEquipos}:
+						#{mensaje.cumplimientoCronograma}</h2>
+
+				</div>
+			</div>
+
+			<div align="center" class="titulo"></div>
+			<p:outputPanel id="pnlCasoUso">
+				<p:spacer height="10" />
+				<p:outputPanel id="pnlConsultar">
+					<p:accordionPanel activeIndex="1">
+						<p:tab title="#{mensaje.consultarCumplimentoCronograma}"
+							titleStyle="font-size:16px" closable="true">
+
+							<p:panelGrid columns="6" cellpadding="0" cellspacing="0"
+								style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+
+
+
+
+
+
+								<p:outputLabel for="calFechaInicialAnalisis2"
+									value="#{mensaje.fechaInicialAnalisis}"
+									style="font-weight:bold; font-size:14px" />
+
+								<p:calendar id="calFechaInicialAnalisis2"
+									label="#{mensaje.fechaInicialAnalisis}" required="true"
+									value="#{administrarCronograma.cronogramaConsulta.tFechaDesde}"
+									pattern="dd/MM/yyyy" mask="true"
+									style="font-size:14px;  " />
+
+
+
+
+
+								<p:outputLabel for="calFechaFinalAnalisis2"
+									value="#{mensaje.fechaFinalAnalisis}"
+									style="font-weight:bold; font-size:14px" />
+
+								<p:calendar id="calFechaFinalAnalisis2" required="true"
+									label="#{mensaje.fechaFinalAnalisis}"
+									value="#{administrarCronograma.cronogramaConsulta.tFechaHasta}"
+									pattern="dd/MM/yyyy" mask="true"
+									style="font-size:14px;  " />
+
+								<p:outputLabel for="calFechaEvaluacionAvance2"
+									value="#{mensaje.fechaEvaluacionAlcance}"
+									style="font-weight:bold; font-size:14px" />
+
+								<p:calendar id="calFechaEvaluacionAvance2" required="true"
+									label="#{mensaje.fechaFinalAnalisis}"
+									value="#{administrarCronograma.cronogramaConsulta.tFechaEvaluacion}"
+									pattern="dd/MM/yyyy" mask="true"
+									style="font-size:14px;  " />
+
+
+
+								<p:spacer width="1" />
+								<p:message for="calFechaInicialAnalisis2" />
+								<p:spacer width="1" />
+								<p:message for="calFechaFinalAnalisis2" />
+								<p:spacer width="1" />
+								<p:message for="calFechaEvaluacionAvance2" />
+
+
+
+
+								<p:outputLabel for="txtCliente2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="#{mensaje.clienteNormal}"
+									style="font-weight:bold; font-size:14px; " />
+
+								<p:outputLabel for="txtCliente3"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}"
+									value="#{mensaje.clienteNormal}"
+									style="font-weight:bold; font-size:14px; " />
+
+								<p:autoComplete id="txtCliente2" required="true"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									placeholder="#{mensaje.escribaMinimoTres}"
+									style="font-size:14px; width:100%; height:20px"
+									forceSelection="true" minQueryLength="3"
+									label="#{mensaje.clienteNormal}" panelStyle="width:350px"
+									value="#{administrarCronograma.cronogramaConsulta.equipo.cliente.tClienteAutocompletado}"
+									completeMethod="#{administrarCronograma.usarAutocompletar}">
+									<p:ajax event="itemSelect"
+										listener="#{administrarCronograma.onItemSelectConsulta}"
+										update="@this, lstEquipo2" process="@this" />
+								</p:autoComplete>
+
+
+								<p:selectOneMenu label="#{mensaje.clienteNormal}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}"
+									required="true" style="width:100%; font-size:14px;"
+									id="txtCliente3"
+									value="#{administrarCronograma.cronogramaConsulta.equipo.cliente.id}">
+									<f:selectItems
+										value="#{administrarSesionCliente.itemsClientes}" />
+
+									<p:ajax event="change"
+										listener="#{administrarCronograma.seleccionarCliente()}"
+										update="@this, lstEquipo2" process="@this" />
+
+
+								</p:selectOneMenu>
+
+
+
+
+								<p:outputLabel for="lstEquipo2" value="#{mensaje.equipo}"
+									style="font-weight:bold; font-size:14px; " />
+								<p:selectOneMenu label="#{mensaje.equipo}"
+									style="width:100%; font-size:14px;" id="lstEquipo2"
+									value="#{administrarCronograma.cronogramaConsulta.equipo.id}">
+									<f:selectItems value="#{administrarCronograma.itemsEquipos}" />
+								</p:selectOneMenu>
+
+
+								<p:spacer width="1" />
+								<p:spacer width="1" />
+
+								<p:spacer width="1" />
+								<p:message for="txtCliente2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:message for="txtCliente3"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}" />
+
+								<p:spacer width="1" />
+								<p:message for="lstEquipo2" />
+								<p:spacer width="1" />
+								<p:spacer width="1" />
+
+
+
+
+
+							</p:panelGrid>
+							<p:spacer height="10" />
+							<div align="center">
+								<p:commandButton id="btnConsultar" style="font-size:14px; "
+									action="#{administrarCronograma.consultarEvaluacionCronograma()}"
+									value="#{mensaje.consultar}"
+									update=":form:pnlConsultar, :form:pnlDtlCronogramas, :form:messages"
+									process=":form:pnlConsultar" />
+
+								<p:spacer width="10" />
+								<p:commandButton id="btnBorrar"
+									style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+									action="#{administrarCronograma.cancelarConsulta()}"
+									process="@this" value="#{mensaje.cancelar}"
+									update=":form:pnlConsultar, :form:pnlDtlCronogramas">
+
+									<p:resetInput target=":form:pnlConsultar" />
+
+								</p:commandButton>
+
+							</div>
+
+							<p:blockUI block=":form:pnlConsultar"
+								trigger="btnConsultar, btnBorrar">
+
+								<p:graphicImage value="../imagenes/cargando.gif" />
+
+
+							</p:blockUI>
+
+						</p:tab>
+
+
+
+					</p:accordionPanel>
+				</p:outputPanel>
+
+				<p:spacer height="30" />
+				<p:accordionPanel id="pnlDtlCronogramas">
+					<p:tab title="#{mensaje.listadoEvaluacionAlcance}"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:dataTable var="loc" id="dtlCronogramas"
+							widgetVar="dtlRegistros" value="#{administrarCronograma.equipos}"
+							reflow="true" rows="10" paginator="true"
+							paginatorPosition="bottom" draggableColumns="true"
+							emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+							<f:facet name="header">
+								<p:outputPanel style="text-align:right">
+									<p:inputText id="globalFilter" immediate="true"
+										onkeyup="PF('dtlRegistros').filter()"
+										style="width:150px; "
+										placeholder="#{mensaje.palabrasClave}" />
+								</p:outputPanel>
+							</f:facet>
+
+
+
+
+
+
+
+							<p:column headerText="#{mensaje.equipo}"
+								filterBy="#{loc.codigoQr} #{loc.nombreEquipo}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.nombreEquipo}" style="font-size:14px">
+								<p:outputLabel value="#{loc.nombreEquipo}, #{loc.codigoQr}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.estadoEquipo}" filterMatchMode="contains"
+								sortBy="#{loc.estado}" style="font-size:14px;">
+								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estado == 'A'}" />
+								<p:outputLabel value="#{mensaje.ESTADO_INACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estado == 'I'}" />
+							</p:column>
+
+
+
+
+
+
+
+
+							<p:column headerText="#{mensaje.totalIntervencionesProgramadas}" filterMatchMode="contains"
+								sortBy="#{loc.tTotalIntervencionesProgramadas}"
+								filterBy="#{loc.tTotalIntervencionesProgramadas}"
+								filterStyle="display:none"
+								style="font-size:14px; text-align:right">
+								<p:outputLabel value="#{loc.tTotalIntervencionesProgramadas}"
+									style="font-weight:normal; font-size:12px;" />
+
+							</p:column>
+
+							<p:column headerText="#{mensaje.totalIntervencionesRealizadas}" filterMatchMode="contains"
+								sortBy="#{loc.tTotalIntervencionesRealizadas}"
+								filterBy="#{loc.tTotalIntervencionesRealizadas}"
+								filterStyle="display:none"
+								style="font-size:14px; text-align:right">
+								<p:outputLabel value="#{loc.tTotalIntervencionesRealizadas}"
+									style="font-weight:normal; font-size:12px;" />
+
+							</p:column>
+
+							<p:column headerText="#{mensaje.porcentajeCumplimiento}" filterMatchMode="contains"
+								sortBy="#{loc.tPorcentajeCumplimiento}"
+								filterBy="#{loc.tPorcentajeCumplimiento}"
+								filterStyle="display:none"
+								style="font-size:14px; text-align:right">
+								<p:outputLabel value="#{loc.tPorcentajeCumplimiento}"
+									style="font-weight:normal; font-size:12px;" />
+
+							</p:column>
+
+
+
+
+
+
+						</p:dataTable>
+
+						<br />
+						<br />
+						<p:panelGrid columns="1" cellpadding="0" cellspacing="0"
+							style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+							<p:chart type="bar"
+								model="#{administrarCronograma.graficoCumplimiento}"
+								style="width:100%"
+								rendered="#{administrarCronograma.equipos!=null and administrarCronograma.equipos.size()>0}"
+								responsive="true" />
+
+
+
+						</p:panelGrid>
+
+
+					</p:tab>
+				</p:accordionPanel>
+
+			</p:outputPanel>
+		</h:form>
+
+
+
+	</ui:define>
+</ui:composition>

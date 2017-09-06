@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formEditarActividad">
+
+		<p:dialog header="#{mensaje.editarActividad}" width="450" height="400"
+			widgetVar="panelEdicionActividad" resizable="true" closable="false"
+			responsive="true">
+			<p:panel id="pnlEditarActividad">
+
+				<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+					styleClass="ui-panelgrid-blank" layout="grid">
+
+					<p:outputLabel for="txtActividad" value="#{mensaje.actividad}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:inputTextarea id="txtActividad" rows="3" readonly="true"
+						autoResize="false"
+						value="#{realizarMantenimiento.actividadMantenimiento.actividadInformeEquipo.actividad}"
+						required="true" label="#{mensaje.actividad}"
+						style="width:100%; font-size:14px; background-color:#D3D3D3" />
+
+
+
+					<p:spacer width="1" />
+					<p:message for="txtActividad" />
+
+
+					<p:outputLabel for="lstEstadoInicial"
+						value="#{mensaje.estadoInicial}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:selectOneMenu label="#{mensaje.estadoInicial}"
+						style="width:100%; font-size:14px" id="lstEstadoInicial"
+						value="#{realizarMantenimiento.actividadMantenimiento.estadoInicial}"
+						required="true">
+						<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+						<f:selectItem itemValue="B" itemLabel="#{mensaje.bueno}" />
+						<f:selectItem itemValue="R" itemLabel="#{mensaje.regular}" />
+						<f:selectItem itemValue="M" itemLabel="#{mensaje.malo}" />
+					</p:selectOneMenu>
+					<p:spacer width="1" />
+					<p:message for="lstEstadoInicial" />
+
+					<p:outputLabel for="txtDescripcion" value="#{mensaje.descripcion}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:inputTextarea id="txtDescripcion" rows="3" cols="5"
+						autoResize="false"
+						value="#{realizarMantenimiento.actividadMantenimiento.descripcion}"
+						required="true" label="#{mensaje.descripcion}"
+						style="width:100%; font-size:14px;" />
+
+					<p:spacer width="1" />
+					<p:message for="txtDescripcion" />
+
+					<p:outputLabel for="txtRecomendaciones"
+						value="#{mensaje.recomendaciones}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:inputTextarea id="txtRecomendaciones" rows="3" cols="5"
+						autoResize="false"
+						value="#{realizarMantenimiento.actividadMantenimiento.recomendaciones}"
+						required="true" label="#{mensaje.recomendaciones}"
+						style="width:100%; font-size:14px;" />
+
+					<p:spacer width="1" />
+					<p:message for="txtRecomendaciones" />
+
+					<p:outputLabel for="lstEstadoFinal" value="#{mensaje.estadoFinal}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:selectOneMenu label="#{mensaje.estadoFinal}"
+						style="width:100%; font-size:14px" id="lstEstadoFinal"
+						value="#{realizarMantenimiento.actividadMantenimiento.estadoFinal}"
+						required="true">
+						<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+						<f:selectItem itemValue="O" itemLabel="#{mensaje.operativo}" />
+						<f:selectItem itemValue="N" itemLabel="#{mensaje.noOperativo}" />
+
+					</p:selectOneMenu>
+					<p:spacer width="1" />
+					<p:message for="lstEstadoFinal" />
+
+
+					<p:outputLabel for="fileCrear" value="#{mensaje.foto}"
+						style="font-weight:bold; font-size:14px" />
+
+
+				</p:panelGrid>
+				<p:outputPanel id="pnlCargado">
+					<p:panelGrid columns="3" style="width:100%;"
+						styleClass="ui-panelgrid-blank">
+						<p:fileUpload id="fileCrear" cancelLabel="true"
+							dragDropSupport="true" style="width:100%;"
+							rendered="#{realizarMantenimiento.actividadMantenimiento.archivo==null}"
+							fileUploadListener="#{realizarMantenimiento.recibirFoto}"
+							multiple="false" fileLimit="1" fileLimitMessage="Sólo 1 archivo"
+							label="#{mensaje.busqueArchivo}" required="true" mode="advanced"
+							update=":form:messages, pnlCargado" auto="true"
+							sizeLimit="1000000" requiredMessage="Información requerida"
+							invalidSizeMessage="Excede el tamaño  permitido de 1024KB!"
+							invalidFileMessage="Extensión de archivo incorrecta, solo fotos"
+							allowTypes="/(\.|\/)(jpg|jp?g|gif|png)$/" />
+
+
+						<p:outputLabel
+							value="(IMAGEN_EN_MEMORIA)"
+							rendered="#{realizarMantenimiento.actividadMantenimiento.archivo != null}" />
+
+						<p:commandLink value="#{mensaje.limpiar}"
+							style="font-weight:bold; font-size:14px"
+							action="#{realizarMantenimiento.limpiarFotoCargada()}"
+							process="@this" update="pnlCargado"
+							rendered="#{realizarMantenimiento.actividadMantenimiento.archivo != null}" />
+
+
+					</p:panelGrid>
+
+
+				</p:outputPanel>
+
+
+				<br />
+				<div align="center">
+					<p:commandButton id="btnEditarActividad" style="font-size:14px"
+						action="#{realizarMantenimiento.guardarParcialmente()}"
+						value="#{mensaje.editar}"
+						process=":formEditarActividad:pnlEditarActividad"
+						update=":formEditarActividad:pnlEditarActividad, :form:pnlDltRegistros:dtlRegistros2, :form:messages" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEdicionActividad"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{realizarMantenimiento.cancelarEdicionActividad()}"
+						process="@this" value="#{mensaje.cancelar}"
+						update=":form:pnlDltRegistros:dtlRegistros2">
+						<p:resetInput target=":formEditarActividad" />
+					</p:commandButton>
+
+				</div>
+
+				<p:outputLabel value="#{mensaje.informacionRequerida}"
+					style="font-size:10px" />
+				<p:blockUI block=":formEditarActividad:pnlEditarActividad"
+					trigger="btnEditarActividad, btnCancelarEdicionActividad">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

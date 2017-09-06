@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formAprobacionInforme">
+
+		<p:dialog header="#{mensaje.aprobarInformeMantenimiento}" width="450"
+			widgetVar="panelAprobacionInforme" resizable="true" closable="false"
+			responsive="true">
+			<p:panel id="pnlAprobacionInforme">
+
+				<p:panelGrid columns="1" styleClass="ui-panelgrid-blank"
+					layout="grid">
+
+					<p:outputLabel value="#{mensaje.deseaAprobarInforme}"
+						style="font-weight:bold; font-size:14px" />
+
+
+
+
+				</p:panelGrid>
+
+
+
+
+
+				<br />
+				<div align="center">
+					<p:commandButton id="btnAprobacionInforme" style="font-size:14px"
+						action="#{administrarCronograma.aprobarInformeCronograma()}"
+						value="#{mensaje.aprobar}" process=":formAprobacionInforme"
+						update=":formAprobacionInforme:pnlAprobacionInforme, :form" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarAprobacionInforme"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarCronograma.cancelarCronogramaTransaccion('MODAL_APROBACION_INFORME')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+						<p:resetInput target=":formAprobacionInforme:pnlAprobacionInforme, :form" />
+					</p:commandButton>
+
+				</div>
+
+				<p:blockUI block=":formAprobacionInforme:pnlAprobacionInforme"
+					trigger="btnAprobacionInforme, btnCancelarAprobacionInforme">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

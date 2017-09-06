@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="formVer">
+		<p:dialog header="#{mensaje.informacionCompleta}" closable="false"
+			width="500" widgetVar="panelVerCliente" resizable="true"
+			responsive="true">
+			<p:outputPanel id="outputpanelVer">
+
+
+				<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+					styleClass="ui-panelgrid-blank" layout="grid">
+
+					<p:outputLabel for="txtCliente" value="#{mensaje.cliente}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtCliente" disabled="true"
+						value="#{administrarRol.clienteTransaccion.cliente}"
+						required="true" label="#{mensaje.cliente}"
+						style="width:100%; font-size:14px; " />
+
+
+
+					<p:outputLabel for="txtNit" value="#{mensaje.nit}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtNit"
+						value="#{administrarRol.clienteTransaccion.nit}" required="true"
+						label="#{mensaje.nit}" disabled="true"
+						style="width:100%; font-size:14px; " />
+
+
+
+
+
+					<p:outputLabel for="txtUbicacion" value="#{mensaje.ubicacion}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtUbicacion" disabled="true"
+						value="#{administrarRol.clienteTransaccion.ubicacion}"
+						required="true" label="#{mensaje.ubicacion}"
+						style="width:100%; font-size:14px; " />
+
+
+					<p:outputLabel for="lstIndicativo" value="#{mensaje.indicativo}"
+						style="font-weight:bold; font-size:14px;" />
+					<p:selectOneMenu id="lstIndicativo" required="true"
+						style="font-size:14px;" disabled="true"
+						value="#{administrarRol.clienteTransaccion.estadoVigencia}"
+						label="#{mensaje.indicativo}">
+						<f:selectItems value="#{consultarFuncionesAPI.itemsEstados}" />
+					</p:selectOneMenu>
+					
+					
+					<p:outputLabel for="txtDireccion"
+						value="#{mensaje.direccionFisica}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtDireccion" disabled="true"
+						value="#{administrarRol.clienteTransaccion.direccionFisica}"
+						required="true" label="#{mensaje.direccionFisica}"
+						style="width:100%; font-size:14px; " />
+
+
+
+
+					<p:outputLabel for="txtRepresentante"
+						value="#{mensaje.representante}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtRepresentante" disabled="true"
+						value="#{administrarRol.clienteTransaccion.representante}"
+						required="true" label="#{mensaje.representante}"
+						style="width:100%; font-size:14px; " />
+
+
+					<p:outputLabel for="txtCargo" value="#{mensaje.cargo}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:inputText id="txtCargo"
+						value="#{administrarRol.clienteTransaccion.cargo}" disabled="true"
+						required="true" label="#{mensaje.cargo}"
+						style="width:100%; font-size:14px; " />
+
+
+
+
+
+
+					<p:outputLabel for="txtTelefono"
+						value="#{mensaje.telefonoResponsable}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtTelefono" disabled="true"
+						value="#{administrarRol.clienteTransaccion.telefono}"
+						required="true" label="#{mensaje.telefonoResponsable}"
+						style="width:100%; font-size:14px; " />
+
+
+
+					<p:outputLabel for="txtCorreo" value="#{mensaje.correoResponsable}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtCorreo" disabled="true"
+						value="#{administrarRol.clienteTransaccion.correoElectronico}"
+						required="true" label="#{mensaje.correoResponsable}"
+						style="width:100%; font-size:14px; " />
+
+
+
+				</p:panelGrid>
+
+				<p:spacer height="5" />
+				<div align="center">
+
+
+
+					<p:commandButton id="btnCancelarEliminarCliente"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarRol.cancelarClienteTransaccion('MODAL_VER_CLIENTE')}"
+						process="@this" value="#{mensaje.cerrar}" update=":form">
+
+					</p:commandButton>
+
+				</div>
+			</p:outputPanel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

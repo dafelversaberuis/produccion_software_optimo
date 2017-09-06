@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="formEliminar">
+		<p:dialog header="#{mensaje.eliminarTecnico}" closable="false"
+			width="500" widgetVar="panelEliminacionTecnico" resizable="true"
+			responsive="true">
+			<p:outputPanel id="outputpanelEliminacion">
+
+
+				<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+					styleClass="ui-panelgrid-blank" layout="grid">
+
+					<p:outputLabel for="txtNombres" value="#{mensaje.nombreCompleto}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtNombres" disabled="true"
+						value="#{administrarRol.tecnicoTransaccion.nombres}"
+						required="true" label="#{mensaje.nombreCompleto}"
+						style="width:100%; font-size:14px; " />
+
+
+
+
+					<p:outputLabel for="txtDocumento"
+						value="#{mensaje.documentoTarjeta}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtDocumento" disabled="true"
+						value="#{administrarRol.tecnicoTransaccion.documento}"
+						required="true" label="#{mensaje.documentoTarjeta}"
+						style="width:100%; font-size:14px; " />
+
+
+
+
+					<p:outputLabel for="txtCargo" value="#{mensaje.cargoTecnico}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtCargo" disabled="true"
+						value="#{administrarRol.tecnicoTransaccion.cargo}" required="true"
+						label="#{mensaje.cargoTecnico}"
+						style="width:100%; font-size:14px; " />
+
+
+
+
+
+					<p:outputLabel for="txtTelefono" value="#{mensaje.telefonos}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtTelefono" disabled="true"
+						value="#{administrarRol.tecnicoTransaccion.telefono}"
+						required="true" label="#{mensaje.telefonos}"
+						style="width:100%; font-size:14px; " />
+
+
+
+					<p:outputLabel for="txtCorreo" value="#{mensaje.correo}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtCorreo" disabled="true"
+						value="#{administrarRol.tecnicoTransaccion.correoElectronico}"
+						required="true" label="#{mensaje.correo}"
+						style="width:100%; font-size:14px; " />
+
+
+
+
+
+
+					<p:outputLabel for="lstIndicativo" value="#{mensaje.indicativo}"
+						style="font-weight:bold; font-size:14px;" />
+					<p:selectOneMenu id="lstIndicativo" required="true"
+						style="font-size:14px;" disabled="true"
+						value="#{administrarRol.tecnicoTransaccion.estadoVigencia}"
+						label="#{mensaje.indicativo}">
+						<f:selectItems value="#{consultarFuncionesAPI.itemsEstados}" />
+					</p:selectOneMenu>
+
+
+				</p:panelGrid>
+				<p:spacer height="5" />
+				<div align="center">
+
+
+					<p:commandButton value="#{mensaje.eliminar}" style="font-size:14px"
+						action="#{administrarRol.eliminarTecnico()}"
+						update=":form, :formEliminar" />
+
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEliminarTecnico"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarRol.cancelarTecnicoTransaccion('MODAL_ELIMINAR_TECNICO')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+
+					</p:commandButton>
+
+				</div>
+			</p:outputPanel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

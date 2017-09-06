@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formEditar">
+
+		<p:dialog header="#{mensaje.editarCliente}"  height="400" 
+			widgetVar="panelEdicionCliente" resizable="true" closable="false"
+			responsive="true">
+			<p:panel id="pnlEditarCliente">
+
+
+				<p:panelGrid columns="2" cellpadding="0" cellspacing="0" layout="grid"
+					styleClass="ui-panelgrid-blank" >
+
+					<p:outputLabel for="txtCliente" value="#{mensaje.cliente}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtCliente"
+						value="#{administrarRol.clienteTransaccion.cliente}"
+						required="true" label="#{mensaje.cliente}"
+						style="width:100%; font-size:14px; " />
+
+					<p:spacer width="1" />
+					<p:message for="txtCliente" />
+
+					<p:outputLabel for="txtNit" value="#{mensaje.nit}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtNit"
+						value="#{administrarRol.clienteTransaccion.nit}" required="true"
+						label="#{mensaje.nit}" disabled="true"
+						style="width:100%; font-size:14px; " />
+
+					<p:spacer width="1" />
+					<p:message for="txtNit" />
+
+
+
+					<p:outputLabel for="txtUbicacion" value="#{mensaje.ubicacion}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtUbicacion"
+						value="#{administrarRol.clienteTransaccion.ubicacion}"
+						required="true" label="#{mensaje.ubicacion}"
+						style="width:100%; font-size:14px; " />
+
+					<p:spacer width="1" />
+					<p:message for="txtUbicacion" />
+
+					<p:outputLabel for="lstIndicativo" value="#{mensaje.indicativo}"
+						style="font-weight:bold; font-size:14px;" />
+					<p:selectOneMenu id="lstIndicativo" required="true"
+						style="font-size:14px;"
+						value="#{administrarRol.clienteTransaccion.estadoVigencia}"
+						label="#{mensaje.indicativo}">
+						<f:selectItems value="#{consultarFuncionesAPI.itemsEstados}" />
+					</p:selectOneMenu>
+					<p:spacer width="1" />
+					<p:message for="lstIndicativo" />
+
+
+					<p:outputLabel for="txtDireccion"
+						value="#{mensaje.direccionFisica}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtDireccion"
+						value="#{administrarRol.clienteTransaccion.direccionFisica}"
+						required="true" label="#{mensaje.direccionFisica}"
+						style="width:100%; font-size:14px; " />
+					<p:spacer width="1" />
+					<p:message for="txtDireccion" />
+
+
+
+					<p:outputLabel for="txtRepresentante"
+						value="#{mensaje.representante}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtRepresentante"
+						value="#{administrarRol.clienteTransaccion.representante}"
+						required="true" label="#{mensaje.representante}"
+						style="width:100%; font-size:14px; " />
+					<p:spacer width="1" />
+					<p:message for="txtRepresentante" />
+
+					<p:outputLabel for="txtCargo" value="#{mensaje.cargo}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:inputText id="txtCargo"
+						value="#{administrarRol.clienteTransaccion.cargo}" required="true"
+						label="#{mensaje.cargo}"
+						style="width:100%; font-size:14px; " />
+
+
+
+					<p:spacer width="1" />
+					<p:message for="txtCargo" />
+
+
+					<p:outputLabel for="txtTelefono"
+						value="#{mensaje.telefonoResponsable}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtTelefono"
+						value="#{administrarRol.clienteTransaccion.telefono}"
+						required="true" label="#{mensaje.telefonoResponsable}"
+						style="width:100%; font-size:14px; " />
+
+					<p:spacer width="1" />
+					<p:message for="txtTelefono" />
+
+					<p:outputLabel for="txtCorreo" value="#{mensaje.correoResponsable}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtCorreo"
+						value="#{administrarRol.clienteTransaccion.correoElectronico}"
+						required="true" label="#{mensaje.correoResponsable}"
+						style="width:100%; font-size:14px; " />
+
+					<p:spacer width="1" />
+					<p:message for="txtCorreo" />
+
+					<p:outputLabel for="lstPermisos" value="#{mensaje.permisos}"
+						style="font-weight:bold; font-size:14px" />
+					<p:selectCheckboxMenu id="lstPermisos" required="true"
+						value="#{administrarRol.clienteTransaccion.tPermisos}"
+						label="#{mensaje.lista}" panelStyle="width:250px">
+						<f:selectItems value="#{administrarRol.itemsPermisosCliente}" />
+					</p:selectCheckboxMenu>
+					<p:message for="lstPermisos" />
+
+
+
+
+
+				</p:panelGrid>
+
+				<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+					<p:outputLabel for="sigFirma" value="#{mensaje.firma}"
+						style="font-weight:bold; font-size:14px" />
+					<p:signature id="sigFirma" style="width:400px; height:200px"
+						widgetVar="firma2"
+						value="#{administrarRol.clienteTransaccion.firma}"
+						label="#{mensaje.firma}" guideline="true" />
+					<p:commandButton
+						style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+						value="" onclick="PF('firma2').clear()" process="@this"
+						id="btnFirma" update="sigFirma"
+						action="#{administrarRol.limpiarFirmaEdicionCliente()}" />
+				</p:panelGrid>
+
+
+				<div align="center">
+					<p:commandButton id="btnEditarCliente" style="font-size:14px"
+						action="#{administrarRol.editarCliente()}"
+						value="#{mensaje.editar}" process=":formEditar:pnlEditarCliente"
+						update=":formEditar:pnlEditarCliente, :form" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEdicionCliente"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarRol.cancelarClienteTransaccion('MODAL_EDITAR_CLIENTE')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+						<p:resetInput target=":formEditar, :form" />
+					</p:commandButton>
+
+				</div>
+
+				<p:outputLabel value="#{mensaje.informacionRequerida}"
+					style="font-size:10px" />
+				<p:blockUI block=":formEditar:pnlEditarCliente"
+					trigger="btnEditarCliente, btnCancelarEdicionCliente">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

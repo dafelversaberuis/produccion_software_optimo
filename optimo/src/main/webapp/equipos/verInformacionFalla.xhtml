@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formInformacionFalla">
+
+		<p:dialog header="#{mensaje.informacionCompletaFalla}" width="450"
+			height="400" widgetVar="panelInformacionFalla" resizable="true"
+			closable="false" responsive="true">
+			<p:panel id="pnlInformacionFalla"
+				rendered="#{reportarFalla!=null and reportarFalla.reporteFalla!=null and reportarFalla.reporteFalla.id!=null}">
+
+				<p:panelGrid columns="2" styleClass="ui-panelgrid-blank"
+					layout="grid">
+
+					<p:outputLabel value="#{mensaje.fechaFalla}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:outputLabel
+						value="#{consultarFuncionesAPI.getFechaColombia(reportarFalla.reporteFalla.fechaFalla)}"
+						style="font-weight:normal; font-size:14px" />
+
+
+
+					<p:outputLabel value="#{mensaje.descripcionFalla}"
+						style="font-weight:bold; font-size:14px" />
+
+
+					<p:outputLabel
+						value="#{reportarFalla.reporteFalla.descripcionFalla}"
+						style="font-weight:normal; font-size:14px" />
+
+
+					<p:outputLabel value="#{mensaje.estadoFalla}"
+						style="font-weight:bold; font-size:14px" />
+
+
+					<p:outputLabel value="#{mensaje.abierta}"
+						style="font-weight:normal; font-size:14px"
+						rendered="#{reportarFalla.reporteFalla.estado == 'A'}" />
+					<p:outputLabel
+						value="#{mensaje.cerrada} el #{consultarFuncionesAPI.getFechaColombia(reportarFalla.reporteFalla.fechaHoraAtencion)}"
+						style="font-weight:normal; font-size:14px"
+						rendered="#{reportarFalla.reporteFalla.estado == 'C' and reportarFalla.reporteFalla.conceptoCierreManual==null}" />
+
+					<p:outputLabel
+						value="#{mensaje.cerrada} #{mensaje.manualmente} el #{consultarFuncionesAPI.getFechaColombia(reportarFalla.reporteFalla.fechaHoraAtencion)}: #{reportarFalla.reporteFalla.conceptoCierreManual}"
+						style="font-weight:normal; font-size:14px"
+						rendered="#{reportarFalla.reporteFalla.estado == 'C' and reportarFalla.reporteFalla.conceptoCierreManual!=null}" />
+
+
+
+
+
+					<p:outputLabel value="#{mensaje.foto}"
+						style="font-weight:bold; font-size:14px" />
+
+
+					<p:outputPanel
+						rendered="#{reportarFalla.reporteFalla.tFotoDecodificada!=null}">
+
+
+						<div align="center">
+							<img
+								src='data:image/png;base64,#{reportarFalla.reporteFalla.tFotoDecodificada}' />
+
+						</div>
+					</p:outputPanel>
+
+
+				</p:panelGrid>
+
+
+
+
+
+				<br />
+				<div align="center">
+
+					<p:commandButton id="btnFotoFalla"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{consultarFuncionesAPI.cerrarModal('panelInformacionFalla')}"
+						process="@this" value="#{mensaje.cerrar}" update="@this" />
+
+				</div>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

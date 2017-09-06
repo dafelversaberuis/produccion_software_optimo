@@ -1,0 +1,424 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principal.xhtml">
+
+	<ui:define name="body">
+		<style type="text/css">
+.columna1 {
+	width: 30px
+}
+
+.columna2 {
+	
+}
+</style>
+
+		<h:form id="form">
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+			
+			<p:remoteCommand name="onload" process="@this"
+				action="#{administrarSesionCliente.getNoRolAdmitido('ROLES')}"
+				autoRun="true" />
+
+
+			<div class="row x_title">
+				<div class="col-md-6">
+
+					<h2 class="project-title">#{mensaje.moduloPersonal}:
+						#{mensaje.administrarClientes}</h2>
+
+
+
+
+				</div>
+			</div>
+
+			<div align="center" class="titulo"></div>
+
+			<p:outputPanel id="pnlCliente">
+
+				<p:spacer height="10" />
+
+				<p:accordionPanel id="pnlCrear" activeIndex="1">
+					<p:tab title="#{mensaje.crearCliente}" titleStyle="font-size:16px"
+						closable="true">
+						<div align="left">
+							<p:panelGrid columns="6" cellpadding="0" cellspacing="0"
+								style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+								<p:outputLabel for="txtCliente" value="#{mensaje.cliente}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtCliente"
+									value="#{administrarRol.cliente.cliente}" required="true"
+									label="#{mensaje.cliente}"
+									style="width:100%; font-size:14px; " />
+
+
+								<p:outputLabel for="txtNit" value="#{mensaje.nit}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNit" value="#{administrarRol.cliente.nit}"
+									required="true" label="#{mensaje.nit}"
+									style="width:100%; font-size:14px; " />
+
+
+
+
+
+								<p:outputLabel for="txtUbicacion" value="#{mensaje.ubicacion}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtUbicacion"
+									value="#{administrarRol.cliente.ubicacion}" required="true"
+									label="#{mensaje.ubicacion}"
+									style="width:100%; font-size:14px; " />
+
+
+
+
+
+
+								<p:spacer width="1" />
+								<p:message for="txtCliente" />
+								<p:spacer width="1" />
+								<p:message for="txtNit" />
+								<p:spacer width="1" />
+								<p:message for="txtUbicacion" />
+
+
+								<p:outputLabel for="txtDireccion"
+									value="#{mensaje.direccionFisica}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtDireccion"
+									value="#{administrarRol.cliente.direccionFisica}"
+									required="true" label="#{mensaje.direccionFisica}"
+									style="width:100%; font-size:14px; " />
+
+
+								<p:outputLabel for="txtRepresentante"
+									value="#{mensaje.representante}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtRepresentante"
+									value="#{administrarRol.cliente.representante}" required="true"
+									label="#{mensaje.representante}"
+									style="width:100%; font-size:14px; " />
+
+								<p:outputLabel for="txtCargo" value="#{mensaje.cargo}"
+									style="font-weight:bold; font-size:14px" />
+
+								<p:inputText id="txtCargo"
+									value="#{administrarRol.cliente.cargo}" required="true"
+									label="#{mensaje.cargo}"
+									style="width:100%; font-size:14px; " />
+
+								<p:spacer width="1" />
+								<p:message for="txtDireccion" />
+								<p:spacer width="1" />
+								<p:message for="txtRepresentante" />
+								<p:spacer width="1" />
+								<p:message for="txtCargo" />
+
+
+								<p:outputLabel for="txtTelefono"
+									value="#{mensaje.telefonoResponsable}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtTelefono"
+									value="#{administrarRol.cliente.telefono}" required="true"
+									label="#{mensaje.telefonoResponsable}"
+									style="width:100%; font-size:14px; " />
+
+								<p:outputLabel for="txtCorreo"
+									value="#{mensaje.correoResponsable}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtCorreo"
+									value="#{administrarRol.cliente.correoElectronico}"
+									required="true" label="#{mensaje.correoResponsable}"
+									style="width:100%; font-size:14px; " />
+
+								<p:outputLabel for="lstPermisos" value="#{mensaje.permisos}"
+									style="font-weight:bold; font-size:14px" />
+								<p:selectCheckboxMenu id="lstPermisos" required="true"
+									value="#{administrarRol.cliente.tPermisos}"
+									label="#{mensaje.lista}" panelStyle="width:250px">
+									<f:selectItems value="#{administrarRol.itemsPermisosCliente}" />
+								</p:selectCheckboxMenu>
+
+
+								<p:spacer width="1" />
+								<p:message for="txtTelefono" />
+								<p:spacer width="1" />
+								<p:message for="txtCorreo" />
+								<p:spacer width="1" />
+								<p:message for="lstPermisos" />
+
+
+							</p:panelGrid>
+							<div align="center">
+								<p:panelGrid columns="7" styleClass="ui-panelgrid-blank">
+									<p:outputLabel for="sigFirma" value="#{mensaje.firma}"
+										style="font-weight:bold; font-size:14px" />
+									<p:signature id="sigFirma" style="width:400px; height:200px"
+										widgetVar="firma" value="#{administrarRol.cliente.firma}"
+										label="#{mensaje.firma}" guideline="true" />
+									<p:message for="sigFirma" />
+									<p:commandButton
+										style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										value="" onclick="PF('firma').clear()" process="@this"
+										id="btnFirma" update="sigFirma"
+										action="#{administrarRol.limpiarFirmaCreacionCliente()}" />
+
+
+									<p:commandButton
+										style="background-origin: content-box; background-image: url('../imagenes/ayuda.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										value="" id="ayudaFirma" />
+
+									<p:tooltip value="#{mensaje.limpiar}" trackMouse="true"
+										for="btnFirma" />
+									<p:tooltip value="#{mensaje.ayudaFirma}" trackMouse="true"
+										for="ayudaFirma" />
+								</p:panelGrid>
+							</div>
+
+						</div>
+
+
+						<p:spacer height="10" />
+						<div align="center">
+							<p:commandButton id="btnCrear" style="font-size:14px;"
+								action="#{administrarRol.crearCliente()}"
+								value="#{mensaje.guardar}" update=":form" />
+
+							<p:spacer width="10" />
+							<p:commandButton id="btnBorrar"
+								style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+								action="#{administrarRol.cancelarCliente()}" process="@this"
+								value="#{mensaje.cancelar}" update=":form">
+
+								<p:resetInput target=":form:pnlCliente" />
+
+							</p:commandButton>
+
+						</div>
+						<p:outputLabel value="#{mensaje.informacionRequerida}"
+							style="font-size:10px" />
+
+						<p:blockUI block=":form:pnlCrear" trigger="btnCrear, btnBorrar">
+
+							<p:graphicImage value="../imagenes/cargando.gif" />
+
+
+						</p:blockUI>
+					</p:tab>
+				</p:accordionPanel>
+				<p:spacer height="30" />
+				<p:outputPanel id="pnlConsultar">
+					<p:accordionPanel activeIndex="1">
+						<p:tab title="#{mensaje.consultarClientes}"
+							titleStyle="font-size:16px" closable="true">
+
+							<p:panelGrid columns="3" cellpadding="0" cellspacing="0"
+								styleClass="ui-panelgrid-blank">
+								<p:outputLabel for="txtNombre2" value="#{mensaje.nombreOParte}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNombre2"
+									value="#{administrarRol.clienteConsulta.cliente}"
+									label="#{mensaje.nombre}" style="width:100%; font-size:14px" />
+								<p:message for="txtNombre2" />
+
+								<p:outputLabel for="txtNit2" value="#{mensaje.nit}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNit2"
+									value="#{administrarRol.clienteConsulta.nit}"
+									label="#{mensaje.nit}" style="width:100%; font-size:14px" />
+								<p:message for="txtNit2" />
+
+							</p:panelGrid>
+
+							<p:spacer height="10" />
+							<div align="center">
+								<p:commandButton id="btnConsultar" style="font-size:14px; "
+									action="#{administrarRol.consultarClientes()}"
+									value="#{mensaje.consultar}"
+									update=":form:pnlConsultar, :form:pnlDtlClientes"
+									process=":form:pnlConsultar" />
+
+								<p:spacer width="10" />
+								<p:commandButton id="btnBorrar"
+									style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+									action="#{administrarRol.cancelarConsulta()}" process="@this"
+									value="#{mensaje.cancelar}"
+									update=":form:pnlConsultar, :form:pnlDtlClientes">
+
+									<p:resetInput target=":form:pnlConsultar" />
+
+								</p:commandButton>
+
+							</div>
+
+							<p:blockUI block=":form:pnlConsultar"
+								trigger="btnConsultar, btnBorrar">
+
+								<p:graphicImage value="../imagenes/cargando.gif" />
+
+
+							</p:blockUI>
+
+
+						</p:tab>
+
+					</p:accordionPanel>
+				</p:outputPanel>
+
+				<p:spacer height="30" />
+				<p:accordionPanel id="pnlDtlClientes">
+					<p:tab title="#{mensaje.listadoClientes}"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:dataTable var="loc" id="dtlClientes" widgetVar="dtlRegistros"
+							value="#{administrarRol.clientes}" reflow="true" rows="10"
+							paginator="true" paginatorPosition="bottom"
+							draggableColumns="true"
+							emptyMessage="#{mensaje.noExistenciaClientes}">
+
+							<f:facet name="header">
+								<p:outputPanel style="text-align:right">
+									<p:inputText id="globalFilter" immediate="true"
+										onkeyup="PF('dtlRegistros').filter()"
+										style="width:150px; "
+										placeholder="#{mensaje.palabrasClave}" />
+								</p:outputPanel>
+							</f:facet>
+
+
+
+							<p:column headerText="#{mensaje.nit}" filterMatchMode="contains"
+								filterStyle="display:none" sortBy="#{loc.nit}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.nit}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.cliente}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.cliente}" filterBy="#{loc.cliente}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.cliente}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.ubicacion}"
+								filterStyle="display:none" filterMatchMode="contains"
+								filterBy="#{loc.ubicacion}" sortBy="#{loc.ubicacion}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.ubicacion}"
+									style="font-weight:normal; font-size:12px" />
+
+							</p:column>
+							<p:column headerText="#{mensaje.indicativo}" filterMatchMode="contains"
+								sortBy="#{loc.estadoVigencia}" style="font-size:14px">
+								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estadoVigencia == 'A'}" />
+								<p:outputLabel value="#{mensaje.ESTADO_INACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estadoVigencia == 'I'}" />
+							</p:column>
+
+
+							<p:column headerText="#{mensaje.representante}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.representante}" filterBy="#{loc.representante}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.representante}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+
+							<p:column headerText="#{mensaje.correo}"
+								filterStyle="display:none" filterMatchMode="contains"
+								filterBy="#{loc.correoElectronico}"
+								sortBy="#{loc.correoElectronico}" style="font-size:14px">
+								<p:outputLabel value="#{loc.correoElectronico}"
+									style="font-weight:normal; font-size:12px" />
+
+							</p:column>
+
+
+
+							<p:column headerText="#{mensaje.permisos}" style="font-size:14px">
+								<p:selectOneMenu style="font-size:14px; width:100%">
+									<f:selectItems
+										value="#{administrarRol.getItemsPermisosClienteRegistro(loc)}" />
+								</p:selectOneMenu>
+							</p:column>
+
+
+
+
+							<p:column headerText="#{mensaje.acciones}"
+								style="font-size:14px; text-align:center;">
+
+
+								<p:commandButton id="btnIrBuscar"
+									style="background-origin: content-box; background-image: url('../imagenes/buscar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									value=""
+									action="#{administrarRol.asignarCliente(loc,'MODAL_VER_CLIENTE')}"
+									process=":form:pnlDtlClientes" update=":formVer" />
+
+
+								<p:tooltip for="btnIrBuscar"
+									value="#{mensaje.informacionCompleta}" trackMouse="true" />
+
+								<p:commandButton id="btnIrEditar"
+									style="background-origin: content-box; background-image: url('../imagenes/editar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarRol.asignarCliente(loc,'MODAL_EDITAR_CLIENTE')}"
+									value="" process=":form:pnlDtlClientes" update=":formEditar" />
+
+
+								<p:tooltip for="btnIrEditar" value="#{mensaje.editar}"
+									trackMouse="true" />
+
+								<p:commandButton id="btnIrEliminar"
+									style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									value=""
+									action="#{administrarRol.asignarCliente(loc,'MODAL_ELIMINAR_CLIENTE')}"
+									process=":form:pnlDtlClientes" update=":formEliminar" />
+
+
+								<p:tooltip for="btnIrEliminar" value="#{mensaje.eliminar}"
+									trackMouse="true" />
+
+
+								<p:commandButton id="btnIrClave"
+									style="background-origin: content-box; background-image: url('../imagenes/c_mayuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									value=""
+									action="#{administrarRol.asignarCliente(loc,'MODAL_CLAVE_CLIENTE')}"
+									process=":form:pnlDtlClientes" update=":formClave" />
+
+								<p:tooltip for="btnIrClave"
+									value="#{mensaje.generarClaveCliente}" trackMouse="true" />
+
+
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:tab>
+				</p:accordionPanel>
+
+			</p:outputPanel>
+		</h:form>
+
+		<ui:include src="/roles/editarCliente.xhtml" />
+		<ui:include src="/roles/eliminarCliente.xhtml" />
+		<ui:include src="/roles/verCliente.xhtml" />
+		<ui:include src="/roles/cambiarClaveCliente.xhtml" />
+
+
+		<p:spacer height="800" />
+
+	</ui:define>
+</ui:composition>

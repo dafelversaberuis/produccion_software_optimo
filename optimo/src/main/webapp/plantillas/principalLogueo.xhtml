@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<link rel="shortcut icon"
+		href="/optimo/mpi/plantillas/images/favicon.png" />
+
+	<meta name="author" content="Quimerapps" />
+	<title>Óptimo</title>
+	<meta name="description" content="Óptimo" />
+	<meta name="keywords" content="SPI Software" />
+
+
+	<!-- Libs CSS -->
+	<link href="/optimo/plantillas/dependenciasLogueo/css/bootstrap.css"
+		rel="stylesheet" />
+	<link
+		href="/optimo/plantillas/dependenciasLogueo/css/font-awesome.min.css"
+		rel="stylesheet" />
+	<link href="/optimo/plantillas/dependenciasLogueo/css/flexslider.css"
+		rel="stylesheet" />
+	<link href="/optimo/plantillas/dependenciasLogueo/css/prettyPhoto.css"
+		rel="stylesheet" />
+	<link href="/optimo/plantillas/dependenciasLogueo/css/owl.carousel.css"
+		rel="stylesheet" />
+
+	<!-- On Scroll Animations -->
+	<link href="/optimo/plantillas/dependenciasLogueo/css/animate.min.css"
+		rel="stylesheet" />
+
+	<!-- Template CSS -->
+	<link href="/optimo/plantillas/dependenciasLogueo/css/style.css"
+		rel="stylesheet" />
+
+	<!-- Style Switcher CSS -->
+	<link href="/optimo/plantillas/dependenciasLogueo/css/green.css"
+		rel="alternate stylesheet" title="green-theme" />
+	<link href="/optimo/plantillas/dependenciasLogueo/css/blue.css"
+		rel="alternate stylesheet" title="blue-theme" />
+	<link href="/optimo/plantillas/dependenciasLogueo/css/tomato.css"
+		rel="alternate stylesheet" title="tomato-theme" />
+	<link href="/optimo/plantillas/dependenciasLogueo/css/turquoise.css"
+		rel="alternate stylesheet" title="turquoise-theme" />
+
+	<!-- Responsive CSS -->
+	<link href="/optimo/plantillas/dependenciasLogueo/css/responsive.css"
+		rel="stylesheet" />
+
+
+
+	<!-- Google Fonts -->
+	<link
+		href='http://fonts.googleapis.com/css?family=Open+Sans:400,300italic,800italic,800,700italic,700,600italic,600,400italic,300'
+		rel='stylesheet' type='text/css' />
+	<link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700'
+		rel='stylesheet' type='text/css' />
+
+
+
+	<style type="text/css">
+.ui-growl-title {
+	font: 14px "Lucida Console", Monaco, monospace;
+}
+
+.ui-growl-message p {
+	font: 16px "Lucida Console", Monaco, monospace;
+}
+
+.ui-growl {
+	top: 15%;
+}
+</style>
+</h:head>
+
+<body>
+
+
+
+	<!-- PRELOADER
+		============================================= -->
+	<div class="animationload">
+		<div class="loader"></div>
+	</div>
+
+
+
+<!-- HEADER
+		============================================= -->
+		<header id="header">		
+			<div class="navbar navbar-fixed-top">	
+				<div class="container">
+				
+					
+					<!-- Navigation Bar -->
+					<div class="navbar-header">
+					
+						<!-- Responsive Menu Button -->
+						<button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-menu">
+							<span class="sr-only">Toggle navigation</span> 
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						
+					
+						
+					</div>	<!-- End Navigation Bar -->
+					
+					
+					<!-- Navigation Menu -->
+					<nav id="navigation-menu" class="collapse navbar-collapse" role="navigation">
+						
+					</nav>  <!-- End Navigation Menu -->
+					
+					
+				</div>	 <!-- End container -->
+			</div>	  <!-- End navbar fixed top  -->		
+		</header>	<!-- END HEADER -->
+
+
+
+
+
+
+
+
+	<!-- CONTENT WRAPPER
+		============================================= -->
+	<div id="content_wrapper">
+
+
+
+		<!-- INTRO
+			============================================= -->
+		<section id="intro">
+		<div class="overlay">
+			<div class="container">
+				<div id="intro_content" class="row">
+
+
+					<!-- INTRO TEXT -->
+					<div class="col-md-7">
+
+						<div class="intro_text">
+
+							<h2>
+								<img src="/optimo/imagenes/logo_software.png" alt="logo"
+									style="width: 70%; height: auto" />
+							</h2>
+							<h3>
+								<br />
+							</h3>
+							<p>Ingrese sus credenciales de acceso al software.
+								Solicítelos al administrador</p>
+
+						</div>
+
+
+
+					</div>
+					<!-- END TEXT -->
+
+
+					<!-- INTRO REGISTER FORM -->
+					<div id="intro_form" class="col-md-5 form_register text-center">
+
+						<ui:insert name="body" />
+
+					</div>
+					<!-- END INTRO REGISTER FORM -->
+
+
+				</div>
+				<!-- End Intro Content -->
+			</div>
+			<!-- End container -->
+		</div>
+		<!-- End overlay--> </section>
+		<!-- END INTRO -->
+
+
+
+		<!-- ABOUT
+			============================================= -->
+		<section id="about">
+		<div class="container">
+
+			<div align="center">
+
+				<img src="/optimo/plantillas/dependenciasLogueo/img/logo-footer.png"
+					alt="logo" style="" />
+					<br/>
+					#{mensaje.mpiSoftware} #{mensaje.disenadoPor}
+			</div>
+
+
+
+
+		</div>
+		<!-- End container --> </section>
+		<!-- END ABOUT -->
+
+
+
+
+
+
+	</div>
+	<!-- END CONTENT WRAPPER -->
+
+
+
+	<!-- EXTERNAL SCRIPTS
+		============================================= -->
+	<script
+		src="/optimo/plantillas/dependenciasLogueo/js/jquery-2.1.1.min.js"
+		type="text/javascript"></script>
+	<script src="/optimo/plantillas/dependenciasLogueo/js/bootstrap.min.js"
+		type="text/javascript"></script>
+	<script
+		src="/optimo/plantillas/dependenciasLogueo/js/modernizr.custom.js"
+		type="text/javascript"></script>
+	<script src="/optimo/plantillas/dependenciasLogueo/js/jquery.easing.js"
+		type="text/javascript"></script>
+	<script src="/optimo/plantillas/dependenciasLogueo/js/retina.js"
+		type="text/javascript"></script>
+	<script
+		src="/optimo/plantillas/dependenciasLogueo/js/jquery.stellar.min.js"
+		type="text/javascript"></script>
+	<script
+		src="/optimo/plantillas/dependenciasLogueo/js/jquery.flexslider.js"
+		type="text/javascript"></script>
+	<script
+		src="/optimo/plantillas/dependenciasLogueo/js/jquery.parallax-1.1.3.js"
+		type="text/javascript"></script>
+	<script src="/optimo/plantillas/dependenciasLogueo/js/count-to.js"></script>
+	<script src="/optimo/plantillas/dependenciasLogueo/js/jquery.appear.js"></script>
+	<script
+		src="/optimo/plantillas/dependenciasLogueo/js/jquery.mixitup.js"
+		type="text/javascript"></script>
+	<script
+		src="/optimo/plantillas/dependenciasLogueo/js/jquery.prettyPhoto.js"
+		type="text/javascript"></script>
+	<script src="/optimo/plantillas/dependenciasLogueo/js/owl.carousel.js"
+		type="text/javascript"></script>
+	<script
+		src="/optimo/plantillas/dependenciasLogueo/js/jquery.easypiechart.min.js"></script>
+	<script
+		src="/optimo/plantillas/dependenciasLogueo/js/jquery.validate.min.js"
+		type="text/javascript"></script>
+	<script src="/optimo/plantillas/dependenciasLogueo/js/waypoints.min.js"
+		type="text/javascript"></script>
+	<script src="/optimo/plantillas/dependenciasLogueo/js/custom.js"
+		type="text/javascript"></script>
+
+
+
+
+
+
+
+
+	<script src="/optimo/plantillas/dependenciasLogueo/js/changer.js"
+		type="text/javascript"></script>
+	<script src="/optimo/plantillas/dependenciasLogueo/js/styleswitch.js"></script>
+
+
+</body>
+
+
+
+
+
+</html>

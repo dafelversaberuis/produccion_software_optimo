@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formResumenAprobado">
+
+		<p:dialog header="#{mensaje.resumenInformeAprobado}"
+			widgetVar="panelResumenAprobado" resizable="true" closable="false"
+			responsive="true">
+			<p:panel id="pnlResumenAprobado">
+
+				<p:panelGrid styleClass="ui-panelgrid-blank" layout="grid"
+					style="width:100%" cellpadding="0" columns="1">
+
+
+
+					<p:commandButton id="btnResumenAprobado1" process="@this"
+						
+						update=":form, :formResumenAprobado:pnlResumenAprobado, :formVerDocumento"
+						style="font-size:16px; font-weight: normal !important; width:100%"
+						action="#{realizarMantenimiento.decidirPostGuardado('IMPRIMIR_APROBADO')}" immediate="true" ajax="false"
+						value="#{mensaje.imprimirAprobado}" />
+
+					<p:commandButton id="btnResumenAprobado2" process="@this"
+						update=":form, :formResumenAprobado:pnlResumenAprobado"
+						style="font-size:16px; font-weight: normal !important; width:100%"
+						action="#{realizarMantenimiento.decidirPostGuardado('CERRAR_APROBADO_CLIENTE')}"
+						value="#{mensaje.cerrarElaborarNuevo}" />
+
+
+				</p:panelGrid>
+
+				<br />
+				<p:blockUI block=":formResumenAprobado:pnlResumenAprobado"
+					trigger="btnResumenAprobado2, btnResumenAprobado1">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

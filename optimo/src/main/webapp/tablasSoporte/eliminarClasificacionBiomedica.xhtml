@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="formEliminar">
+		<p:dialog header="#{mensaje.eliminarClasificacionBiomedica}" closable="false"
+			widgetVar="panelEliminacion" resizable="true" responsive="true">
+			<p:outputPanel id="outputpanelEliminacion">
+
+				<div align="center">
+					<p:panelGrid columns="3" cellpadding="0" cellspacing="0"
+						styleClass="ui-panelgrid-blank">
+						
+						<p:outputLabel for="txtNombre" value="#{mensaje.nombre}"
+							style="font-weight:bold; font-size:14px" />
+						<p:inputText id="txtNombre" disabled="true"
+							value="#{hacerMantenimiento.clasificacionBiomedicaTransaccion.nombre}"
+							label="#{mensaje.nombre}" style="width:100%; font-size:14px" />
+						<p:message for="txtNombre" />
+
+						<p:outputLabel for="lstVigencia"
+							value="#{mensaje.indicativoVigencia}"
+							style="font-weight:bold; font-size:14px" />
+
+						<p:selectOneMenu label="#{mensaje.indicativoVigencia}"
+							style="width:100%; font-size:14px" id="lstVigencia"
+							disabled="true"
+							value="#{hacerMantenimiento.clasificacionBiomedicaTransaccion.indicativoVigencia}">
+							<f:selectItems value="#{consultarFuncionesAPI.itemsEstados}" />
+						</p:selectOneMenu>
+						<p:message for="lstVigencia" />
+
+
+
+					</p:panelGrid>
+
+				</div>
+				<div align="center">
+					<p:commandButton value="#{mensaje.eliminar}" style="font-size:14px"
+						action="#{hacerMantenimiento.eliminarRegistro('CLASIFICACION_BIOMEDICA')}"  
+						update=":form, :formEliminar" />
+
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEliminar"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{hacerMantenimiento.cancelarTransaccion('MODAL_ELIMINAR','CLASIFICACION_BIOMEDICA')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+
+					</p:commandButton>
+
+				</div>
+			</p:outputPanel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principal.xhtml">
+
+	<ui:define name="body">
+		<style type="text/css">
+.columna1 {
+	width: 30px
+}
+
+.columna2 {
+	
+}
+
+.columnaH1 {
+width: 90%
+	
+}
+
+.columnaH2 {
+width: 10%
+	
+}
+</style>
+
+		<h:form id="form">
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+
+			<p:remoteCommand name="onload" process="@this"
+				action="#{administrarSesionCliente.getNoRolAdmitido('ROLES')}"
+				autoRun="true" />
+
+
+			<div class="row x_title">
+				<div class="col-md-6">
+
+					<h2 class="project-title">#{mensaje.moduloPersonal}:
+						#{mensaje.administrarTecnicos}</h2>
+
+
+
+
+				</div>
+			</div>
+
+			<div align="center" class="titulo"></div>
+
+			<p:outputPanel id="pnlTecnico">
+
+				<p:spacer height="10" />
+
+				<p:accordionPanel id="pnlCrear" activeIndex="1">
+					<p:tab title="#{mensaje.crearTecnico}" titleStyle="font-size:16px"
+						closable="true">
+						<div align="left">
+							<p:panelGrid columns="6" cellpadding="0" cellspacing="0"
+								style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+
+								<p:outputLabel for="txtNombres"
+									value="#{mensaje.nombreCompleto}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNombres"
+									value="#{administrarRol.tecnico.nombres}" required="true"
+									label="#{mensaje.nombreCompleto}"
+									style="width:100%; font-size:14px; " />
+
+
+
+
+								<p:outputLabel for="txtDocumento"
+									value="#{mensaje.documentoTarjeta}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtDocumento"
+									value="#{administrarRol.tecnico.documento}" required="true"
+									label="#{mensaje.documentoTarjeta}"
+									style="width:100%; font-size:14px; " />
+
+
+
+
+								<p:outputLabel for="txtCargo" value="#{mensaje.cargoTecnico}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtCargo"
+									value="#{administrarRol.tecnico.cargo}" required="true"
+									label="#{mensaje.cargoTecnico}"
+									style="width:100%; font-size:14px; " />
+
+								<p:spacer width="1" />
+								<p:message for="txtNombres" />
+								<p:spacer width="1" />
+								<p:message for="txtDocumento" />
+								<p:spacer width="1" />
+								<p:message for="txtCargo" />
+
+								<p:outputLabel for="txtTelefono" value="#{mensaje.telefonos}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtTelefono"
+									value="#{administrarRol.tecnico.telefono}" required="true"
+									label="#{mensaje.telefonos}"
+									style="width:100%; font-size:14px; " />
+
+
+
+								<p:outputLabel for="txtCorreo" value="#{mensaje.correo}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtCorreo"
+									value="#{administrarRol.tecnico.correoElectronico}"
+									required="true" label="#{mensaje.correo}"
+									style="width:100%; font-size:14px; " />
+
+
+
+
+
+								<p:spacer width="1" />
+								<p:message for="txtTelefono" />
+								<p:spacer width="1" />
+								<p:message for="txtCorreo" />
+
+
+
+
+
+
+
+
+
+							</p:panelGrid>
+							<div align="center">
+								<p:panelGrid columns="8" styleClass="ui-panelgrid-blank" layout="grid">
+									<p:outputLabel for="sigFirma" value="#{mensaje.firma}"
+										style="font-weight:bold; font-size:14px" />
+									<p:signature id="sigFirma" style="width:400px; height:200px"
+										widgetVar="firma" value="#{administrarRol.tecnico.firma}"
+										label="#{mensaje.firma}" guideline="true" />
+									<p:message for="sigFirma" />
+									<p:commandButton
+										style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										value="" onclick="PF('firma').clear()" process="@this"
+										id="btnFirma" update="sigFirma"
+										action="#{administrarRol.limpiarFirmaCreacionTecnico()}" />
+
+
+									<p:commandButton
+										style="background-origin: content-box; background-image: url('../imagenes/ayuda.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+										value="" id="ayudaFirma" />
+
+									<p:tooltip value="#{mensaje.limpiar}" trackMouse="true"
+										for="btnFirma" />
+									<p:tooltip value="#{mensaje.ayudaFirma}" trackMouse="true"
+										for="ayudaFirma" />
+								</p:panelGrid>
+							</div>
+
+						</div>
+
+
+						<p:spacer height="10" />
+						<div align="center">
+							<p:commandButton id="btnCrear" style="font-size:14px;"
+								action="#{administrarRol.crearTecnico()}"
+								value="#{mensaje.guardar}" update=":form" />
+
+							<p:spacer width="10" />
+							<p:commandButton id="btnBorrar"
+								style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+								action="#{administrarRol.cancelarTecnico()}" process="@this"
+								value="#{mensaje.cancelar}" update=":form">
+
+								<p:resetInput target=":form:pnlTecnico" />
+
+							</p:commandButton>
+
+						</div>
+						<p:outputLabel value="#{mensaje.informacionRequerida}"
+							style="font-size:10px" />
+
+						<p:blockUI block=":form:pnlCrear" trigger="btnCrear, btnBorrar">
+
+							<p:graphicImage value="../imagenes/cargando.gif" />
+
+
+						</p:blockUI>
+					</p:tab>
+				</p:accordionPanel>
+
+				<p:spacer height="30" />
+				<p:accordionPanel id="pnlDtlTecnicos">
+					<p:tab title="#{mensaje.listadoTecnicos}"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:dataTable var="loc" id="dtlTecnicos" widgetVar="dtlRegistros" 
+							value="#{administrarRol.tecnicos}" rows="10" reflow="true"
+							paginator="true" paginatorPosition="bottom"  
+							draggableColumns="true" 
+							emptyMessage="#{mensaje.noExistenciaTecnicos}">
+
+							<f:facet name="header">
+								
+								<p:outputPanel style="text-align:right">
+									<p:inputText id="globalFilter" immediate="true"
+										onkeyup="PF('dtlRegistros').filter()" style="width:150px"
+										placeholder="#{mensaje.palabrasClave}" />
+								</p:outputPanel>
+								
+							</f:facet>
+
+
+
+							<p:column headerText="#{mensaje.tecnico}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.nombres}" filterBy="#{loc.nombres}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.nombres}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.documentoTarjeta}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.documento}" filterBy="#{loc.documento}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.documento}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.cargoTecnico}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.cargo}" filterBy="#{loc.cargo}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.cargo}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+
+							<p:column headerText="#{mensaje.correo}"
+								filterStyle="display:none" filterMatchMode="contains"
+								filterBy="#{loc.correoElectronico}"
+								sortBy="#{loc.correoElectronico}" style="font-size:14px">
+								<p:outputLabel value="#{loc.correoElectronico}"
+									style="font-weight:normal; font-size:12px" />
+
+							</p:column>
+
+							<p:column headerText="#{mensaje.telefonos}"
+								filterStyle="display:none" filterMatchMode="contains"
+								filterBy="#{loc.telefono}" sortBy="#{loc.telefono}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.telefono}"
+									style="font-weight:normal; font-size:12px" />
+
+							</p:column>
+
+
+
+
+							<p:column headerText="#{mensaje.indicativo}" filterMatchMode="contains"
+								sortBy="#{loc.estadoVigencia}" style="font-size:14px">
+								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estadoVigencia == 'A'}" />
+								<p:outputLabel value="#{mensaje.ESTADO_INACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estadoVigencia == 'I'}" />
+							</p:column>
+
+
+
+
+							<p:column headerText="#{mensaje.acciones}"
+								style="font-size:14px; text-align:center;">
+
+
+								<p:commandButton id="btnIrEditar"
+									style="background-origin: content-box; background-image: url('../imagenes/editar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarRol.asignarTecnico(loc,'MODAL_EDITAR_TECNICO')}"
+									value="" process=":form:pnlDtlTecnicos" update=":formEditar" />
+
+
+								<p:tooltip for="btnIrEditar" value="#{mensaje.editar}"
+									trackMouse="true" />
+
+
+								<p:commandButton id="btnIrEliminar"
+									style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									value=""
+									action="#{administrarRol.asignarTecnico(loc,'MODAL_ELIMINAR_TECNICO')}"
+									process=":form:pnlDtlTecnicos" update=":formEliminar" />
+
+
+								<p:tooltip for="btnIrEliminar" value="#{mensaje.eliminar}"
+									trackMouse="true" />
+
+
+
+
+
+								<p:commandButton id="btnIrClave"
+									style="background-origin: content-box; background-image: url('../imagenes/c_mayuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									value=""
+									action="#{administrarRol.asignarTecnico(loc,'MODAL_CLAVE_TECNICO')}"
+									process=":form:pnlDtlTecnicos" update=":formClave" />
+
+								<p:tooltip for="btnIrClave"
+									value="#{mensaje.generarClaveTecnico}" trackMouse="true" />
+
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:tab>
+				</p:accordionPanel>
+
+			</p:outputPanel>
+		</h:form>
+
+		<ui:include src="/roles/editarTecnico.xhtml" />
+		<ui:include src="/roles/eliminarTecnico.xhtml" />
+		<ui:include src="/roles/cambiarClaveTecnico.xhtml" />
+
+
+		<p:spacer height="800" />
+
+	</ui:define>
+</ui:composition>

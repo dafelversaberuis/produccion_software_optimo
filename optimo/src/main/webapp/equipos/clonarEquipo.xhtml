@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formClonar">
+
+		<p:dialog header="#{mensaje.clonarEquipo}" width="750" height="400"
+			widgetVar="panelClonarEquipo" resizable="true" closable="false"
+			responsive="true">
+
+			<div class="ui-message-warn ui-corner-all" align="center">
+				<span class="ui-message-warn-icon"
+					style="font-size: 14px; width: 100%; font-weight: bold;" /> <span
+					class="ui-message-error-detail"
+					style="font-size: 14px; width: 100%; font-weight: bold;">#{mensaje.informacionClonacion}
+				</span>
+			</div>
+			<br />
+
+			<p:outputPanel id="pnlClonarEquipo">
+
+				<p:panel id="panel">
+					<p:focus context="panel" />
+					<f:facet name="header">
+				#{mensaje.iformacionGeneralEquipoClonar}
+				</f:facet>
+
+
+					<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+						style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+						<p:outputLabel value="#{mensaje.idCodigoQr}"
+							style="font-weight:bold; font-size:14px" />
+						
+
+						<p:inputText
+							value="#{administrarHojaVida.equipoTransaccion.codigoQr}"
+							required="true" readonly="true"
+							style="width:100%; font-size:14px; background-color:#D3D3D3"/>
+
+
+							<p:outputLabel value="#{mensaje.clienteNormal}"
+								style="font-weight:bold; font-size:14px; " />
+
+							<p:outputLabel
+								value="#{administrarHojaVida.equipoTransaccion.cliente.tClienteAutocompletado}"
+								style="font-size:14px" />
+
+
+
+
+
+
+							<p:outputLabel value="#{mensaje.claseEquipo}"
+								style="font-weight:bold; font-size:14px" />
+
+							<p:outputLabel value="#{mensaje.biomedico}"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+								style="font-size:14px" />
+
+							<p:outputLabel value="#{mensaje.otro}"
+								rendered="#{administrarHojaVida.equipoTransaccion.equipoBiomedico=='N'}"
+								style="font-size:14px" />
+
+
+
+
+
+
+							<p:outputLabel value="#{mensaje.nombreEquipo}"
+								style="font-weight:bold; font-size:14px" />
+
+
+							<p:outputLabel
+								value="#{administrarHojaVida.equipoTransaccion.nombreEquipo}"
+								style="font-size:14px" />
+					</p:panelGrid>
+
+				</p:panel>
+
+				<br />
+
+
+				<p:dataTable var="loc" id="dtlActividades"
+					rendered="#{administrarHojaVida.actividades!=null and administrarHojaVida.actividades.size()>0}"
+					value="#{administrarHojaVida.actividades}" reflow="true" rows="5"
+					paginator="true" paginatorPosition="bottom" draggableColumns="true"
+					emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+					<f:facet name="header">
+				#{mensaje.actividadesEquiposSeleccionar}
+				</f:facet>
+
+					<p:column headerText=""
+						style="font-size:12px; text-align:center; width:50px">
+
+						<p:selectBooleanCheckbox value="#{loc.tSeleccionado}">
+							<p:ajax process="@this" />
+						</p:selectBooleanCheckbox>
+
+
+					</p:column>
+
+					<p:column headerText="#{mensaje.actividad}"
+						filterMatchMode="contains" filterStyle="display:none"
+						sortBy="#{loc.actividad}" filterBy="#{loc.actividad}"
+						style="font-size:12px">
+						<p:outputLabel value="#{loc.actividad}"
+							style="font-weight:normal; font-size:12px" />
+
+
+
+					</p:column>
+
+					<p:column headerText="#{mensaje.indicativoVigencia}"
+						sortBy="#{loc.indicativoVigencia}" style="font-size:12px;">
+
+						<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
+							style="font-weight:normal"
+							rendered="#{loc.indicativoVigencia=='A'}" />
+						<p:outputLabel value="#{mensaje.ESTADO_INACTIVO}"
+							style="font-weight:normal"
+							rendered="#{loc.indicativoVigencia=='I'}" />
+
+
+					</p:column>
+
+
+
+
+
+
+
+
+				</p:dataTable>
+
+
+				<br />
+
+
+				<p:dataTable var="loc" id="dtlEquiposNuevos"
+					value="#{administrarHojaVida.equipoTransaccion.tEquiposNuevos}"
+					rowIndexVar="indice" reflow="true" rows="5" paginator="true"
+					paginatorPosition="bottom" draggableColumns="true"
+					emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+					<f:facet name="header">
+
+
+
+						<p:outputPanel>
+							<p:panelGrid style="width:100%" columns="2"
+								columnClasses="columnaA,columnaB"
+								styleClass="ui-panelgrid-blank">
+								<p:outputLabel value="#{mensaje.datosDistintosEquiposNuevos}"
+									style="font-weight:bold; color:white" />
+
+								<p:commandButton id="btnIrCreareq"
+									title="#{mensaje.agregaUnEquipo}"
+									style="background-origin: content-box; background-image: url('../imagenes/agregar_detalle.png'); background-size: cover; background-repeat:no-repeat; width:18px; height:18px; vertical-align:bottom; border:0; background-color:transparent"
+									value=""
+									action="#{administrarHojaVida.agregarOtroEquipoClonacion()}"
+									process="@this"
+									update=":formClonar:dtlEquiposNuevos, :form:messages" />
+
+
+
+							</p:panelGrid>
+						</p:outputPanel>
+					</f:facet>
+
+
+					<p:column headerText=""
+						style="font-size:12px; text-align:center; width:50px">
+
+						<p:outputLabel value="#{(indice+1)}"
+							style="font-weight:normal; font-size:12px" />
+
+
+					</p:column>
+
+					<p:column headerText="#{mensaje.numeroSerie} *"
+						filterMatchMode="contains" filterStyle="display:none"
+						sortBy="#{loc.numeroSerie}" filterBy="#{loc.numeroSerie}"
+						style="font-size:12px">
+
+						<p:inputText id="txtNumeroSerie" value="#{loc.numeroSerie}"
+							required="true" label="#{mensaje.numeroSerie}"
+							style="width:100%; font-size:14px; ">
+
+							<p:ajax event="change" process="@this" />
+						</p:inputText>
+
+						<p:message for="txtNumeroSerie" />
+
+
+
+
+					</p:column>
+
+					<p:column headerText="#{mensaje.modelo} *"
+						filterMatchMode="contains" filterStyle="display:none"
+						sortBy="#{loc.modelo}" filterBy="#{loc.modelo}"
+						style="font-size:12px">
+
+
+						<p:inputText id="txtModelo" value="#{loc.modelo}" required="true"
+							label="#{mensaje.modelo}" style="width:100%; font-size:14px; ">
+
+							<p:ajax event="change" process="@this" />
+						</p:inputText>
+
+						<p:message for="txtModelo" />
+					</p:column>
+
+					<p:column headerText="#{mensaje.numeroInventario} *"
+						filterMatchMode="contains" filterStyle="display:none"
+						sortBy="#{loc.numeroInventario}"
+						filterBy="#{loc.numeroInventario}" style="font-size:12px">
+
+
+
+
+						<p:inputText id="txtNumeroInventario"
+							value="#{loc.numeroInventario}" required="true"
+							label="#{mensaje.numeroInventario}"
+							style="width:100%; font-size:14px; ">
+							<p:ajax event="change" process="@this" />
+						</p:inputText>
+
+
+						<p:message for="txtNumeroInventario" />
+
+
+
+					</p:column>
+					
+					
+					
+					<p:column headerText="#{mensaje.servicio} *" rendered="#{administrarHojaVida.equipoTransaccion!=null and administrarHojaVida.equipoTransaccion.equipoBiomedico=='S'}"
+						filterMatchMode="contains" filterStyle="display:none"
+						sortBy="#{loc.servicio}"
+						filterBy="#{loc.servicio}" style="font-size:12px">
+
+
+
+
+						<p:inputText id="txtServicio"
+							value="#{loc.servicio}" required="true"
+							label="#{mensaje.servicio}"
+							style="width:100%; font-size:14px; ">
+						
+						</p:inputText>
+
+
+						<p:message for="txtServicio" />
+
+
+
+					</p:column>
+					
+					
+					
+					
+
+
+					<p:column headerText="#{mensaje.acciones}"
+						rendered="#{administrarHojaVida.equipoTransaccion.tEquiposNuevos!=null and administrarHojaVida.equipoTransaccion.tEquiposNuevos.size()>1}"
+						style="font-size:12px; text-align:center;">
+
+						<p:commandButton id="btnIrEliminar2"
+							style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+							action="#{administrarHojaVida.quitarEquipoClonacion(loc)}"
+							value="" process="@this"
+							update=":formClonar:dtlEquiposNuevos, :form:messages" />
+
+
+						<p:tooltip for="btnIrEliminar2" value="#{mensaje.remover}"
+							trackMouse="true" />
+
+
+					</p:column>
+
+				</p:dataTable>
+
+
+
+				<br />
+
+				<div align="center">
+					<p:commandButton id="btnClonarEquipo" style="font-size:14px"
+						action="#{administrarHojaVida.crearEquiposClonados()}"
+						value="#{mensaje.clonar}" process=":formClonar"
+						update=":formClonar:pnlClonarEquipo, :form:messages" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarClonarEquipo"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarHojaVida.cancelarEquipoTransaccion('MODAL_CLONAR')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+						<p:resetInput target=":formClonar:pnlClonarEquipo, :form" />
+					</p:commandButton>
+
+				</div>
+
+				<p:outputLabel value="#{mensaje.informacionRequerida}"
+					style="font-size:10px" />
+				<p:blockUI block=":formClonar:pnlClonarEquipo"
+					trigger="btnClonarEquipo, btnCancelarClonarEquipo">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+
+			</p:outputPanel>
+
+		</p:dialog>
+	</h:form>
+
+
+</ui:composition>

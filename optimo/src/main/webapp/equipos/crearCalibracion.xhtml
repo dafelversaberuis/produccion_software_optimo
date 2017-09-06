@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formCalibracion">
+
+		<p:dialog header="#{mensaje.calibracionesEquipo}" width="750"
+			height="400" widgetVar="panelVerCalibracion" resizable="true"
+			closable="false" responsive="true">
+
+			<p:outputPanel id="pnlCalibracion">
+
+
+
+				<p:accordionPanel id="pnlCrear" activeIndex="1">
+					<p:tab title="#{mensaje.crearCalibracion}"
+						titleStyle="font-size:16px" closable="true">
+						<div align="left">
+							<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+								style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+
+								<p:outputLabel for="calFechaCalibracion"
+									value="#{mensaje.fechaCalibracion}"
+									style="font-weight:bold; font-size:14px" />
+
+								<p:calendar id="calFechaCalibracion"
+									label="#{mensaje.fechaCalibracion}" required="true"
+									value="#{administrarHojaVida.calibracion.fechaCalibracion}"
+									pattern="dd/MM/yyyy" mask="true" style="font-size:14px;  " />
+
+
+								<p:spacer width="1" />
+								<p:message for="calFechaCalibracion" />
+
+
+
+
+								<p:outputLabel for="fileCrear" value="#{mensaje.archivo}"
+									style="font-weight:bold; font-size:14px" />
+
+
+							</p:panelGrid>
+
+
+							<p:outputPanel id="pnlCargado">
+								<p:panelGrid columns="5" style="width:100%;"
+									styleClass="ui-panelgrid-blank">
+									<p:fileUpload id="fileCrear" cancelLabel="true"
+										dragDropSupport="true" style="width:100%;"
+										rendered="#{administrarHojaVida.calibracion.tFile==null}"
+										fileUploadListener="#{administrarHojaVida.recibirArchivoCalibracion}"
+										multiple="false" fileLimit="1"
+										fileLimitMessage="Sólo 1 archivo"
+										label="#{mensaje.busqueArchivo}" required="true"
+										mode="advanced" update=":form:messages, pnlCargado"
+										auto="true" sizeLimit="1000000"
+										requiredMessage="Información requerida"
+										invalidSizeMessage="Excede el tamaño  permitido de 1024KB!"
+										invalidFileMessage="Extensión de archivo incorrecta, solo archivos multimedia, comprimidos, archivos office"
+										allowTypes="/(\.|\/)(jpg|jp?g|gif|png|pdf|doc|docx|xls|xlsx|ppt|pps|pptx|ppsx|zip|rar|7z|mp4|mov|avi|3gp)$/" />
+
+
+									<p:outputLabel
+										value="#{administrarHojaVida.calibracion.tFile.fileName}"
+										rendered="#{administrarHojaVida.calibracion.archivo != null}" />
+
+									<p:commandLink value="#{mensaje.limpiar}"
+										style="font-weight:bold; font-size:14px"
+										action="#{administrarHojaVida.limpiarArchivoCalibracion()}"
+										process="@this" update="pnlCargado"
+										rendered="#{administrarHojaVida.calibracion.archivo != null}" />
+
+									<p:graphicImage value="../imagenes/ayuda.png"
+										id="ayudaCargarArchivo" />
+									<p:tooltip value="#{mensaje.ayudaCargarArchivo}"
+										trackMouse="true" for="ayudaCargarArchivo" />
+								</p:panelGrid>
+
+
+							</p:outputPanel>
+
+						</div>
+
+
+						<p:spacer height="10" />
+						<div align="center">
+							<p:commandButton id="btnCrear" style="font-size:14px;"
+								action="#{administrarHojaVida.crearCalibracion()}"
+								value="#{mensaje.guardar}"
+								update=":formCalibracion:pnlCalibracion, :form:messages" />
+
+							<p:spacer width="10" />
+							<p:commandButton id="btnBorrar"
+								style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+								action="#{administrarHojaVida.cancelarCalibracion()}"
+								process="@this" value="#{mensaje.regresar}"
+								update=":formCalibracion:pnlCalibracion">
+
+								<p:resetInput
+									target=":formCalibracion:pnlCalibracion, :form:messages" />
+
+							</p:commandButton>
+
+						</div>
+						<p:outputLabel value="#{mensaje.informacionRequerida}"
+							style="font-size:10px" />
+
+						<p:blockUI block=":formCalibracion:pnlCalibracion"
+							trigger="btnCrear, btnBorrar">
+
+							<p:graphicImage value="../imagenes/cargando.gif" />
+
+
+						</p:blockUI>
+					</p:tab>
+				</p:accordionPanel>
+
+				<p:spacer height="30" />
+				<p:accordionPanel id="pnlDtlCalibraciones">
+					<p:tab title="#{mensaje.listadoCalibraciones}"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:dataTable var="loc" id="dtlCalibraciones"
+							value="#{administrarHojaVida.calibraciones}" reflow="true"
+							rows="10" paginator="true" paginatorPosition="bottom"
+							draggableColumns="true"
+							emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+
+							<p:column headerText="#{mensaje.fechaCalibracion}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.fechaCalibracion}"
+								filterBy="#{loc.fechaCalibracion}" style="font-size:12px">
+								<p:outputLabel
+									value="#{consultarFuncionesAPI.getFechaColombia(loc.fechaCalibracion)}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+
+
+
+
+
+
+							<p:column headerText="#{mensaje.acciones}"
+								style="font-size:14px; text-align:center;">
+
+
+								<p:commandButton id="btnIrDescargar"
+									style="background-origin: content-box; background-image: url('../imagenes/flecha_abajo.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.descargarCalibracion(loc)}"
+									ajax="false" immediate="true" value="" />
+
+
+								<p:tooltip for="btnIrDescargar"
+									value="#{mensaje.descargarArchivo}" trackMouse="true" />
+
+
+
+								<p:commandButton id="btnIrEliminar"
+									style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarCalibracion(loc,'MODAL_ELIMINAR_CALIBRACION')}"
+									value="" process=":formCalibracion:pnlDtlCalibraciones"
+									update=":formEliminarCalibracion" />
+
+
+								<p:tooltip for="btnIrEliminar" value="#{mensaje.eliminar}"
+									trackMouse="true" />
+
+								<p:commandButton id="btnIrFirma"
+									style="background-origin: content-box; background-image: url('../imagenes/buscar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarCalibracion(loc,'MODAL_FIRMA')}"
+									value="" process=":formCalibracion:pnlDtlCalibraciones"
+									update=":formFirmaCalibracion" />
+
+
+								<p:tooltip for="btnIrFirma"
+									value="#{mensaje.firmaAutorizoCalibracion}" trackMouse="true" />
+
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:tab>
+				</p:accordionPanel>
+
+
+				<div align="center">
+					
+					<p:commandButton id="btnBorrar2"
+						style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+						action="#{administrarHojaVida.cancelarCalibracion()}"
+						process="@this" value="#{mensaje.regresar}"
+						update=":formCalibracion:pnlCalibracion">
+
+						<p:resetInput
+							target=":formCalibracion:pnlCalibracion, :form:messages" />
+
+					</p:commandButton>
+
+				</div>
+
+			</p:outputPanel>
+
+		</p:dialog>
+	</h:form>
+
+
+</ui:composition>

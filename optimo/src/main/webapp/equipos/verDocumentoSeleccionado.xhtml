@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formVerDocumento">
+
+
+		<p:dialog header="Ver documento" width="999" height="499"
+			widgetVar="panelVistaPreviaDocumento" resizable="true"
+			closable="false" responsive="true">
+			<p:panel id="pnlVistaPreviaDocumento">
+
+				<h:panelGrid style="width:100%">
+
+					
+
+
+				</h:panelGrid>
+
+				<br />
+				<div align="center">
+
+					<p:commandButton id="btnCerrarDocumento"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{consultarFuncionesAPI.cerrarModal('panelVistaPreviaDocumento')}"
+						process="@this" value="#{mensaje.cerrar}" update="@this" />
+
+				</div>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+
+</ui:composition>

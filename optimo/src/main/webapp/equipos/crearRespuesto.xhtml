@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formRepuesto">
+
+		<p:dialog header="#{mensaje.repuestosPartes}" width="750" height="400"
+			widgetVar="panelVerRepuesto" resizable="true" closable="false"
+			responsive="true">
+
+			<p:outputPanel id="pnlRepuesto">
+
+
+
+				<p:accordionPanel id="pnlCrear" activeIndex="1"
+					rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}">
+					<p:tab title="#{mensaje.crearRepuesto}" titleStyle="font-size:16px"
+						closable="true">
+						<div align="left">
+							<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+								style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+
+								<p:outputLabel for="txtNombre" value="#{mensaje.nombreRepuesto}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNombre"
+									value="#{administrarHojaVida.repuestoEquipo.nombre}"
+									required="true" label="#{mensaje.nombreRepuesto}"
+									style="width:100%; font-size:14px; " />
+
+
+								<p:spacer width="1" />
+								<p:message for="txtNombre" />
+
+								<p:outputLabel for="txtDescripcion"
+									value="#{mensaje.descripcion}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputTextarea id="txtDescripcion" rows="2"
+									value="#{administrarHojaVida.repuestoEquipo.descripcion}"
+									required="true" label="#{mensaje.descripcion}"
+									style="width:100%; font-size:14px; " />
+								<p:spacer width="1" />
+								<p:message for="txtDescripcion" />
+
+
+								<p:outputLabel for="txtUbicacion"
+									value="#{mensaje.ubicacionRepuesto}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtUbicacion"
+									value="#{administrarHojaVida.repuestoEquipo.ubicacion}"
+									required="true" label="#{mensaje.marca}"
+									style="width:100%; font-size:14px; " />
+
+
+								<p:spacer width="1" />
+								<p:message for="txtMarca" />
+
+								<p:outputLabel for="txtMarca" value="#{mensaje.marca}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtMarca"
+									value="#{administrarHojaVida.repuestoEquipo.marca}"
+									required="true" label="#{mensaje.marca}"
+									style="width:100%; font-size:14px; " />
+
+
+								<p:spacer width="1" />
+								<p:message for="txtMarca" />
+
+
+								<p:outputLabel for="txtModelo" value="#{mensaje.modelo}"
+									style="font-weight:bold; font-size:14px" />
+
+								<p:inputText id="txtModelo"
+									value="#{administrarHojaVida.repuestoEquipo.modelo}"
+									required="true" label="#{mensaje.modelo}"
+									style="width:100%; font-size:14px; " />
+
+
+								<p:spacer width="1" />
+								<p:message for="txtModelo" />
+
+
+								<p:outputLabel for="txtPeriodicidad"
+									value="#{mensaje.periodicidadCambio}"
+									style="font-weight:bold; font-size:14px" />
+								<p:panelGrid columns="3" style="width:100%" layout="grid"
+									styleClass="ui-panelgrid-blank">
+
+									<p:outputLabel value="#{mensaje.cada}" style="ffont-size:14px" />
+
+									<p:inputText id="txtPeriodicidad"
+										value="#{administrarHojaVida.repuestoEquipo.valorPeriodicidad}"
+										required="true" label="#{mensaje.periodicidadCambio}"
+										style="width:100%; font-size:14px; " />
+
+									<p:selectOneMenu label="#{mensaje.periodicidadCambio}"
+										style="width:100%; font-size:14px;" id="lstClaseEquipo"
+										required="true"
+										value="#{administrarHojaVida.repuestoEquipo.periodicidad}">
+										
+										<f:selectItem itemValue="A" itemLabel="#{mensaje.anos}" />
+
+
+									</p:selectOneMenu>
+
+								</p:panelGrid>
+
+								<p:spacer width="1" />
+								<p:message for="txtPeriodicidad" />
+
+							</p:panelGrid>
+						</div>
+
+
+						<p:spacer height="10" />
+						<div align="center">
+							<p:commandButton id="btnCrear" style="font-size:14px;"
+								action="#{administrarHojaVida.crearRepuesto()}"
+								value="#{mensaje.guardar}"
+								update=":formRepuesto:pnlRepuesto, :form:messages" />
+
+							<p:spacer width="10" />
+							<p:commandButton id="btnBorrar"
+								style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+								action="#{administrarHojaVida.cancelarRepuesto()}"
+								process="@this" value="#{mensaje.regresar}"
+								update=":formRepuesto:pnlRepuesto">
+
+								<p:resetInput target=":formRepuesto:pnlRepuesto, :form:messages" />
+
+							</p:commandButton>
+
+						</div>
+						<p:outputLabel value="#{mensaje.informacionRequerida}"
+							style="font-size:10px" />
+
+						<p:blockUI block=":formRepuesto:pnlRepuesto"
+							trigger="btnCrear, btnBorrar">
+
+							<p:graphicImage value="../imagenes/cargando.gif" />
+
+
+						</p:blockUI>
+					</p:tab>
+				</p:accordionPanel>
+
+				<p:spacer height="30" />
+				<p:accordionPanel id="pnlDtlRepuestos">
+					<p:tab title="#{mensaje.listadoRepuestos}"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:dataTable var="loc" id="dtlTecnicos"
+							value="#{administrarHojaVida.repuestosEquipos}" reflow="true"
+							rows="10" paginator="true" paginatorPosition="bottom"
+							draggableColumns="true"
+							emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+
+							<p:column headerText="#{mensaje.nombreRepuesto}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.nombre}" filterBy="#{loc.nombre}"
+								style="font-size:12px">
+								<p:outputLabel value="#{loc.nombre}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.ubicacionRepuesto}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.ubicacion}" filterBy="#{loc.ubicacion}"
+								style="font-size:12px">
+								<p:outputLabel value="#{loc.ubicacion}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+
+							<p:column headerText="#{mensaje.marca}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.marca}" filterBy="#{loc.marca}"
+								style="font-size:12px">
+								<p:outputLabel value="#{loc.marca}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.modelo}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.modelo}" filterBy="#{loc.modelo}"
+								style="font-size:12px">
+								<p:outputLabel value="#{loc.modelo}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+
+							<p:column headerText="#{mensaje.periodicidadCambio}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.periodicidad} #{loc.valorPeriodicidad}"
+								filterBy="#{loc.valorPeriodicidad}" style="font-size:12px">
+								<p:outputLabel
+									value="#{mensaje.cada} #{loc.valorPeriodicidad} #{administrarHojaVida.getPeriocidad(loc.periodicidad)}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.descripcion}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.descripcion}" filterBy="#{loc.descripcion}"
+								style="font-size:12px">
+								<p:outputLabel value="#{loc.descripcion}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+
+
+							<p:column headerText="#{mensaje.acciones}" rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+								style="font-size:14px; text-align:center;">
+
+								<p:commandButton id="btnIrEditar"
+									style="background-origin: content-box; background-image: url('../imagenes/editar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarRepuesto(loc,'MODAL_EDITAR_REPUESTO')}"
+									value="" process=":formRepuesto:pnlDtlRepuestos"
+									update=":formEditarRepuesto" />
+
+
+								<p:tooltip for="btnIrEditar" value="#{mensaje.editar}"
+									trackMouse="true" />
+
+
+								<p:commandButton id="btnIrEliminar"
+									style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarHojaVida.asignarRepuesto(loc,'MODAL_ELIMINAR_REPUESTO')}"
+									value="" process=":formRepuesto:pnlDtlRepuestos"
+									update=":formEliminarRepuesto" />
+
+
+								<p:tooltip for="btnIrEliminar" value="#{mensaje.eliminar}"
+									trackMouse="true" />
+
+							</p:column>
+
+						
+
+
+						</p:dataTable>
+						
+							<p:spacer height="10" />
+							<div align="center">
+								   
+								<p:commandButton id="btnBorrar2" 
+									style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+									action="#{administrarHojaVida.cancelarRepuesto()}"
+									process="@this" value="#{mensaje.regresar}"
+									update=":formRepuesto:pnlRepuesto">
+
+									
+
+								</p:commandButton>
+
+							</div>
+
+					</p:tab>
+				</p:accordionPanel>
+
+			</p:outputPanel>
+
+		</p:dialog>
+	</h:form>
+
+
+</ui:composition>

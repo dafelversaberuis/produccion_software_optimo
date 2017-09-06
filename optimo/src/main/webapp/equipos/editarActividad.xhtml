@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formEditarActividad">
+
+		<p:dialog header="#{mensaje.editarActividad}" width="450"
+			widgetVar="panelEdicionActividad" resizable="true" closable="false"
+			responsive="true">
+			<p:panel id="pnlEditarActividad">
+
+				<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+					styleClass="ui-panelgrid-blank" layout="grid">
+
+					<p:outputLabel for="txtActividad" value="#{mensaje.actividad}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:inputTextarea id="txtActividad" rows="3" cols="5"
+						value="#{administrarHojaVida.actividadTransaccion.actividad}"
+						required="true" label="#{mensaje.actividad}"
+						style="width:100%; font-size:14px;" />
+
+    
+
+					<p:spacer width="1" />
+					<p:message for="txtActividad" />
+
+
+					<p:outputLabel for="lstVigencia"
+						value="#{mensaje.indicativoVigencia}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:selectOneMenu label="#{mensaje.indicativoVigencia}"
+						style="width:100%; font-size:14px" id="lstVigencia"
+						value="#{administrarHojaVida.actividadTransaccion.indicativoVigencia}"
+						required="true">
+						<f:selectItems value="#{consultarFuncionesAPI.itemsEstados}" />
+					</p:selectOneMenu>
+					<p:spacer width="1" />
+					<p:message for="lstVigencia" />
+
+
+
+
+
+				</p:panelGrid>
+				<br />
+				<div align="center">
+					<p:commandButton id="btnEditarActividad" style="font-size:14px"
+						action="#{administrarHojaVida.editarActividad()}"
+						value="#{mensaje.editar}"
+						process=":formEditarActividad:pnlEditarActividad"
+						update=":formEditarActividad:pnlEditarActividad, :formActividad:pnlActividad, :form:messages" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEdicionActividad"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarHojaVida.cancelarActividadTransaccion('MODAL_EDITAR_ACTIVIDAD')}"
+						process="@this" value="#{mensaje.cancelar}"
+						update=":formActividad:pnlActividad">
+						<p:resetInput
+							target=":formEditarActividad, :formActividad:pnlActividad, :form:messages" />
+					</p:commandButton>
+
+				</div>
+
+				<p:outputLabel value="#{mensaje.informacionRequerida}"
+					style="font-size:10px" />
+				<p:blockUI block=":formEditarActividad:pnlEditarActividad"
+					trigger="btnEditarActividad, btnCancelarEdicionActividad">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

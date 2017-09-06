@@ -1,0 +1,471 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principal.xhtml">
+
+	<ui:define name="body">
+		<h:form id="form">
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+
+			<p:remoteCommand name="onload" process="@this"
+				action="#{administrarSesionCliente.getNoRolAdmitido('REPORTE_FALLAS')}"
+				autoRun="true" />
+
+			<div class="row x_title">
+				<div class="col-md-6">
+
+					<h2 class="project-title">#{mensaje.moduloEquipos}:
+						#{mensaje.reporteFallas}</h2>
+
+				</div>
+			</div>
+
+			<div align="center" class="titulo"></div>
+			<p:outputPanel id="pnlCasoUso">
+				<p:spacer height="10" />
+				<p:accordionPanel id="pnlCrearCasoUso" activeIndex="0">
+					<p:tab title="#{mensaje.crearReporteFalla}"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:outputLabel
+							value="#{reportarFalla.getAsignacionQrReportarFalla()}" />
+
+						<p:panelGrid columns="4" cellpadding="0" cellspacing="0" layout="grid" 
+							style="width:100%" styleClass="ui-panelgrid-blank">
+
+
+							<p:outputLabel for="txtQr" value="#{mensaje.idCodigoQr}"
+								style="font-weight:bold; font-size:14px" />
+							<p:inputText id="txtQr" required="true"
+								value="#{reportarFalla.reporteFalla.equipo.codigoQr}"
+								label="#{mensaje.idCodigoQr}"
+								style="width:100%; font-size:14px; " />
+
+							<p:spacer width="1" />
+							<p:spacer width="1" />
+
+							<p:spacer width="1" />
+							<p:message for="txtQr" />
+							<p:spacer width="1" />
+							<p:spacer width="1" />
+
+
+							<p:outputLabel for="txtDescripcion"
+								value="#{mensaje.descripcionFalla}"
+								style="font-weight:bold; font-size:14px" />
+							<p:inputText id="txtDescripcion"
+								value="#{reportarFalla.reporteFalla.descripcionFalla}"
+								required="true" label="#{mensaje.descripcionFalla}"
+								style="width:100%; font-size:14px" />
+
+
+							<p:outputLabel for="fileCrear" value="#{mensaje.foto}"
+								style="font-weight:bold; font-size:14px" />
+
+
+							<p:outputPanel id="pnlCargado">
+								<p:panelGrid columns="3" style="width:100%;"
+									styleClass="ui-panelgrid-blank">
+									<p:fileUpload id="fileCrear" cancelLabel="true"
+										dragDropSupport="true" style="width:100%;"
+										rendered="#{reportarFalla.reporteFalla.archivo==null}"
+										fileUploadListener="#{reportarFalla.recibirFoto}"
+										multiple="false" fileLimit="1"
+										fileLimitMessage="Sólo 1 archivo"
+										label="#{mensaje.busqueArchivo}" required="true"
+										mode="advanced" update=":form:messages, pnlCargado"
+										auto="true" sizeLimit="10485760"
+										requiredMessage="Información requerida"
+										invalidSizeMessage="Excede el tamaño  permitido de 10MB!"
+										invalidFileMessage="Extensión de archivo incorrecta, solo fotos"
+										allowTypes="/(\.|\/)(jpg|jp?g|gif|png)$/" />
+
+
+									<p:outputLabel value="(IMAGEN_EN_MEMORIA)"
+										rendered="#{reportarFalla.reporteFalla.archivo != null}" />
+
+									<p:commandLink value="#{mensaje.limpiar}"
+										style="font-weight:bold; font-size:14px"
+										action="#{reportarFalla.limpiarFotoCargada()}" process="@this"
+										update="pnlCargado"
+										rendered="#{reportarFalla.reporteFalla.archivo != null}" />
+
+
+								</p:panelGrid>
+
+
+							</p:outputPanel>
+							<p:spacer width="1" />
+							<p:message for="txtDescripcion" />
+
+
+
+
+
+
+						</p:panelGrid>
+
+						<p:spacer height="10" />
+						<div align="center">
+
+
+							<p:commandButton id="btnCrearCasoUso"
+								action="#{reportarFalla.crearReporteQr()}"
+								style="font-size:14px" process=":form:pnlCrearCasoUso"
+								value="#{mensaje.guardar}"
+								update=":form:pnlCrearCasoUso, :form:pnlConsultar, :form:pnlDtlReportes, :form:messages" />
+							<p:spacer width="10" />
+							<p:commandButton id="btnBorrarCasoUso"
+								action="#{reportarFalla.cancelarReporte()}"
+								style="font-size:14px; font-weight: normal !important;"
+								process="@this" value="#{mensaje.cancelar}"
+								update=":form:pnlCrearCasoUso">
+								<p:resetInput target=":form:pnlCasoUso" />
+							</p:commandButton>
+
+						</div>
+						<p:outputLabel value="#{mensaje.informacionRequerida}"
+							style="font-size:10px" />
+						<p:blockUI block=":form:pnlCrearCasoUso"
+							trigger="btnCrearCasoUso, btnBorrarCasoUso">
+							<p:graphicImage value="../imagenes/cargando.gif" />
+						</p:blockUI>
+					</p:tab>
+				</p:accordionPanel>
+				<p:spacer height="30" />
+				<p:outputPanel id="pnlConsultar">
+					<p:accordionPanel activeIndex="1">
+						<p:tab title="#{mensaje.consultarReporteFallas}"
+							titleStyle="font-size:16px" closable="true">
+
+							<p:panelGrid columns="6" cellpadding="0" cellspacing="0"
+								style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+
+
+								<p:outputLabel for="txtCliente2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="#{mensaje.clienteNormal}"
+									style="font-weight:bold; font-size:14px; " />
+
+								<p:outputLabel for="txtCliente3"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}"
+									value="#{mensaje.clienteNormal}"
+									style="font-weight:bold; font-size:14px; " />
+
+
+								<p:autoComplete id="txtCliente2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									placeholder="#{mensaje.escribaMinimoTres}"
+									style="font-size:14px; width:100%; height:20px"
+									forceSelection="true" minQueryLength="3"
+									label="#{mensaje.clienteNormal}" panelStyle="width:350px"
+									value="#{reportarFalla.reporteFallaConsulta.equipo.cliente.tClienteAutocompletado}"
+									completeMethod="#{reportarFalla.usarAutocompletar}">
+									<p:ajax event="itemSelect"
+										listener="#{reportarFalla.onItemSelectConsulta}"
+										update="@this, lstEquipo2" process="@this" />
+								</p:autoComplete>
+
+
+								<p:selectOneMenu label="#{mensaje.clienteNormal}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}"
+									required="true" style="width:100%; font-size:14px;"
+									id="txtCliente3"
+									value="#{reportarFalla.reporteFallaConsulta.equipo.cliente.id}">
+									<f:selectItems
+										value="#{administrarSesionCliente.itemsClientes}" />
+
+									<p:ajax event="change"
+										listener="#{reportarFalla.seleccionarFallaConsulta()}"
+										update="@this, lstEquipo2" process="@this" />
+
+
+								</p:selectOneMenu>
+
+
+
+
+								<p:outputLabel for="lstEquipo2" value="#{mensaje.equipo}"
+									style="font-weight:bold; font-size:14px; " />
+								<p:selectOneMenu label="#{mensaje.equipo}"
+									style="width:100%; font-size:14px;" id="lstEquipo2"
+									value="#{reportarFalla.reporteFallaConsulta.equipo.id}">
+									<f:selectItems value="#{reportarFalla.itemsEquipos}" />
+								</p:selectOneMenu>
+
+
+								<p:outputLabel for="lstEstado2" value="#{mensaje.estadoFalla}"
+									style="font-weight:bold; font-size:14px" />
+								<p:selectOneMenu label="#{mensaje.estado}"
+									style="width:100%; font-size:14px;" id="lstEstado2"
+									value="#{reportarFalla.reporteFallaConsulta.estado}">
+									<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+									<f:selectItem itemValue="A" itemLabel="#{mensaje.abierta}" />
+									<f:selectItem itemValue="C" itemLabel="#{mensaje.cerrada}" />
+
+								</p:selectOneMenu>
+
+
+								<p:spacer width="1" />
+								<p:message for="txtCliente2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:message for="txtCliente3"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}" />
+								<p:spacer width="1" />
+								<p:message for="lstEquipo2" />
+								<p:spacer width="1" />
+								<p:message for="lstEstado2" />
+
+								<p:outputLabel for="txtQr2" value="#{mensaje.idCodigoQr}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtQr2"
+									value="#{reportarFalla.reporteFallaConsulta.equipo.codigoQr}"
+									label="#{mensaje.idCodigoQr}"
+									style="width:100%; font-size:14px; " />
+
+
+
+
+								<p:outputLabel for="calFechaInicialAnalisis2"
+									value="#{mensaje.fechaInicialAnalisis}"
+									style="font-weight:bold; font-size:14px" />
+
+								<p:calendar id="calFechaInicialAnalisis2"
+									label="#{mensaje.fechaInicialAnalisis}"
+									value="#{reportarFalla.reporteFallaConsulta.tFechaDesde}"
+									pattern="dd/MM/yyyy" mask="true"
+									style="font-size:14px;  " />
+
+
+
+
+
+								<p:outputLabel for="calFechaFinalAnalisis2"
+									value="#{mensaje.fechaFinalAnalisis}"
+									style="font-weight:bold; font-size:14px" />
+
+								<p:calendar id="calFechaFinalAnalisis2"
+									label="#{mensaje.fechaFinalAnalisis}"
+									value="#{reportarFalla.reporteFallaConsulta.tFechaHasta}"
+									pattern="dd/MM/yyyy" mask="true"
+									style="font-size:14px;  " />
+
+
+								<p:spacer width="1" />
+								<p:message for="txtQr2" />
+								<p:spacer width="1" />
+								<p:message for="calFechaInicialAnalisis2" />
+								<p:spacer width="1" />
+								<p:message for="calFechaFinalAnalisis2" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+							</p:panelGrid>
+							<p:spacer height="10" />
+							<div align="center">
+								<p:commandButton id="btnConsultar" style="font-size:14px; "
+									action="#{reportarFalla.consultarReporteFalla()}"
+									value="#{mensaje.consultar}"
+									update=":form:pnlConsultar, :form:pnlDtlReportes"
+									process=":form:pnlConsultar" />
+
+								<p:spacer width="10" />
+								<p:commandButton id="btnBorrar"
+									style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+									action="#{reportarFalla.cancelarConsulta()}" process="@this"
+									value="#{mensaje.cancelar}"
+									update=":form:pnlConsultar, :form:pnlDtlReportes">
+
+									<p:resetInput target=":form:pnlConsultar" />
+
+								</p:commandButton>
+
+							</div>
+
+							<p:blockUI block=":form:pnlConsultar"
+								trigger="btnConsultar, btnBorrar">
+
+								<p:graphicImage value="../imagenes/cargando.gif" />
+
+
+							</p:blockUI>
+
+						</p:tab>
+
+
+
+					</p:accordionPanel>
+				</p:outputPanel>
+
+				<p:spacer height="30" />
+				<p:accordionPanel id="pnlDtlReportes">
+					<p:tab title="#{mensaje.listadoReportes}"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:dataTable var="loc" id="dtlReportes" widgetVar="dtlRegistros"
+							value="#{reportarFalla.reportesFallas}" reflow="true" rows="10"
+							paginator="true" paginatorPosition="bottom"
+							draggableColumns="true"
+							emptyMessage="#{mensaje.noExistenciaRegistrosConsulta}">
+
+							<f:facet name="header">
+								<p:outputPanel style="text-align:right">
+									<p:inputText id="globalFilter" immediate="true"
+										onkeyup="PF('dtlRegistros').filter()"
+										style="width:150px; "
+										placeholder="#{mensaje.palabrasClave}" />
+								</p:outputPanel>
+							</f:facet>
+
+
+							<p:column headerText="#{mensaje.fechaFalla}"
+								filterBy="#{loc.fechaFalla}" filterMatchMode="contains"
+								filterStyle="display:none" sortBy="#{loc.fechaFalla}"
+								style="font-size:14px;">
+								<p:outputLabel
+									value="#{consultarFuncionesAPI.getFechaColombia(loc.fechaFalla)}"
+									style="font-weight:normal; font-size:12px" />
+
+
+							</p:column>
+
+							<p:column headerText="#{mensaje.descripcionFalla}"
+								filterBy="#{loc.descripcionFalla}" filterMatchMode="contains"
+								filterStyle="display:none" sortBy="#{loc.descripcionFalla}"
+								style="font-size:14px;">
+								<p:outputLabel value="#{loc.descripcionFalla}"
+									style="font-weight:normal; font-size:12px" />
+
+
+							</p:column>
+ 
+							<p:column headerText="#{mensaje.estadoFalla}" filterMatchMode="contains"
+								sortBy="#{loc.equipo.estado}" style="font-size:14px;">
+								<p:outputLabel value="#{mensaje.abierta}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estado == 'A'}" />
+								<p:outputLabel
+									value="#{mensaje.cerrada} el #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estado == 'C' and loc.conceptoCierreManual==null}" />
+
+								<p:outputLabel
+									value="#{mensaje.cerrada} #{mensaje.manualmente} el #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}: #{loc.conceptoCierreManual}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estado == 'C' and loc.conceptoCierreManual!=null}" />
+							</p:column>
+
+
+							<p:column headerText="#{mensaje.equipo}"
+								filterBy="#{loc.equipo.codigoQr} #{loc.equipo.nombreEquipo}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.equipo.nombreEquipo}" style="font-size:14px">
+								<p:outputLabel
+									value="#{loc.equipo.codigoQr} #{loc.equipo.nombreEquipo}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="#{mensaje.estadoEquipo}" filterMatchMode="contains"
+								sortBy="#{loc.equipo.estado}" style="font-size:14px;">
+								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.equipo.estado == 'A'}" />
+								<p:outputLabel value="#{mensaje.ESTADO_INACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.equipo.estado == 'I'}" />
+							</p:column>
+
+
+
+
+
+							<p:column headerText="#{mensaje.clienteNormal}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.equipo.cliente.nit} #{loc.equipo.cliente.cliente} #{loc.equipo.cliente.ubicacion}"
+								filterBy="#{loc.equipo.cliente.nit} #{loc.equipo.cliente.ubicacion}"
+								style="font-size:14px">
+								<p:outputLabel
+									value="#{loc.equipo.cliente.nit} #{loc.equipo.cliente.cliente}, #{loc.equipo.cliente.ubicacion}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+
+							<p:column headerText="#{mensaje.estadoCliente}" filterMatchMode="contains"
+								sortBy="#{loc.equipo.cliente.estadoVigencia}"
+								style="font-size:14px;">
+								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.equipo.cliente.estadoVigencia == 'A'}" />
+								<p:outputLabel value="#{mensaje.ESTADO_INACTIVO}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.equipo.cliente.estadoVigencia == 'I'}" />
+							</p:column>
+
+
+
+
+
+
+
+							<p:column headerText="#{mensaje.acciones}"
+								style="font-size:14px; text-align:center;">
+
+								<p:commandButton id="btnIrEditar" rendered="#{loc.estado=='A'}"
+									style="background-origin: content-box; background-image: url('../imagenes/c_mayuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{reportarFalla.asignarReporte(loc,'MODAL_EDITAR_REPORTE')}"
+									value="" process=":form:pnlDtlReportes" update=":formEditar" />
+
+
+								<p:tooltip for="btnIrEditar" value="#{mensaje.cerrarFalla}"
+									rendered="#{loc.estado=='A'}" trackMouse="true" />
+
+								<p:commandButton id="btnIrFoto"
+									style="background-origin: content-box; background-image: url('../imagenes/buscar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{reportarFalla.asignarReporte(loc,'MODAL_VER_REPORTE')}"
+									value="" process=":form:pnlDtlReportes" update=":formFotoFalla" />
+
+
+								<p:tooltip for="btnIrFoto" value="#{mensaje.verFotoFalla}"
+									trackMouse="true" />
+
+
+
+
+							</p:column>
+
+
+
+
+
+						</p:dataTable>
+
+
+					</p:tab>
+				</p:accordionPanel>
+
+			</p:outputPanel>
+		</h:form>
+
+		<ui:include src="/equipos/cerrarFallaManualmente.xhtml" />
+		<ui:include src="/equipos/verFotoFalla.xhtml" />
+
+
+		<p:spacer height="1000" />
+
+
+	</ui:define>
+</ui:composition>

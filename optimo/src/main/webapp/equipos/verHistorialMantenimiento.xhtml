@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formHistorial">
+
+		<p:dialog header="#{mensaje.historialIntervencionesEquipo}"
+			height="400" width="900" widgetVar="panelHistorial" resizable="true"
+			closable="false" responsive="true">
+			<p:panel id="pnlHistorial">
+
+
+				<p:outputPanel>
+					<p:dataTable var="loc" id="dtlCronogramas" style="width:100%"
+						value="#{realizarMantenimiento.cronogramas}" reflow="true"
+						rows="10" paginator="true" paginatorPosition="bottom"
+						draggableColumns="true" rowIndexVar="indice"
+						emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+						<p:column headerText="No." style="font-size:14px; width:30px">
+							<p:outputLabel value="#{indice+1}"
+								style="font-weight:normal; font-size:12px" />
+
+
+						</p:column>
+
+
+
+						<p:column headerText="#{mensaje.fechaProgramacion}"
+							sortBy="#{loc.fechaProgramacion}" style="font-size:14px;">
+							<p:outputLabel
+								value="#{consultarFuncionesAPI.getFechaColombia(loc.fechaProgramacion)}"
+								style="font-weight:normal; font-size:12px" />
+
+						</p:column>
+
+						<p:column headerText="#{mensaje.estado}"
+							sortBy="#{loc.equipo.estado}" style="font-size:14px;">
+							<p:outputLabel value="#{mensaje.programado}"
+								style="font-weight:normal; font-size:12px"
+								rendered="#{loc.estado == 'P'}" />
+							<p:outputLabel
+								value="#{mensaje.atendidoTecnico}, #{consultarFuncionesAPI.getFechaHoraColombia(loc.fechaHoraAtencion)}"
+								style="font-weight:normal; font-size:12px"
+								rendered="#{loc.estado == 'T'}" />
+							<p:outputLabel
+								value="#{mensaje.aprobado}, fecha atención: #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}, fecha aprobación: #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}"
+								style="font-weight:normal; font-size:12px"
+								rendered="#{loc.estado == 'C'}" />
+
+						</p:column>
+
+
+
+
+
+						<p:column headerText="#{mensaje.tipoIntervencion}"
+							sortBy="#{loc.tipoMantenimiento}" style="font-size:14px">
+							<p:outputLabel rendered="#{loc.tipoMantenimiento.trim()=='P'}"
+								value="#{mensaje.preventivo}"
+								style="font-weight:normal; font-size:12px" />
+							<p:outputLabel rendered="#{loc.tipoMantenimiento=='C'}"
+								value="#{mensaje.correctivo}"
+								style="font-weight:normal; font-size:12px" />
+							<p:outputLabel rendered="#{loc.tipoMantenimiento=='D'}"
+								value="#{mensaje.diagnostico}"
+								style="font-weight:normal; font-size:12px" />
+						</p:column>
+
+
+
+
+						<p:column headerText="#{mensaje.costo}" sortBy="#{loc.costo}"
+							style="font-size:14px; text-align:right;">
+							<p:outputLabel value="#{loc.costo}"
+								style="font-weight:normal; font-size:12px">
+
+								<f:convertNumber type="currency" currencySymbol="$ " />
+							</p:outputLabel>
+
+						</p:column>
+
+						<p:column headerText="#{mensaje.observacionesGenerales}"
+							sortBy="#{loc.tObservaciones}" style="font-size:14px">
+							<p:outputLabel rendered="#{loc.tObservaciones!=null}"
+								value="#{loc.tObservaciones}"
+								style="font-weight:normal; font-size:12px" />
+							<p:outputLabel rendered="#{loc.tObservaciones==null}"
+								value="#{mensaje.noAplica}"
+								style="font-weight:normal; font-size:12px" />
+
+						</p:column>
+
+
+
+
+
+						<p:column headerText="#{mensaje.acciones}"
+							style="font-size:14px; text-align:center;">
+
+
+							<p:commandButton id="btnIrImprimirInforme" immediate="true" ajax="false"
+								style="background-origin: content-box; background-image: url('../imagenes/pdf.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+								action="#{realizarMantenimiento.diligenciarImprimirInforme(loc)}"
+								rendered="#{loc.estado!='P'}" value="" process="@this"
+								update=":formVerDocumento, :form:messages" />
+
+
+							<p:tooltip for="btnIrImprimirInforme"
+								value="#{mensaje.imprimirInforme}" rendered="#{loc.estado!='P'}"
+								trackMouse="true" />
+
+
+							<p:outputLabel rendered="#{loc.estado=='P'}"
+								value="#{mensaje.noAplica}"
+								style="font-weight:normal; font-size:12px" />
+
+
+							<p:blockUI block=":formHistorial" trigger="btnIrImprimirInforme">
+								<p:graphicImage value="../imagenes/cargando.gif" />
+							</p:blockUI>
+
+
+						</p:column>
+
+
+						<p:columnGroup type="footer">
+							<p:row>
+								<p:column style="text-align:right; font-size:14px" colspan="4"
+									footerText="TOTAL" />
+
+								<p:column style="text-align:right; font-size:14px"
+									footerText="#{administrarCronograma.getMoneda(realizarMantenimiento.costoRedondeado)}" />
+
+								<p:column style="text-align:right; font-size:14px" colspan="2"
+									footerText=" " />
+
+
+							</p:row>
+
+
+						</p:columnGroup>
+
+
+
+
+
+
+					</p:dataTable>
+
+				</p:outputPanel>
+
+
+
+				<br />
+				<div align="center">
+
+					<p:commandButton id="btnHistorial"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{consultarFuncionesAPI.cerrarModal('panelHistorial')}"
+						process="@this" value="#{mensaje.cerrar}" update="@this" />
+
+				</div>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

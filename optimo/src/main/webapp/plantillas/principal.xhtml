@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport"
+		content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1" />
+
+
+	<meta name="author" content="Quimerapps" />
+	<title>Óptimo</title>
+	<meta name="description" content="Óptimo" />
+	<meta name="keywords" content="SPI Software" />
+	<link
+		href='http://fonts.googleapis.com/css?family=Roboto:100,300,300italic,400,700|Julius+Sans+One|Roboto+Condensed:300,400'
+		rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" href="/optimo/plantillas/css/style.css" />
+	<link rel="stylesheet" href="/optimo/plantillas/css/grid.css" />
+	<link rel="stylesheet" href="/optimo/plantillas/css/layout.css" />
+	<link rel="stylesheet" href="/optimo/plantillas/css/fontello.css" />
+	<link rel="stylesheet" href="/optimo/plantillas/css/animation.css" />
+	<link rel="stylesheet"
+		href="/optimo/plantillas/js/fancybox/jquery.fancybox.css" />
+	<script src="/optimo/plantillas/js/jquery.modernizr.js"></script>
+	<style type="text/css">
+.ui-growl-title {
+	font: 14px "Lucida Console", Monaco, monospace;
+}
+
+.ui-growl-message p {
+	font: 16px "Lucida Console", Monaco, monospace;
+}
+</style>
+
+
+</h:head>
+
+<body data-spy="scroll" data-target="#navigation" class="page-template">
+	<div class="loader"></div>
+	<header id="header"> <h:form id="formCliente">
+		<p:remoteCommand name="onload"
+			action="#{administrarSesionCliente.getNologueoPersonal()}"
+			autoRun="true" />
+		<div class="header-in">
+
+			<h1 id="logo" style="font-size: 0 !important;">
+				<a href="/optimo/home.jsf"><img
+					src="/optimo/imagenes/logo_software.png" alt="Óptimo software"
+					style="height: 80px; width: auto" /> </a>
+			</h1>
+
+			<a id="responsive-nav-button" class="responsive-nav-button" href="#"></a>
+
+			<nav id="navigation" class="navigation">
+
+			<ul>
+
+				<h:panelGroup
+					rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and (administrarSesionCliente.personalSesion.equipos or administrarSesionCliente.personalSesion.cronograma or administrarSesionCliente.personalSesion.informeMantenimiento or administrarSesionCliente.personalSesion.reporteFallas or administrarSesionCliente.personalSesion.indicadoresGestion)}">
+
+					<li class=""><a href="#" class="">#{mensaje.equipos}</a>
+						<ul class="">
+
+
+							<h:panelGroup
+								rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.equipos}">
+
+								<li><p:commandLink value="#{mensaje.equipos}"
+										title="#{mensaje.equipos}"
+										action="/equipos/crearEquipo.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+							</h:panelGroup>
+
+
+							<h:panelGroup
+								rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.cronograma}">
+
+								<li><p:commandLink value="#{mensaje.cronograma}"
+										title="#{mensaje.cronograma}"
+										action="/equipos/crearCronograma.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+
+							</h:panelGroup>
+
+							<h:panelGroup
+								rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.informeMantenimiento}">
+
+								<li><p:commandLink value="#{mensaje.informeMantenimiento}"
+										title="#{mensaje.cronograma}"
+										action="/equipos/realizarMantenimiento.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+							</h:panelGroup>
+
+
+							<h:panelGroup
+								rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.reporteFallas}">
+
+								<li><p:commandLink value="#{mensaje.reporteFallas}"
+										title="#{mensaje.reporteFallas}"
+										action="/equipos/crearReporteFalla.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+
+							</h:panelGroup>
+
+							<h:panelGroup
+								rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.indicadoresGestion}">
+
+
+								<li class=""><a href="#" class="">#{mensaje.indicadores}</a>
+									<ul class="">
+
+										<li><p:commandLink
+												value="#{mensaje.cumplimientoCronograma}"
+												title="#{mensaje.cumplimientoCronograma}"
+												action="/equipos/consultarCumplimientoCronograma.xhtml?faces-redirect=true"
+												ajax="false" /></li>
+
+										<li><p:commandLink value="#{mensaje.indicadoresGestion}"
+												title="#{mensaje.indicadoresGestion}"
+												action="/equipos/consultarIndicadores.xhtml?faces-redirect=true"
+												ajax="false" /></li>
+
+									</ul></li>
+
+							</h:panelGroup>
+
+						</ul></li>
+
+					<h:panelGroup
+						rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.tipoUsuario=='A'}">
+						<li class=""><a href="#" class="">#{mensaje.parámetros}</a>
+							<ul class="">
+
+								<li><p:commandLink
+										value="#{mensaje.clasesSoporteBiomedico}"
+										title="#{mensaje.clasesSoporteBiomedico}"
+										action="/tablasSoporte/crearClaseSoporteBiomedico.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+
+								<li><p:commandLink
+										value="#{mensaje.clasificacionesBiomedicas}"
+										title="#{mensaje.clasificacionesBiomedicas}"
+										action="/tablasSoporte/crearClasificacionBiomedica.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+
+								<li><p:commandLink value="#{mensaje.clasificacionesRiesgo}"
+										title="#{mensaje.clasificacionesRiesgo}"
+										action="/tablasSoporte/crearClasificacionRiesgo.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+
+								<li><p:commandLink value="#{mensaje.clasesDocumentos}"
+										title="#{mensaje.clasesDocumentos}"
+										action="/tablasSoporte/crearClaseDocumento.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+
+
+
+							</ul></li>
+
+					</h:panelGroup>
+
+					<h:panelGroup
+						rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.tipoUsuario=='A'}">
+						<li class=""><a href="#" class="">#{mensaje.personal}</a>
+							<ul class="">
+
+								<li><p:commandLink
+										value="#{mensaje.administradoresSoftware}"
+										title="#{mensaje.administradoresSoftware}"
+										action="/roles/crearAdministrador.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+
+								<li><p:commandLink value="#{mensaje.clientes}"
+										title="#{mensaje.administradoresSoftware}"
+										action="/roles/crearCliente.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+
+								<li><p:commandLink value="#{mensaje.tecnicos}"
+										title="#{mensaje.tecnicos}"
+										action="/roles/crearTecnico.xhtml?faces-redirect=true"
+										ajax="false" /></li>
+
+
+
+							</ul></li>
+
+					</h:panelGroup>
+
+
+				</h:panelGroup>
+
+
+
+
+
+				<li class="current-menu-item"><p:commandLink
+						value="#{administrarSesionCliente.personalSesion.nombreCompleto} #{mensaje.cerrarSesion}"
+						ajax="false" title="#{mensaje.cerrarSesion}"
+						action="#{administrarSesionCliente.getCerrarSesion()}" /></li>
+
+
+			</ul>
+
+			</nav>
+		</div>
+	</h:form> </header>
+	<div id="wrapper" align="center">
+
+		<div style="width: 90%;" align="left">
+			<br /> <br /> <br /> <br />
+			<ui:insert name="body" />
+			<br /> <br /> <br />
+
+		</div>
+		<footer id="footer"> <section class="section parallax ">
+		<img src="/optimo/imagenes/logo_inferior.png" alt="Óptimo software" />
+		<br />
+		#{mensaje.disenadoPor} </section> </footer>
+	</div>
+
+
+
+	<script src="/optimo/plantillas/js/jquery.queryloader2.js"></script>
+	<script src="/optimo/plantillas/js/jquery.easing.1.3.min.js"></script>
+	<script src="/optimo/plantillas/js/jquery.cycle.all.min.js"></script>
+	<script src="/optimo/plantillas/js/jquery.smoothscroll.js"></script>
+	<script src="/optimo/plantillas/js/waypoints.min.js"></script>
+
+
+	<script src="/optimo/plantillas/js/fancybox/jquery.fancybox.pack.js"></script>
+	<script src="/optimo/plantillas/js/config.js"></script>
+	<script src="/optimo/plantillas/js/custom.js"></script>
+
+
+</body>
+</html>

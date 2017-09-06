@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formEliminar">
+
+		<p:dialog header="#{mensaje.eliminarCronograma}" width="600"
+			height="400" widgetVar="panelEliminacionCronograma" resizable="true"
+			closable="false" responsive="true">
+
+			<p:outputPanel id="pnlEliminarCronograma">
+
+				<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+					style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+  
+
+
+
+
+					<p:outputLabel  value="#{mensaje.clienteNormal}"
+						style="font-weight:bold; font-size:14px; " />
+
+					<p:inputText required="true" disabled="true"
+						style="font-size:14px; width:100%; height:20px"
+						label="#{mensaje.clienteNormal}"
+						value="#{administrarCronograma.cronogramaTransaccion.equipo.cliente.cliente}, #{administrarCronograma.cronogramaTransaccion.equipo.cliente.ubicacion} - #{administrarCronograma.cronogramaTransaccion.equipo.cliente.nit}" />
+
+
+
+
+
+					<p:outputLabel value="#{mensaje.equipo}"
+						style="font-weight:bold; font-size:14px; " />
+
+
+					<p:inputText label="#{mensaje.equipo}" disabled="true"
+						style="width:100%; font-size:14px;" required="true"
+						value="#{administrarCronograma.cronogramaTransaccion.equipo.nombreEquipo} #{administrarCronograma.cronogramaTransaccion.equipo.codigoQr}" />
+
+
+
+
+
+
+					<p:outputLabel for="lstTipoMantenimiento"
+						value="#{mensaje.tipoMantenimiento}"
+						style="font-weight:bold; font-size:14px" />
+					<p:selectOneMenu label="#{mensaje.tipoMantenimiento}"
+						disabled="true" style="width:100%; font-size:14px;"
+						id="lstTipoMantenimiento" required="true"
+						value="#{administrarCronograma.cronogramaTransaccion.tipoMantenimiento}">
+						<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+						<f:selectItem itemValue="P" itemLabel="#{mensaje.preventivo}" />
+						<f:selectItem itemValue="C" itemLabel="#{mensaje.correctivo}" />
+						<f:selectItem itemValue="D" itemLabel="#{mensaje.diagnostico}" />
+					</p:selectOneMenu>
+
+
+
+
+
+
+					<p:outputLabel for="txtDuracion" value="#{mensaje.duracionH}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtDuracion" disabled="true"
+						value="#{administrarCronograma.cronogramaTransaccion.duracion}"
+						required="true" label="#{mensaje.duracionH}"
+						style="width:100%; font-size:14px; " />
+
+					<p:spacer width="1" />
+					<p:message for="txtDuracion" />
+
+
+					<p:outputLabel for="txtCosto" value="#{mensaje.costo}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtCosto" disabled="true"
+						value="#{administrarCronograma.cronogramaTransaccion.costo}"
+						required="true" label="#{mensaje.costo}"
+						style="width:100%; font-size:14px; " />
+
+
+
+
+					<p:outputLabel for="lstTecnico" value="#{mensaje.tecnico}"
+						style="font-weight:bold; font-size:14px; " />
+					<p:selectOneMenu label="#{mensaje.tecnico}" disabled="true"
+						style="width:100%; font-size:14px;" id="lstTecnico"
+						required="true"
+						value="#{administrarCronograma.cronogramaTransaccion.tecnico.id}">
+						<f:selectItems
+							value="#{administrarCronograma.getItemsTecnicosEditar()}" />
+					</p:selectOneMenu>
+
+
+
+
+
+					<p:outputLabel for="calFechaProgramacion"
+						value="#{mensaje.fechaProgramacion}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:calendar id="calFechaProgramacion" disabled="true"
+						label="#{mensaje.fechaProgramacion}" required="true"
+						value="#{administrarCronograma.cronogramaTransaccion.fechaProgramacion}"
+						pattern="dd/MM/yyyy" mask="true"
+						style="font-size:14px;  " />
+
+
+
+
+
+					<p:outputLabel for="txtHolgura" value="#{mensaje.holgura}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtHolgura" disabled="true"
+						value="#{administrarCronograma.cronogramaTransaccion.holgura}"
+						required="true" label="#{mensaje.holgura}"
+						style="width:100%; font-size:14px; " />
+
+
+
+
+
+
+
+
+				</p:panelGrid>
+
+
+
+
+
+				<div align="center">
+					<p:commandButton id="btnEliminarCronograma" style="font-size:14px"
+						action="#{administrarCronograma.eliminarCronograma()}"
+						value="#{mensaje.eliminar}" process=":formEliminar"
+						update=":formEliminar:pnlEliminarCronograma, :form" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEliminacionCronograma"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarCronograma.cancelarCronogramaTransaccion('MODAL_ELIMINAR_CRONOGRAMA')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+						<p:resetInput target=":formEliminar:pnlEliminarCronograma, :form" />
+					</p:commandButton>
+
+				</div>
+
+			</p:outputPanel>
+
+			<p:blockUI block=":formEliminar:pnlEliminarCronograma"
+				trigger="btnEliminarCronograma, btnCancelarEliminacionCronograma">
+				<p:graphicImage value="../imagenes/cargando.gif" />
+			</p:blockUI>
+
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

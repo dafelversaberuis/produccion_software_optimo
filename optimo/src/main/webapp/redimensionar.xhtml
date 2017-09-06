@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principal.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="form">
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+a-<p:inputText value="#{realizarMantenimiento.inicio}"/>
+b-<p:inputText value="#{realizarMantenimiento.fin}"/>
+			<p:commandButton value="ACTIVIDADES MANTENIMIENTO" process=":form"
+				action="#{realizarMantenimiento.redimensionarExistentes('actividades_mantenimiento')}" update=":form"
+				id="uno" />
+			<br />
+			<br />
+			<br />
+			<br />
+			<p:commandButton value="FOTOS EQUIPOS"
+				action="#{realizarMantenimiento.redimensionarExistentes('fotos_equipos')}" update=":form"
+				id="dos" />
+			<br />
+			<br />
+			<br />
+			<br />
+			<p:commandButton value="REPORTES FALLAS"
+				action="#{realizarMantenimiento.redimensionarExistentes('reporte_fallas')}" update=":form"
+				id="tres" />
+
+			<p:blockUI block=":form" trigger="uno,dos,tres">
+
+				<p:graphicImage value="imagenes/cargando.gif" />
+
+
+			</p:blockUI>
+
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

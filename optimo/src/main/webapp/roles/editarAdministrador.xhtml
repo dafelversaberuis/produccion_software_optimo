@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formEditar">
+
+		<p:dialog header="#{mensaje.editarAdministrador}"
+			widgetVar="panelEdicionAdministrador" resizable="true"
+			closable="false" responsive="true">
+			<p:panel id="pnlEditarAdministrador">
+				<div align="center">
+
+
+					<p:panelGrid columns="5" cellpadding="0" cellspacing="0"
+						styleClass="ui-panelgrid-blank">
+
+						<p:outputLabel for="txtNombres" value="#{mensaje.nombres}"
+							style="font-weight:bold; font-size:14px" />
+						<p:inputText id="txtNombres"
+							value="#{administrarRol.administradorTransaccion.nombres}"
+							required="true" label="#{mensaje.nombres}"
+							style="width:100%; font-size:14px" />
+
+						<p:spacer width="1" />
+						<p:spacer width="1" />
+						<p:message for="txtNombres" />
+
+
+
+						<p:outputLabel for="txtCorreo" value="#{mensaje.correo}"
+							style="font-weight:bold; font-size:14px" />
+						<p:inputText id="txtCorreo"
+							value="#{administrarRol.administradorTransaccion.correoElectronico}"
+							required="true" label="#{mensaje.correo}"
+							style="width:100%; font-size:14px" />
+
+						<p:graphicImage value="../imagenes/ayuda.png"
+							id="ayudaCorreoAdministrador" />
+						<p:tooltip value="#{mensaje.ayudaCorreoAdministrador}"
+							trackMouse="true" for="ayudaCorreoAdministrador" />
+						<p:message for="txtCorreo" />
+
+						<p:outputLabel for="lstIndicativo" value="#{mensaje.indicativo}"
+							style="font-weight:bold; font-size:14px;" />
+						<p:selectOneMenu id="lstIndicativo" required="true"
+							style="font-size:14px;"
+							value="#{administrarRol.administradorTransaccion.estadoVigencia}"
+							label="#{mensaje.indicativo}">
+							<f:selectItems value="#{consultarFuncionesAPI.itemsEstados}" />
+						</p:selectOneMenu>
+						<p:graphicImage value="../imagenes/ayuda.png"
+							id="ayudaIndicativoEstado" />
+						<p:tooltip value="#{mensaje.ayudaIndicativoEstado}"
+							trackMouse="true" for="ayudaIndicativoEstado" />
+						<p:message for="lstIndicativo" />
+
+
+
+
+
+
+
+
+
+					</p:panelGrid>
+
+
+
+				</div>
+				<br />
+				<br />
+				<div align="center">
+					<p:commandButton id="btnEditarAdministrador" style="font-size:14px"
+						action="#{administrarRol.editarAdministrador()}"
+						value="#{mensaje.editar}"
+						process=":formEditar:pnlEditarAdministrador"
+						update=":formEditar:pnlEditarAdministrador, :form" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEdicionAdministrador"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarRol.cancelarAdministradorTransaccion('MODAL_EDITAR_ADMINISTRADOR')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+						<p:resetInput target=":formEditar, :form" />
+					</p:commandButton>
+
+				</div>
+
+				<p:outputLabel value="#{mensaje.informacionRequerida}"
+					style="font-size:10px" />
+				<p:blockUI block=":formEditar:pnlEditarAdministrador"
+					trigger="btnEditarAdministrador, btnCancelarEdicionAdministrador">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+			</p:panel>
+		</p:dialog>
+		<p:blockUI block="pnlEditarAdministrador"
+			trigger="btnEditarAdministrador" />
+
+	</h:form>
+</ui:composition>

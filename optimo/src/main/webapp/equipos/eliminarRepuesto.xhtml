@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formEliminarRepuesto">
+
+		<p:dialog header="#{mensaje.eliminarRepuesto}" width="600" height="430"
+			widgetVar="panelEliminacionRepuesto" resizable="true" closable="false"
+			responsive="true">
+			<p:panel id="pnlEliminarRepuesto">
+
+
+
+				<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+					styleClass="ui-panelgrid-blank" layout="grid">
+
+					<p:outputLabel for="txtNombre" value="#{mensaje.nombreRepuesto}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtNombre" disabled="true"
+						value="#{administrarHojaVida.repuestoTransaccion.nombre}"
+						required="true" label="#{mensaje.nombreRepuesto}"
+						style="width:100%; font-size:14px; " />
+
+
+			
+
+					<p:outputLabel for="txtDescripcion" value="#{mensaje.descripcion}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputTextarea id="txtDescripcion" rows="2" disabled="true"
+						value="#{administrarHojaVida.repuestoTransaccion.descripcion}"
+						required="true" label="#{mensaje.descripcion}"
+						style="width:100%; font-size:14px; " />
+			
+
+					<p:outputLabel for="txtUbicacion"
+						value="#{mensaje.ubicacionRepuesto}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtUbicacion" disabled="true"
+						value="#{administrarHojaVida.repuestoTransaccion.ubicacion}"
+						required="true" label="#{mensaje.marca}"
+						style="width:100%; font-size:14px; " />
+
+
+
+					<p:outputLabel for="txtMarca" value="#{mensaje.marca}"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtMarca" disabled="true"
+						value="#{administrarHojaVida.repuestoTransaccion.marca}"
+						required="true" label="#{mensaje.marca}"
+						style="width:100%; font-size:14px; " />
+
+
+
+
+					<p:outputLabel for="txtModelo" value="#{mensaje.modelo}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:inputText id="txtModelo" disabled="true"
+						value="#{administrarHojaVida.repuestoTransaccion.modelo}"
+						required="true" label="#{mensaje.modelo}"
+						style="width:100%; font-size:14px; " />
+
+
+			
+
+
+					<p:outputLabel for="txtPeriodicidad"
+						value="#{mensaje.periodicidadCambio}"
+						style="font-weight:bold; font-size:14px" />
+					<p:panelGrid columns="3" style="width:100%" layout="grid"
+						styleClass="ui-panelgrid-blank">
+
+						<p:outputLabel value="#{mensaje.cada}" style="ffont-size:14px" />
+
+						<p:inputText id="txtPeriodicidad" disabled="true"
+							value="#{administrarHojaVida.repuestoTransaccion.valorPeriodicidad}"
+							required="true" label="#{mensaje.periodicidadCambio}"
+							style="width:100%; font-size:14px; " />
+
+						<p:selectOneMenu label="#{mensaje.periodicidadCambio}" disabled="true"
+							style="width:100%; font-size:14px;" id="lstClaseEquipo"
+							required="true"
+							value="#{administrarHojaVida.repuestoTransaccion.periodicidad}">
+							<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+							<f:selectItem itemValue="D" itemLabel="#{mensaje.dias}" />
+							<f:selectItem itemValue="M" itemLabel="#{mensaje.meses}" />
+							<f:selectItem itemValue="A" itemLabel="#{mensaje.anos}" />
+
+
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+				
+
+
+				</p:panelGrid>
+				<br />
+				<div align="center">
+					<p:commandButton id="btnEliminarRepuesto" style="font-size:14px"
+						action="#{administrarHojaVida.eliminarRepuesto()}"
+						value="#{mensaje.eliminar}" process=":formEliminarRepuesto:pnlEliminarRepuesto"
+						update=":formEliminarRepuesto:pnlEliminarRepuesto, :formRepuesto:pnlRepuesto, :form:messages" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEliminacionRepuesto"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarHojaVida.cancelarRepuestoTransaccion('MODAL_ELIMINAR_REPUESTO')}"
+						process="@this" value="#{mensaje.cancelar}" update=":formRepuesto:pnlRepuesto">
+						<p:resetInput target=":formEliminarRepuesto, :formRepuesto:pnlRepuesto, :form:messages" />
+					</p:commandButton>
+
+				</div>
+
+				<p:outputLabel value="#{mensaje.informacionRequerida}"
+					style="font-size:10px" />
+				<p:blockUI block=":formEliminarRepuesto:pnlEliminarRepuesto"
+					trigger="btnEliminarRepuesto, btnCancelarEliminacionRepuesto">
+					<p:graphicImage value="../imagenes/cargando.gif" />
+				</p:blockUI>
+
+			</p:panel>
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

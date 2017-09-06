@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/plantillas/principal.xhtml">
+
+	<ui:define name="body">
+		<h:form id="form">
+			<p:growl id="messages" showDetail="true" globalOnly="true" />
+			
+			<p:remoteCommand name="onload" process="@this"
+				action="#{administrarSesionCliente.getNoRolAdmitido('PARAMETROS')}"
+				autoRun="true" />
+
+			<div class="row x_title">
+				<div class="col-md-6">
+
+					<h2 class="project-title">#{mensaje.moduloParametros}:
+						#{mensaje.clasificacionesBiomedicas}</h2>
+
+
+				</div>
+			</div>
+
+			<div align="center" class="titulo"></div>
+			<p:outputPanel id="pnlCasoUso">
+				<p:spacer height="10" />
+				<p:accordionPanel id="pnlCrearCasoUso">
+					<p:tab title="#{mensaje.crearClasificacionBiomedica}"
+						titleStyle="font-size:16px" closable="true">
+						<p:panelGrid columns="3" cellpadding="0" cellspacing="0"
+							styleClass="ui-panelgrid-blank">
+							<p:outputLabel for="txtNombre" value="#{mensaje.nombre}"
+								style="font-weight:bold; font-size:14px" />
+							<p:inputText id="txtNombre"
+								value="#{hacerMantenimiento.clasificacionBiomedica.nombre}"
+								required="true" label="#{mensaje.nombre}"
+								style="width:100%; font-size:14px" />
+							<p:message for="txtNombre" />
+						</p:panelGrid>
+						<p:spacer height="10" />
+						<div align="center">
+							<p:commandButton id="btnCrearCasoUso"
+								action="#{hacerMantenimiento.crearEstado('CLASIFICACION_BIOMEDICA')}"
+								style="font-size:14px" process=":form"
+								value="#{mensaje.guardar}" update=":form" />
+							<p:spacer width="10" />
+							<p:commandButton id="btnBorrarCasoUso"
+								action="#{hacerMantenimiento.cancelarRegistro('CLASIFICACION_BIOMEDICA')}"
+								style="font-size:14px; font-weight: normal !important;"
+								process="@this" value="#{mensaje.cancelar}" update=":form">
+								<p:resetInput target=":form:pnlCasoUso" />
+							</p:commandButton>
+						</div>
+						<p:outputLabel value="#{mensaje.informacionRequerida}"
+							style="font-size:10px" />
+						<p:blockUI block=":form:pnlCrearCasoUso"
+							trigger="btnCrearCasoUso, btnBorrarCasoUso">
+							<p:graphicImage value="../imagenes/cargando.gif" />
+						</p:blockUI>
+					</p:tab>
+				</p:accordionPanel>
+
+				<p:spacer height="30" />
+				<p:accordionPanel id="pnlDltRegistros">
+					<p:tab title="#{mensaje.listadoClasificacionesBiomedicas}"
+						titleStyle="font-size:16px" closable="true">
+
+
+						<p:dataTable var="loc" id="dtlRegistros" widgetVar="dtlRegistros"
+							value="#{hacerMantenimiento.clasificacionesBiomedicas}"
+							reflow="true" rows="10" paginator="true"
+							paginatorPosition="bottom" draggableColumns="true"
+							emptyMessage="#{mensaje.noExistenciaRegistros}">
+
+
+
+							<p:column headerText="#{mensaje.nombre}" sortBy="#{loc.nombre}"
+								style="font-size:14px">
+								<p:outputLabel value="#{loc.nombre}" style="font-weight:normal" />
+							</p:column>
+
+
+							<p:column headerText="#{mensaje.indicativoVigencia}"
+								sortBy="#{loc.indicativoVigencia}" style="font-size:14px;">
+
+								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
+									style="font-weight:normal"
+									rendered="#{loc.indicativoVigencia=='A'}" />
+								<p:outputLabel value="#{mensaje.ESTADO_INACTIVO}"
+									style="font-weight:normal"
+									rendered="#{loc.indicativoVigencia=='I'}" />
+
+
+							</p:column>
+
+							<p:column headerText="#{mensaje.acciones}"
+								style="font-size:14px; text-align:center;">
+
+
+
+								<p:commandButton id="btnIrEditar"
+									style="background-origin: content-box; background-image: url('../imagenes/editar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{hacerMantenimiento.asignarClasificacionBiomedica(loc,'MODAL_EDITAR')}"
+									value="" process=":form:pnlDltRegistros" update=":formEditar" />
+
+
+
+
+
+								<p:tooltip for="btnIrEditar" value="#{mensaje.editar}"
+									trackMouse="true" />
+
+
+								<p:commandButton id="btnIrEliminar"
+									style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{hacerMantenimiento.asignarClasificacionBiomedica(loc,'MODAL_ELIMINAR')}"
+									value="" process=":form:pnlDltRegistros" update=":formEliminar" />
+
+
+
+
+
+								<p:tooltip for="btnIrEliminar" value="#{mensaje.eliminar}"
+									trackMouse="true" />
+
+
+
+
+
+							</p:column>
+
+
+
+
+						</p:dataTable>
+
+
+					</p:tab>
+				</p:accordionPanel>
+
+
+
+			</p:outputPanel>
+		</h:form>
+		<ui:include src="/tablasSoporte/editarClasificacionBiomedica.xhtml" />
+		<ui:include src="/tablasSoporte/eliminarClasificacionBiomedica.xhtml" />
+		<p:spacer height="500" />
+
+
+	</ui:define>
+</ui:composition>
