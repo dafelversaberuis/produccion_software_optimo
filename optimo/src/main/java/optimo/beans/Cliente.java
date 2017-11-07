@@ -37,6 +37,8 @@ public class Cliente implements Serializable {
 	private String						tClienteAutocompletado;
 	private String						firma;
 
+	private Long							tNumeroPermisos;
+
 	private EstructuraTabla		estructuraTabla;
 
 	public Cliente() {
@@ -261,6 +263,14 @@ public class Cliente implements Serializable {
 
 	public void setFirma(String firma) {
 		this.firma = firma;
+	}
+
+	public Long gettNumeroPermisos() {
+		return tNumeroPermisos;
+	}
+
+	public void settNumeroPermisos(Long tNumeroPermisos) {
+		this.tNumeroPermisos = tNumeroPermisos;
 	}
 
 }

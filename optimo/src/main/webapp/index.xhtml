@@ -31,8 +31,8 @@
 						style="width:100%; font-size:14px;" id="lstRol" required="true"
 						value="#{administrarSesionCliente.personal.tipoUsuario}">
 						<f:selectItem itemValue="A" itemLabel="#{mensaje.administardorL}" />
-						<f:selectItem itemValue="C" itemLabel="#{mensaje.clienteL}" />
 						<f:selectItem itemValue="T" itemLabel="#{mensaje.tecnicoL}" />
+						<f:selectItem itemValue="C" itemLabel="Empresa" />
 
 					</p:selectOneButton>
 
@@ -48,7 +48,7 @@
 
 					<p:commandButton value="#{mensaje.acceder}" class="btn btn-theme"
 						action="#{administrarSesionCliente.accederPersonal()}"
-						process="pnlCuentaExistente" style="color:#FFFFFF"
+						process="pnlCuentaExistente" style="color:#FFFFFF" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 						update="pnlCuentaExistente, :formCliente" />
 
 				</div>

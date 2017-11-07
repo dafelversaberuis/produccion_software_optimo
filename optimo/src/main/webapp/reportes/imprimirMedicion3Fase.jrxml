@@ -96,42 +96,42 @@
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeFase1A2]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeFase1A2+( $P{informeMantenimiento}.unidadesFase1A2!=null ? " "+$P{informeMantenimiento}.unidadesFase1A2 : "" )]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement uuid="5d9b5d62-b61d-4eb1-a887-f216fbb491d7" x="98" y="40" width="92" height="17"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.corrienteFase1]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.corrienteFase1+" A"]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement uuid="382d13b7-e496-4f6b-935b-48ecfbb116e5" x="288" y="21" width="92" height="17"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeFase2A3]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeFase2A3+( $P{informeMantenimiento}.unidadesFase2A3!=null ? " "+$P{informeMantenimiento}.unidadesFase2A3 : "" )]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement uuid="eab6d911-55af-491b-b1d0-479ce57e6944" x="288" y="40" width="92" height="17"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.corrienteFase2]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.corrienteFase2+" A"]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement uuid="f0d94ee2-c142-4b1e-bebc-8eb9c05e6b36" x="478" y="21" width="92" height="17"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeFase1A3]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeFase1A3+( $P{informeMantenimiento}.unidadesFase1A3!=null ? " "+$P{informeMantenimiento}.unidadesFase1A3 : "" )]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement uuid="92a32a24-8d96-4b91-ba45-f02f72613ff5" x="478" y="40" width="92" height="17"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.corrienteFase3]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.corrienteFase3+" A"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

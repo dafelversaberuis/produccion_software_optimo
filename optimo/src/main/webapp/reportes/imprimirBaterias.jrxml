@@ -5,6 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<field name="numeroBateria" class="java.lang.Integer"/>
 	<field name="voltaje" class="java.math.BigDecimal"/>
+	<field name="unidades" class="java.lang.String"/>
 	<columnHeader>
 		<band height="19">
 			<staticText>
@@ -33,12 +34,12 @@
 				</textElement>
 				<textFieldExpression><![CDATA[( $F{numeroBateria}!=null ? "V(B"+$F{numeroBateria}+")" : null )]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="d5370b48-d7a0-4329-881d-2ce4ab23a95e" x="96" y="2" width="90" height="15"/>
 				<textElement textAlignment="Center" markup="none">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{numeroBateria}!=null ? $F{voltaje} : null )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{numeroBateria}!=null ? $F{voltaje} : "" )+( $F{unidades}!=null ? " "+$F{unidades} : "" )]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

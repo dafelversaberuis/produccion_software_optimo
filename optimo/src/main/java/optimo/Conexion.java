@@ -44,9 +44,9 @@ public class Conexion implements Serializable {
 			// ***************************************
 
 			// *********Datasource_local***************************
-			// InitialContext ctx = new InitialContext();
-			// DataSource ds = (DataSource) ctx.lookup("java:/optimoDS");
-			// con = ds.getConnection();
+//			 InitialContext ctx = new InitialContext();
+//			 DataSource ds = (DataSource) ctx.lookup("java:/optimoDS");
+//			 con = ds.getConnection();
 			// ***************************************************
 
 			// **************openshuftV2********************
@@ -446,7 +446,7 @@ public class Conexion implements Serializable {
 					} else if (aCondiciones[i].getClass().getName().equals("java.lang.Long")) {
 						pstmt.setLong(i + 1, ((Long) aCondiciones[i]).longValue());
 					} else if (aCondiciones[i].getClass().getName().equals("java.util.Date")) {// Es
-						pstmt.setDate(i + 1, new java.sql.Date((((Date) aCondiciones[i]).getTime())));
+						pstmt.setTimestamp(i + 1, new java.sql.Timestamp((((Date) aCondiciones[i]).getTime())));
 					} else if (aCondiciones[i].getClass().getName().equals("java.math.BigDecimal")) {// Es
 						pstmt.setBigDecimal(i + 1, (BigDecimal) aCondiciones[i]);
 					} else {
@@ -521,7 +521,7 @@ public class Conexion implements Serializable {
 				} else if (aValores[j].getClass().getName().equals("java.lang.Long")) {
 					pstmt.setLong(j + 1, ((Long) aValores[j]).longValue());
 				} else if (aValores[j].getClass().getName().equals("java.util.Date")) {// Es
-					pstmt.setDate(j + 1, new java.sql.Date((((Date) aValores[j]).getTime())));
+					pstmt.setTimestamp(j + 1, new java.sql.Timestamp((((Date) aValores[j]).getTime())));
 				} else if (aValores[j].getClass().getName().equals("java.math.BigDecimal")) {// Es
 					pstmt.setBigDecimal(j + 1, (BigDecimal) aValores[j]);
 				} else {
@@ -584,7 +584,7 @@ public class Conexion implements Serializable {
 				} else if (aValores[j].getClass().getName().equals("java.lang.Long")) {// Es
 					pstmt.setLong(j + 1, ((Long) aValores[j]).longValue());
 				} else if (aValores[j].getClass().getName().equals("java.util.Date")) {// Es
-					pstmt.setDate(j + 1, new java.sql.Date((((Date) aValores[j]).getTime())));
+					pstmt.setTimestamp(j + 1, new java.sql.Timestamp((((Date) aValores[j]).getTime())));
 				} else if (aValores[j].getClass().getName().equals("java.math.BigDecimal")) {// Es
 					pstmt.setBigDecimal(j + 1, (BigDecimal) aValores[j]);
 				} else {
@@ -666,7 +666,7 @@ public class Conexion implements Serializable {
 					} else if (aValoresActualizar[j].getClass().getName().equals("java.lang.Long")) {
 						pstmt.setLong(j + 1, ((Long) aValoresActualizar[j]).longValue());
 					} else if (aValoresActualizar[j].getClass().getName().equals("java.util.Date")) {// Es
-						pstmt.setDate(j + 1, new java.sql.Date((((Date) aValoresActualizar[j]).getTime())));
+						pstmt.setTimestamp(j + 1, new java.sql.Timestamp((((Date) aValoresActualizar[j]).getTime())));
 					} else if (aValoresActualizar[j].getClass().getName().equals("java.math.BigDecimal")) {// Es
 						pstmt.setBigDecimal(j + 1, (BigDecimal) aValoresActualizar[j]);
 					} else {
@@ -688,7 +688,7 @@ public class Conexion implements Serializable {
 					} else if (aValoresCondiciones[k].getClass().getName().equals("java.lang.Long")) {
 						pstmt.setLong(j + 1, ((Long) aValoresCondiciones[k]).longValue());
 					} else if (aValoresCondiciones[k].getClass().getName().equals("java.util.Date")) {// Es
-						pstmt.setDate(j + 1, new java.sql.Date((((Date) aValoresCondiciones[k]).getTime())));
+						pstmt.setTimestamp(j + 1, new java.sql.Timestamp((((Date) aValoresCondiciones[k]).getTime())));
 					} else if (aValoresCondiciones[k].getClass().getName().equals("java.math.BigDecimal")) {// Es
 						pstmt.setBigDecimal(j + 1, (BigDecimal) aValoresCondiciones[k]);
 					} else {

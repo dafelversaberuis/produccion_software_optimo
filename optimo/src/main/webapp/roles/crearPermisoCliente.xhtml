@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formActividad">
+
+		<p:dialog header="Personas con acceso a información del cliente"
+			width="750" height="400" widgetVar="panelVerActividad"
+			resizable="true" closable="false" responsive="true">
+
+			<p:outputPanel id="pnlActividad">
+
+
+
+				<p:accordionPanel id="pnlCrear" activeIndex="1">
+					<p:tab title="Crear persmiso a persona" titleStyle="font-size:16px"
+						closable="true">
+						<div align="left">
+							<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+								style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+
+								<p:outputLabel for="txtPersona"
+									value="Persona activa a crear acceso"
+									style="font-weight:bold; font-size:14px; " />
+								<p:autoComplete id="txtPersona" required="true"
+									placeholder="#{mensaje.escribaMinimoTres}"
+									style="font-size:14px; width:100%; height:20px"
+									forceSelection="true" minQueryLength="3" label="Persona"
+									panelStyle="width:350px"
+									value="#{administrarRol.permisoCliente.personaAcceso.tClienteAutocompletado}"
+									completeMethod="#{administrarRol.usarAutocompletar}">
+									<p:ajax event="itemSelect"
+										listener="#{administrarRol.onItemSelect}" update="@this"
+										process="@this" />
+								</p:autoComplete>
+
+
+
+							</p:panelGrid>
+						</div>
+
+
+						<p:spacer height="10" />
+						<div align="center">
+							<p:commandButton id="btnCrear" style="font-size:14px;"
+								action="#{administrarRol.crearActividad()}"
+								value="#{mensaje.guardar}"
+								update=":formActividad:pnlActividad, :form:messages" />
+
+							<p:spacer width="10" />
+							<p:commandButton id="btnBorrar"
+								style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+								action="#{administrarRol.cancelarActividad()}" process="@this"
+								value="#{mensaje.regresar}" update=":formActividad:pnlActividad">
+
+								<p:resetInput
+									target=":formActividad:pnlActividad, :form:messages" />
+
+							</p:commandButton>
+
+						</div>
+						<p:outputLabel value="#{mensaje.informacionRequerida}"
+							style="font-size:10px" />
+
+						<p:blockUI block=":formActividad:pnlActividad"
+							trigger="btnCrear, btnBorrar">
+
+							<p:graphicImage value="../imagenes/cargando.gif" />
+
+
+						</p:blockUI>
+					</p:tab>
+				</p:accordionPanel>
+
+				<p:spacer height="30" />
+				<p:accordionPanel id="pnlDtlActividades">
+					<p:tab title="Personas con permiso sobre el cliente"
+						titleStyle="font-size:16px" closable="true">
+
+						<p:dataTable var="loc" id="dtlActividades"
+							value="#{administrarRol.permisos}" reflow="true" rows="10"
+							paginator="true" paginatorPosition="bottom"
+							draggableColumns="true" draggableRows="true"
+							emptyMessage="NO EXISTEN PERSONAS CON PERMISO PARA EL CLIENTE">
+
+
+
+
+							<p:column headerText="Persona" filterMatchMode="contains"
+								filterStyle="display:none" sortBy="#{loc.personaAcceso.nombres}"
+								filterBy="#{loc.personaAcceso.nombres}" style="font-size:12px">
+								<p:outputLabel value="#{loc.personaAcceso.nombres}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+							<p:column headerText="Correo con que accede" filterMatchMode="contains"
+								filterStyle="display:none" sortBy="#{loc.personaAcceso.correoElectronico}"
+								filterBy="#{loc.personaAcceso.correoElectronico}" style="font-size:12px">
+								<p:outputLabel value="#{loc.personaAcceso.correoElectronico}"
+									style="font-weight:normal; font-size:12px" />
+							</p:column>
+
+
+
+
+
+							<p:column headerText="#{mensaje.acciones}"
+								style="font-size:12px; text-align:center;">
+
+
+
+
+								<p:commandButton id="btnIrEliminar"
+									style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarRol.asignarActividad(loc,'MODAL_ELIMINAR_ACTIVIDAD')}"
+									value="" process=":formActividad:pnlDtlActividades"
+									update=":formEliminarActividad" />
+
+
+								<p:tooltip for="btnIrEliminar" value="#{mensaje.eliminar}"
+									trackMouse="true" />
+
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:tab>
+				</p:accordionPanel>
+
+
+				<p:spacer height="10" />
+				<div align="center">
+
+					<p:commandButton id="btnBorrar2"
+						style="font-size:14px; font-weight: normal; text-decoration: none !important;"
+						action="#{administrarRol.cancelarActividad()}" process="@this"
+						value="#{mensaje.regresar}" update=":formActividad:pnlActividad">
+
+						<p:resetInput target=":formActividad:pnlActividad, :form:messages" />
+
+					</p:commandButton>
+
+				</div>
+
+			</p:outputPanel>
+
+		</p:dialog>
+	</h:form>
+
+
+</ui:composition>

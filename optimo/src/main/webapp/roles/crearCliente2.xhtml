@@ -19,7 +19,7 @@
 
 		<h:form id="form">
 			<p:growl id="messages" showDetail="true" globalOnly="true" />
-
+			
 			<p:remoteCommand name="onload" process="@this"
 				action="#{administrarSesionCliente.getNoRolAdmitido('ROLES')}"
 				autoRun="true" />
@@ -29,7 +29,8 @@
 				<div class="col-md-6">
 
 					<h2 class="project-title">#{mensaje.moduloPersonal}:
-						#{mensaje.administrarClientes} y personal con acceso al mismo</h2>
+						#{mensaje.administrarClientes}</h2>
+
 
 
 
@@ -47,13 +48,14 @@
 						closable="true">
 						<div align="left">
 							<p:panelGrid columns="6" cellpadding="0" cellspacing="0"
-								style="width:100%" styleClass="ui-panelgrid-blank">
+								style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
 
 								<p:outputLabel for="txtCliente" value="#{mensaje.cliente}"
 									style="font-weight:bold; font-size:14px" />
 								<p:inputText id="txtCliente"
 									value="#{administrarRol.cliente.cliente}" required="true"
-									label="#{mensaje.cliente}" style="width:100%; font-size:14px; " />
+									label="#{mensaje.cliente}"
+									style="width:100%; font-size:14px; " />
 
 
 								<p:outputLabel for="txtNit" value="#{mensaje.nit}"
@@ -108,7 +110,8 @@
 
 								<p:inputText id="txtCargo"
 									value="#{administrarRol.cliente.cargo}" required="true"
-									label="#{mensaje.cargo}" style="width:100%; font-size:14px; " />
+									label="#{mensaje.cargo}"
+									style="width:100%; font-size:14px; " />
 
 								<p:spacer width="1" />
 								<p:message for="txtDireccion" />
@@ -134,8 +137,16 @@
 									required="true" label="#{mensaje.correoResponsable}"
 									style="width:100%; font-size:14px; " />
 
-
-								<p:spacer width="1" />
+<!-- 
+								<p:outputLabel for="lstPermisos" value="#{mensaje.permisos}"
+									style="font-weight:bold; font-size:14px" />
+								<p:selectCheckboxMenu id="lstPermisos" required="true"
+									value="#{administrarRol.cliente.tPermisos}"
+									label="#{mensaje.lista}" panelStyle="width:250px">
+									<f:selectItems value="#{administrarRol.itemsPermisosCliente}" />
+								</p:selectCheckboxMenu>
+								-->
+<p:spacer width="1" />
 
 								<p:spacer width="1" />
 								<p:message for="txtTelefono" />
@@ -194,10 +205,9 @@
 							</p:commandButton>
 
 						</div>
-						<p:outputLabel
-							value="#{mensaje.informacionRequerida} - (**)Los datos del responsable de mantenimiento son sólo para los informes, los accesos debe restringirlos en las acciones"
+						<p:outputLabel value="#{mensaje.informacionRequerida} - (**)Los datos del responsable de mantenimiento son sólo para los informes, los accesos debe restringirlos en las acciones"
 							style="font-size:12px; color:red" />
-
+					
 
 						<p:blockUI block=":form:pnlCrear" trigger="btnCrear, btnBorrar">
 
@@ -280,7 +290,8 @@
 							<f:facet name="header">
 								<p:outputPanel style="text-align:right">
 									<p:inputText id="globalFilter" immediate="true"
-										onkeyup="PF('dtlRegistros').filter()" style="width:150px; "
+										onkeyup="PF('dtlRegistros').filter()"
+										style="width:150px; "
 										placeholder="#{mensaje.palabrasClave}" />
 								</p:outputPanel>
 							</f:facet>
@@ -310,9 +321,8 @@
 									style="font-weight:normal; font-size:12px" />
 
 							</p:column>
-							<p:column headerText="#{mensaje.indicativo}"
-								filterMatchMode="contains" sortBy="#{loc.estadoVigencia}"
-								style="font-size:14px">
+							<p:column headerText="#{mensaje.indicativo}" filterMatchMode="contains"
+								sortBy="#{loc.estadoVigencia}" style="font-size:14px">
 								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estadoVigencia == 'A'}" />
@@ -339,33 +349,21 @@
 									style="font-weight:normal; font-size:12px" />
 
 							</p:column>
-							
-							
-							<p:column headerText="Num. personas con acceso"
-								filterStyle="display:none" filterMatchMode="contains"
-								filterBy="#{loc.tNumeroPermisos}"
-								sortBy="#{loc.tNumeroPermisos}" style="font-size:14px; text-align:right">
-								<p:outputLabel value="#{loc.tNumeroPermisos}"
-									style="font-weight:normal; font-size:12px" />
 
+
+<!-- 
+							<p:column headerText="#{mensaje.permisos}" style="font-size:14px">
+								<p:selectOneMenu style="font-size:14px; width:100%">
+									<f:selectItems
+										value="#{administrarRol.getItemsPermisosClienteRegistro(loc)}" />
+								</p:selectOneMenu>
 							</p:column>
-
+-->
 
 
 
 							<p:column headerText="#{mensaje.acciones}"
 								style="font-size:14px; text-align:center;">
-								
-								
-								<p:commandButton id="btnIrPersona"
-									style="background-origin: content-box; background-image: url('../imagenes/chat_2.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
-									value=""
-									action="#{administrarRol.asignarCliente(loc,'MODAL_VER_ACTIVIDADES')}"
-									process=":form:pnlDtlClientes" update=":formActividad" />
-
-
-								<p:tooltip for="btnIrPersona"
-									value="Ver personas con acceso" trackMouse="true" />
 
 
 								<p:commandButton id="btnIrBuscar"
@@ -397,8 +395,17 @@
 								<p:tooltip for="btnIrEliminar" value="#{mensaje.eliminar}"
 									trackMouse="true" />
 
+	<!-- 
+								<p:commandButton id="btnIrClave" rendered="1==2"
+									style="background-origin: content-box; background-image: url('../imagenes/c_mayuscula.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									value=""
+									action="#{administrarRol.asignarCliente(loc,'MODAL_CLAVE_CLIENTE')}"
+									process=":form:pnlDtlClientes" update=":formClave" />
 
-
+								<p:tooltip for="btnIrClave" rendered="1==2"
+									value="#{mensaje.generarClaveCliente}" trackMouse="true" />
+-->
+   
 							</p:column>
 
 
@@ -413,9 +420,9 @@
 		<ui:include src="/roles/editarCliente.xhtml" />
 		<ui:include src="/roles/eliminarCliente.xhtml" />
 		<ui:include src="/roles/verCliente.xhtml" />
-
-		<ui:include src="/roles/crearPermisoCliente.xhtml" />
-		<ui:include src="/roles/eliminarPermisoCliente.xhtml" />
+		<!-- 
+		<ui:include src="/roles/cambiarClaveCliente.xhtml" />
+-->
 
 		<p:spacer height="800" />
 

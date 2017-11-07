@@ -5,49 +5,46 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="pUrl" class="java.lang.String"/>
 	<parameter name="pUrlTarjeta" class="java.lang.String"/>
+	<parameter name="pLogo" class="java.lang.String"/>
 	<field name="codigoQr" class="java.lang.String"/>
+	<field name="nombreEquipo" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="173" splitType="Stretch">
-			<image onErrorType="Blank">
-				<reportElement uuid="65914d3f-750a-4994-8280-4edc8d4b1e57" x="19" y="14" width="100" height="100"/>
-				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.qrcode.QRCodeWriter().encode($P{pUrl}+"?e="+$F{codigoQr}, com.google.zxing.BarcodeFormat.QR_CODE, 200, 200))]]></imageExpression>
-			</image>
+		<band height="138" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="2d96b0c8-c2f1-4e4f-941c-e54b2107c761" x="0" y="0" width="278" height="131"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="2d96b0c8-c2f1-4e4f-941c-e54b2107c761" x="7" y="6" width="265" height="119"/>
+				<graphicElement>
+					<pen lineWidth="3.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
 			<textField>
-				<reportElement uuid="6d457a80-76bb-4e5e-895b-13935c10f621" x="15" y="120" width="260" height="20"/>
+				<reportElement uuid="0ba91b76-1156-40d2-afd4-b6c428d01647" x="13" y="92" width="135" height="24"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{pUrlTarjeta}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="0c3b5bbb-8925-45fc-b6e4-64075f2710d7" x="24" y="139" width="252" height="33"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Escanee el QR ó ingrese a la URL y con el código identifique el equipo]]></text>
-			</staticText>
-			<textField>
-				<reportElement uuid="0ba91b76-1156-40d2-afd4-b6c428d01647" x="126" y="40" width="147" height="51"/>
-				<textElement textAlignment="Center">
-					<font size="22" isBold="true"/>
+					<font size="16" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codigoQr}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement uuid="fa804ee6-4e0d-43cc-9ce6-2b7aca7c4d89" x="0" y="172" width="287" height="1"/>
-				<graphicElement>
-					<pen lineWidth="1.25" lineStyle="Dotted"/>
-				</graphicElement>
-			</line>
-			<line>
-				<reportElement uuid="3c73656d-8e42-44e1-afe6-3696cd5f1ee1" x="287" y="0" width="1" height="172">
-					<printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 !=0]]></printWhenExpression>
-				</reportElement>
-				<graphicElement>
-					<pen lineWidth="1.25" lineStyle="Dotted"/>
-				</graphicElement>
-			</line>
+			<image onErrorType="Blank">
+				<reportElement uuid="65914d3f-750a-4994-8280-4edc8d4b1e57" x="156" y="9" width="114" height="114"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.qrcode.QRCodeWriter().encode($P{pUrl}+"?e="+$F{codigoQr}, com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="489f4ee7-b0d8-40c1-aca9-7c51be618bff" x="13" y="52" width="135" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{nombreEquipo}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RealSize" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement uuid="25597c90-4744-4dfc-9cd7-e9fe776d010b" x="52" y="21" width="50" height="28"/>
+				<imageExpression><![CDATA[$P{pLogo}+"spiqr.png"]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>

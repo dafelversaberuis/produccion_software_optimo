@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formEditarAnterior">
+
+		<p:dialog header="Editar estado actual informe a uno anterior"
+			width="600" height="400" widgetVar="panelEdicionAnterior"
+			resizable="true" closable="false" responsive="true">
+
+			<p:outputPanel id="pnlEditarCronograma">
+
+				<h:panelGroup
+					rendered="#{administrarCronograma.cronogramaTransaccion.tipoMantenimiento!=null and administrarCronograma.cronogramaTransaccion.tipoMantenimiento.trim()=='C'}">
+					<div class="ui-message-info ui-corner-all" align="center">
+						Como el tipo de mantenimiento es CORRECTIVO, Si se regresa a un estado anterior la fecha de cierre del reporte de falla se abre <br />
+					</div>
+				</h:panelGroup>
+				<div class="ui-message-warn ui-corner-all" align="center">
+					<h:panelGroup
+						rendered="#{administrarCronograma.cronogramaTransaccion.tCopiaEstado!=null and administrarCronograma.cronogramaTransaccion.tCopiaEstado.trim()=='T'}">
+							Estado actual: ATENDIDO POR EL TÉCNICO <br/>*(Si regresa a estado Programado tendrá que ir a guardar el informe en Realizar mantenimiento[Con fechas vigentes], no elimina la iformación diligenciada en informe)
+						</h:panelGroup>
+					<h:panelGroup
+						rendered="#{administrarCronograma.cronogramaTransaccion.tCopiaEstado!=null and administrarCronograma.cronogramaTransaccion.tCopiaEstado.trim()=='C'}">
+							Estado actual: APROBADO POR EL CLIENTE <br/>*(Si regresa a estado Programado tendrá que ir a guardar el informe en Realizar mantenimiento[Con fechas vigentes] y luego ir a aprobarlo por el cliente)  <br/>*(Si regresa a Atendido por Técnico tendrá que ir a aprobar el informe)<br/>*Nota: Cambiar estado no elimina la información del informe, solo sus estados cambian
+						</h:panelGroup>
+
+				</div>
+
+
+
+
+				<br />
+
+
+				<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+					style="width:100%" styleClass="ui-panelgrid-blank">
+
+
+					<p:outputLabel 
+						value="Nuevo estado del informe:"
+						style="font-weight:bold; font-size:14px" />
+					<p:selectOneMenu label="Nuevo estado del informe:" 
+						style="width:100%; font-size:14px;" rendered="#{administrarCronograma.cronogramaTransaccion.tCopiaEstado!=null and administrarCronograma.cronogramaTransaccion.tCopiaEstado.trim()=='T'}"
+						required="true"
+						value="#{administrarCronograma.cronogramaTransaccion.estado}">
+						<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+						<f:selectItem itemValue="P" itemLabel="Programado" />
+						<f:selectItem itemValue="T" itemLabel="Atendido Técnico" />
+		
+					</p:selectOneMenu>
+					
+					<p:selectOneMenu label="Nuevo estado del informe:" 
+						style="width:100%; font-size:14px;" rendered="#{administrarCronograma.cronogramaTransaccion.tCopiaEstado!=null and administrarCronograma.cronogramaTransaccion.tCopiaEstado.trim()=='C'}"
+						required="true"
+						value="#{administrarCronograma.cronogramaTransaccion.estado}">
+						<f:selectItem itemValue="" itemLabel="#{mensaje.comboVacio}" />
+						<f:selectItem itemValue="P" itemLabel="Programado" />
+						<f:selectItem itemValue="T" itemLabel="Atendido Técnico" />
+						<f:selectItem itemValue="C" itemLabel="Aprobado Cliente" />
+					</p:selectOneMenu>
+
+
+
+					
+
+
+
+
+				</p:panelGrid>
+
+
+
+
+
+
+				<div align="center">
+					<p:commandButton id="btnEditarCronograma" style="font-size:14px"
+						action="#{administrarCronograma.editarAnterior()}"
+						value="#{mensaje.editar}" process=":formEditarAnterior"
+						update=":formEditarAnterior:pnlEditarCronograma, :form" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEdicionCronograma"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarCronograma.cancelarCronogramaTransaccion('MODAL_EDITAR_ANTERIOR')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+						<p:resetInput
+							target=":formEditarAnterior:pnlEditarCronograma, :form" />
+					</p:commandButton>
+
+				</div>
+			</p:outputPanel>
+
+			<p:outputLabel value="#{mensaje.informacionRequerida}"
+				style="font-size:10px" />
+			<p:blockUI block=":formEditarAnterior:pnlEditarCronograma"
+				trigger="btnEditarCronograma, btnCancelarEdicionCronograma">
+				<p:graphicImage value="../imagenes/cargando.gif" />
+			</p:blockUI>
+
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

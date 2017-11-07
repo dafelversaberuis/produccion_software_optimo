@@ -8,6 +8,8 @@
 
 	<ui:define name="body">
 		<style type="text/css">
+
+
 .columnaA {
 	text-align: left;
 	vertical-align: middle;
@@ -17,6 +19,8 @@
 	text-align: right;
 	vertical-align: middle;
 }
+
+
 </style>
 		<h:form id="form">
 			<p:growl id="messages" showDetail="true" globalOnly="true" />
@@ -115,7 +119,8 @@
 										style="font-weight:bold; font-size:14px" />
 									<p:inputText id="txtMarca"
 										value="#{administrarHojaVida.equipo.marca}" required="true"
-										label="#{mensaje.marca}" style="width:100%; font-size:14px; " />
+										label="#{mensaje.marca}"
+										style="width:100%; font-size:14px; " />
 
 
 									<p:spacer width="1" />
@@ -130,7 +135,8 @@
 										style="font-weight:bold; font-size:14px" />
 									<p:inputText id="txtModelo"
 										value="#{administrarHojaVida.equipo.modelo}" required="true"
-										label="#{mensaje.modelo}" style="width:100%; font-size:14px; " />
+										label="#{mensaje.modelo}"
+										style="width:100%; font-size:14px; " />
 									<p:outputLabel for="txtNumeroSerie"
 										value="#{mensaje.numeroSerie}"
 										style="font-weight:bold; font-size:14px" />
@@ -832,10 +838,6 @@
 										value="#{administrarSesionCliente.itemsClientes}" />
 								</p:selectOneMenu>
 
-
-
-
-
 								<p:outputLabel value="#{mensaje.idCodigoQr}"
 									style="font-weight:bold; font-size:14px" />
 
@@ -845,39 +847,76 @@
 									label="#{mensaje.idCodigoQr}"
 									style="width:100%; font-size:14px; " />
 
-								<p:outputLabel for="txtCliente2"
+
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+
+
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}" />
+								<p:message for="lstClienteSesion"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}" />
+								<p:outputLabel value="" />
+								<p:message for="txtQr2" />
+								<p:outputLabel value="" />
+								<p:outputLabel value="" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+
+								<p:outputLabel for="txtNit2" value="#{mensaje.nitParte}"
 									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
-									value="#{mensaje.clienteNormal}"
-									style="font-weight:bold; font-size:14px; " />
-
-								<p:autoComplete id="txtCliente2"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNit2"
 									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
-									placeholder="#{mensaje.escribaMinimoTres}"
-									style="font-size:14px; width:100%; height:20px"
-									forceSelection="true" minQueryLength="3"
-									label="#{mensaje.clienteNormal}" panelStyle="width:350px"
-									value="#{administrarHojaVida.equipoConsulta.cliente.tClienteAutocompletado}"
-									completeMethod="#{administrarHojaVida.usarAutocompletarConsulta}">
-									<p:ajax event="itemSelect"
-										listener="#{administrarHojaVida.onItemSelectConsulta}"
-										update="@this, lstEquipo2" process="@this" />
-								</p:autoComplete>
+									value="#{administrarHojaVida.equipoConsulta.cliente.nit}"
+									label="#{mensaje.nitParte}"
+									style="width:100%; font-size:14px; " />
+								<p:outputLabel for="txtCliente2" value="#{mensaje.clienteParte}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtCliente2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="#{administrarHojaVida.equipoConsulta.cliente.cliente}"
+									label="#{mensaje.clienteParte}"
+									style="width:100%; font-size:14px; " />
+								<p:outputLabel for="txtUbicacion2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="#{mensaje.ubicacionParte}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtUbicacion2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="#{administrarHojaVida.equipoConsulta.cliente.ubicacion}"
+									label="#{mensaje.ubicacionParte}"
+									style="width:100%; font-size:14px; " />
 
 
-								<p:outputLabel for="lstEquipo2" value="#{mensaje.equipo}(Carga al seleccionar cliente)" rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
-									style="font-weight:bold; font-size:14px; " />
-								<p:selectOneMenu label="#{mensaje.equipo}" rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
-									style="width:100%; font-size:14px;" id="lstEquipo2"
-									value="#{administrarHojaVida.equipoConsulta.id}">
-									<f:selectItems value="#{administrarHojaVida.itemsEquipos}" />
-								</p:selectOneMenu>
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:message for="txtNit2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:message for="txtCliente2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:outputLabel value=""
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
+								<p:message for="txtUbicacion2"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
 
 
-								<p:outputLabel value=""  rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}"/>
-								<p:outputLabel value="" rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}"/>
-
-
-							
+								<p:outputLabel for="txtNombreEquipo2"
+									value="#{mensaje.nombreEquipoParte}"
+									style="font-weight:bold; font-size:14px" />
+								<p:inputText id="txtNombreEquipo2"
+									value="#{administrarHojaVida.equipoConsulta.nombreEquipo}"
+									label="#{mensaje.nombreEquipoParte}"
+									style="width:100%; font-size:14px; " />
 
 								<p:outputLabel for="txtNumeroInventario2"
 									value="#{mensaje.numeroInventario}"
@@ -895,7 +934,12 @@
 									label="#{mensaje.numeroSerie}"
 									style="width:100%; font-size:14px; " />
 
-
+								<p:outputLabel value="" />
+								<p:message for="txtNombreEquipo2" />
+								<p:outputLabel value="" />
+								<p:message for="txtNumeroInventario2" />
+								<p:outputLabel value="" />
+								<p:message for="txtNumeroSerie2" />
 
 
 								<p:outputLabel for="lstClaseEquipo2"
@@ -909,19 +953,6 @@
 									<f:selectItem itemValue="N" itemLabel="#{mensaje.otro}" />
 
 								</p:selectOneMenu>
-
-								<p:outputLabel value="" />
-								<p:message for="txtNumeroInventario2" />
-
-								<p:outputLabel value="" />
-								<p:message for="txtNumeroSerie2" />
-
-								<p:outputLabel value="" />
-								<p:message for="lstClaseEquipo2" />
-
-
-
-
 
 
 								<p:outputLabel for="lstDatosTecnicos2"
@@ -955,28 +986,12 @@
 								</p:selectOneMenu>
 
 
-								<p:outputLabel for="txtNombreEquipo2"
-									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}"
-									value="#{mensaje.nombreEquipoParte}"
-									style="font-weight:bold; font-size:14px" />
-								<p:inputText id="txtNombreEquipo2"
-									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}"
-									value="#{administrarHojaVida.equipoConsulta.nombreEquipo}"
-									label="#{mensaje.nombreEquipoParte}"
-									style="width:100%; font-size:14px; " />
-
-
-
+								<p:outputLabel value="" />
+								<p:message for="lstClaseEquipo2" />
 								<p:outputLabel value="" />
 								<p:message for="lstDatosTecnicos2" />
 								<p:outputLabel value="" />
 								<p:message for="lstRequiereCalibracion2" />
-
-
-
-								<p:outputLabel value="" />
-								<p:message for="txtNombreEquipo2"
-									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='C'}" />
 
 
 							</p:panelGrid>
@@ -1030,23 +1045,22 @@
 							<f:facet name="header">
 								<p:outputPanel style="text-align:right">
 									<p:inputText id="globalFilter" immediate="true"
-										onkeyup="PF('dtlEquipos').filter()" style="width:150px; "
+										onkeyup="PF('dtlEquipos').filter()"
+										style="width:150px; "
 										placeholder="#{mensaje.palabrasClave}" />
 								</p:outputPanel>
 							</f:facet>
 
-							<p:column headerText="#{mensaje.idCodigoQr}"
-								filterBy="#{loc.codigoQr}" filterMatchMode="contains"
-								filterStyle="display:none" sortBy="#{loc.codigoQr}"
-								style="font-size:14px; width:100px">
+							<p:column headerText="#{mensaje.idCodigoQr}" filterBy="#{loc.codigoQr}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.codigoQr}" style="font-size:14px; width:100px">
 								<p:outputLabel value="#{loc.codigoQr}"
 									style="font-weight:normal; font-size:12px" />
 							</p:column>
 
-							<p:column headerText="#{mensaje.nombreEquipo}"
-								filterBy="#{loc.nombreEquipo}" filterMatchMode="contains"
-								filterStyle="display:none" sortBy="#{loc.nombreEquipo}"
-								style="font-size:14px">
+							<p:column headerText="#{mensaje.nombreEquipo}" filterBy="#{loc.nombreEquipo}"
+								filterMatchMode="contains" filterStyle="display:none"
+								sortBy="#{loc.nombreEquipo}" style="font-size:14px">
 								<p:outputLabel value="#{loc.nombreEquipo}"
 									style="font-weight:normal; font-size:12px" />
 							</p:column>
@@ -1071,10 +1085,8 @@
 									style="font-weight:normal; font-size:12px" />
 							</p:column>
 
-							<p:column headerText="#{mensaje.estadoEquipo}"
-								filterMatchMode="contains" filterBy="#{loc.estado}"
-								filterStyle="display:none" sortBy="#{loc.estado}"
-								style="font-size:14px; width:100px">
+							<p:column headerText="#{mensaje.estadoEquipo}" filterMatchMode="contains" filterBy="#{loc.estado}" filterStyle="display:none"
+								sortBy="#{loc.estado}" style="font-size:14px; width:100px">
 								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estado == 'A'}" />
@@ -1083,9 +1095,9 @@
 									rendered="#{loc.estado == 'I'}" />
 							</p:column>
 
-							<p:column headerText="#{mensaje.nit}" filterMatchMode="contains"
-								filterBy="#{loc.cliente.nit}" filterStyle="display:none"
-								sortBy="#{loc.cliente.nit}" style="font-size:14px">
+							<p:column headerText="#{mensaje.nit}" filterMatchMode="contains" filterBy="#{loc.cliente.nit}"
+								filterStyle="display:none" sortBy="#{loc.cliente.nit}"
+								style="font-size:14px">
 								<p:outputLabel value="#{loc.cliente.nit}"
 									style="font-weight:normal; font-size:12px" />
 							</p:column>
@@ -1101,10 +1113,7 @@
 							</p:column>
 
 
-							<p:column headerText="#{mensaje.estadoCliente}"
-								filterMatchMode="contains"
-								filterBy="#{loc.cliente.estadoVigencia}"
-								filterStyle="display:none"
+							<p:column headerText="#{mensaje.estadoCliente}" filterMatchMode="contains" filterBy="#{loc.cliente.estadoVigencia}" filterStyle="display:none"
 								sortBy="#{loc.cliente.estadoVigencia}"
 								style="font-size:14px; width:100px">
 								<p:outputLabel value="#{mensaje.ESTADO_ACTIVO}"
@@ -1145,8 +1154,8 @@
 								<p:tooltip for="btnIrEliminar" value="#{mensaje.eliminar}"
 									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
 									trackMouse="true" />
-
-
+									
+									
 								<p:commandButton id="btnIrClonar"
 									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
 									style="background-origin: content-box; background-image: url('../imagenes/clonar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
@@ -1157,8 +1166,8 @@
 								<p:tooltip for="btnIrClonar" value="#{mensaje.clonarEquipo}"
 									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
 									trackMouse="true" />
-
-
+									
+										
 
 								<p:commandButton id="btnIrActividades"
 									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"

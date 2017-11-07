@@ -19,6 +19,8 @@ public class BateriaMantenimiento implements Serializable {
 	private Integer								numeroBateria;
 	private InformeMantenimiento	informeMantenimiento;
 
+	private String								unidades;
+
 	private EstructuraTabla				estructuraTabla;
 
 	public BateriaMantenimiento() {
@@ -32,6 +34,7 @@ public class BateriaMantenimiento implements Serializable {
 		this.estructuraTabla.getLlavePrimaria().put("id", this.id);
 		this.estructuraTabla.getPersistencia().put("voltaje", this.voltaje);
 		this.estructuraTabla.getPersistencia().put("numero_bateria", this.numeroBateria);
+		this.estructuraTabla.getPersistencia().put("unidades", this.unidades);
 
 		if (this.informeMantenimiento != null && this.informeMantenimiento.getCronograma() != null && this.informeMantenimiento.getCronograma().getId() != null) {
 			this.estructuraTabla.getPersistencia().put("id_cronograma", this.informeMantenimiento.getCronograma().getId());
@@ -81,6 +84,14 @@ public class BateriaMantenimiento implements Serializable {
 
 	public void setEstructuraTabla(EstructuraTabla estructuraTabla) {
 		this.estructuraTabla = estructuraTabla;
+	}
+
+	public String getUnidades() {
+		return unidades;
+	}
+
+	public void setUnidades(String unidades) {
+		this.unidades = unidades;
 	}
 
 }

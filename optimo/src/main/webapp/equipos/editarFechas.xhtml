@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formEditarFechas">
+
+		<p:dialog header="Editar fechas cronograma" width="600" height="400"
+			widgetVar="panelEdicionFechas" resizable="true" closable="false"
+			responsive="true">
+
+			<p:outputPanel id="pnlEditarCronograma">
+				<h:panelGroup
+					rendered="#{administrarCronograma.cronogramaTransaccion.tipoMantenimiento!=null and administrarCronograma.cronogramaTransaccion.tipoMantenimiento.trim()=='C'}">
+					<div class="ui-message-info ui-corner-all" align="center">
+						Como el tipo de mantenimiento es CORRECTIVO, La fecha de cierre de
+						la falla es/será la misma de aprobación del cliente <br />
+					</div>
+				</h:panelGroup>
+				
+
+
+				<div class="ui-message-warn ui-corner-all" align="center">
+				
+				<h:panelGroup
+					rendered="#{administrarCronograma.cronogramaTransaccion.estado!=null and administrarCronograma.cronogramaTransaccion.estado.trim()=='P'}">
+				
+						Como el estado actual del cronograma es PROGRAMADO puede editar
+						hasta esta fecha
+				</h:panelGroup>
+
+					<h:panelGroup
+						rendered="#{administrarCronograma.cronogramaTransaccion.estado!=null and administrarCronograma.cronogramaTransaccion.estado.trim()=='T'}">
+				
+Como el estado actual del cronograma es ATENDIDO TECNICO puede editar hasta esta fecha
+
+</h:panelGroup>
+
+
+					<h:panelGroup
+						rendered="#{administrarCronograma.cronogramaTransaccion.estado!=null and administrarCronograma.cronogramaTransaccion.estado.trim()=='C'}">
+			
+Como el estado actual del cronograma es APROBADO CLIENTE puede editar hasta esta fecha
+
+</h:panelGroup>
+				</div>
+
+
+				<br />
+
+
+				<p:panelGrid columns="2" cellpadding="0" cellspacing="0"
+					style="width:100%" styleClass="ui-panelgrid-blank" layout="grid">
+
+
+					<p:outputLabel for="calFechaFalla" value="Fecha-hora reporte de falla:"
+						rendered="#{administrarCronograma.cronogramaTransaccion.tipoMantenimiento!=null and administrarCronograma.cronogramaTransaccion.tipoMantenimiento.trim()=='C'}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:calendar id="calFechaFalla" label="Fecha-hora reporte de falla"
+						rendered="#{administrarCronograma.cronogramaTransaccion.tipoMantenimiento!=null and administrarCronograma.cronogramaTransaccion.tipoMantenimiento.trim()=='C'}"
+						required="true"
+						value="#{administrarCronograma.cronogramaTransaccion.reporteFalla.fechaFalla}"
+						pattern="dd/MM/yyyy HH:mm" mask="true" style="font-size:14px;  " />
+
+					<p:spacer width="1"
+						rendered="#{administrarCronograma.cronogramaTransaccion.tipoMantenimiento!=null and administrarCronograma.cronogramaTransaccion.tipoMantenimiento.trim()=='C'}" />
+					<p:message for="calFechaFalla"
+						rendered="#{administrarCronograma.cronogramaTransaccion.tipoMantenimiento!=null and administrarCronograma.cronogramaTransaccion.tipoMantenimiento.trim()=='C'}" />
+
+
+					<p:outputLabel for="calFechaProgramacion"
+						value="#{mensaje.fechaProgramacion} (Por defecto 00:00)"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:calendar id="calFechaProgramacion"
+						label="#{mensaje.fechaProgramacion}" required="true"
+						value="#{administrarCronograma.cronogramaTransaccion.fechaProgramacion}"
+						pattern="dd/MM/yyyy" mask="true" style="font-size:14px;  " />
+
+					<p:spacer width="1" />
+					<p:message for="calFechaProgramacion" />
+
+					<p:outputLabel for="txtHolgura"
+						value="Holgura fecha prog(+/- dias):"
+						style="font-weight:bold; font-size:14px" />
+					<p:inputText id="txtHolgura"
+						value="#{administrarCronograma.cronogramaTransaccion.holgura}"
+						required="true" label="Holgura fecha programación:"
+						style="width:100%; font-size:14px; " />
+
+
+
+					<p:spacer width="1" />
+					<p:message for="txtHolgura" />
+
+
+					<p:outputLabel for="calFechaAtencion" value="Fecha-hora atención técnico:"
+						rendered="#{administrarCronograma.cronogramaTransaccion.estado!=null and (administrarCronograma.cronogramaTransaccion.estado.trim()=='T' or administrarCronograma.cronogramaTransaccion.estado.trim()=='C')}"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:calendar id="calFechaAtencion" label="Fecha-hora atención técnico:"
+						rendered="#{administrarCronograma.cronogramaTransaccion.estado!=null and (administrarCronograma.cronogramaTransaccion.estado.trim()=='T' or administrarCronograma.cronogramaTransaccion.estado.trim()=='C')}"
+						required="true"
+						value="#{administrarCronograma.cronogramaTransaccion.fechaHoraAtencion}"
+						pattern="dd/MM/yyyy HH:mm" mask="true" style="font-size:14px;  " />
+
+					<p:spacer width="1"
+						rendered="#{administrarCronograma.cronogramaTransaccion.estado!=null and (administrarCronograma.cronogramaTransaccion.estado.trim()=='T' or administrarCronograma.cronogramaTransaccion.estado.trim()=='C')}" />
+					<p:message for="calFechaAtencion"
+						rendered="#{administrarCronograma.cronogramaTransaccion.estado!=null and (administrarCronograma.cronogramaTransaccion.estado.trim()=='T' or administrarCronograma.cronogramaTransaccion.estado.trim()=='C')}" />
+
+					<p:outputLabel for="calFechaAprobacionCliente"
+						rendered="#{administrarCronograma.cronogramaTransaccion.estado!=null and (administrarCronograma.cronogramaTransaccion.estado.trim()=='C')}"
+						value="Fecha-hora aprobación cliente"
+						style="font-weight:bold; font-size:14px" />
+
+					<p:calendar id="calFechaAprobacionCliente" label="Fecha-hora aprobación cliente"
+						rendered="#{administrarCronograma.cronogramaTransaccion.estado!=null and (administrarCronograma.cronogramaTransaccion.estado.trim()=='C')}"
+						required="true"
+						value="#{administrarCronograma.cronogramaTransaccion.fechaHoraAprobacionCliente}"
+						pattern="dd/MM/yyyy HH:mm" mask="true" style="font-size:14px;  " />
+
+					<p:spacer width="1"
+						rendered="#{administrarCronograma.cronogramaTransaccion.estado!=null and (administrarCronograma.cronogramaTransaccion.estado.trim()=='C')}" />
+					<p:message for="calFechaAprobacionCliente" />
+
+
+
+
+				</p:panelGrid>
+
+
+
+
+
+
+				<div align="center">
+					<p:commandButton id="btnEditarCronograma" style="font-size:14px"
+						action="#{administrarCronograma.editarFechas()}"
+						value="#{mensaje.editar}" process=":formEditarFechas"
+						update=":formEditarFechas:pnlEditarCronograma, :form" />
+					<p:spacer width="10" />
+					<p:commandButton id="btnCancelarEdicionCronograma"
+						style="font-size:14px; font-weight: normal !important;"
+						action="#{administrarCronograma.cancelarCronogramaTransaccion('MODAL_EDITAR_FECHAS')}"
+						process="@this" value="#{mensaje.cancelar}" update=":form">
+						<p:resetInput
+							target=":formEditarFechas:pnlEditarCronograma, :form" />
+					</p:commandButton>
+
+				</div>
+			</p:outputPanel>
+
+			<p:outputLabel value="#{mensaje.informacionRequerida}"
+				style="font-size:10px" />
+			<p:blockUI block=":formEditarFechas:pnlEditarCronograma"
+				trigger="btnEditarCronograma, btnCancelarEdicionCronograma">
+				<p:graphicImage value="../imagenes/cargando.gif" />
+			</p:blockUI>
+
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>

@@ -272,13 +272,13 @@
 
 
 								<p:outputLabel for="calFechaInicialAnalisis2"
-									value="#{mensaje.fechaInicialAnalisis}"
+									value="Fecha-hora inicial análisis"
 									style="font-weight:bold; font-size:14px" />
 
 								<p:calendar id="calFechaInicialAnalisis2"
-									label="#{mensaje.fechaInicialAnalisis}"
+									label="Fecha-hora inicial análisis"
 									value="#{reportarFalla.reporteFallaConsulta.tFechaDesde}"
-									pattern="dd/MM/yyyy" mask="true"
+									pattern="dd/MM/yyyy HH:mm" mask="true"
 									style="font-size:14px;  " />
 
 
@@ -286,13 +286,13 @@
 
 
 								<p:outputLabel for="calFechaFinalAnalisis2"
-									value="#{mensaje.fechaFinalAnalisis}"
+									value="Fecha-hora final análisis"
 									style="font-weight:bold; font-size:14px" />
 
 								<p:calendar id="calFechaFinalAnalisis2"
-									label="#{mensaje.fechaFinalAnalisis}"
+									label="Fecha-hora final análisis"
 									value="#{reportarFalla.reporteFallaConsulta.tFechaHasta}"
-									pattern="dd/MM/yyyy" mask="true"
+									pattern="dd/MM/yyyy HH:mm" mask="true"
 									style="font-size:14px;  " />
 
 
@@ -373,12 +373,12 @@
 							</f:facet>
 
 
-							<p:column headerText="#{mensaje.fechaFalla}"
+							<p:column headerText="Fecha-hora falla"
 								filterBy="#{loc.fechaFalla}" filterMatchMode="contains"
 								filterStyle="display:none" sortBy="#{loc.fechaFalla}"
 								style="font-size:14px;">
 								<p:outputLabel
-									value="#{consultarFuncionesAPI.getFechaColombia(loc.fechaFalla)}"
+									value="#{consultarFuncionesAPI.getFechaHoraMilitar(loc.fechaFalla)}"
 									style="font-weight:normal; font-size:12px" />
 
 
@@ -400,12 +400,12 @@
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estado == 'A'}" />
 								<p:outputLabel
-									value="#{mensaje.cerrada} el #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}"
+									value="#{mensaje.cerrada} el #{consultarFuncionesAPI.getFechaHoraMilitar(loc.fechaHoraAtencion)}"
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estado == 'C' and loc.conceptoCierreManual==null}" />
 
 								<p:outputLabel
-									value="#{mensaje.cerrada} #{mensaje.manualmente} el #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}: #{loc.conceptoCierreManual}"
+									value="#{mensaje.cerrada} #{mensaje.manualmente} el #{consultarFuncionesAPI.getFechaHoraMilitar(loc.fechaHoraAtencion)}: #{loc.conceptoCierreManual}"
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estado == 'C' and loc.conceptoCierreManual!=null}" />
 							</p:column>

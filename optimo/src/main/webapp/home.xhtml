@@ -22,13 +22,14 @@
 								<p:outputLabel
 									value="#{administrarSesionCliente.personalSesion.nombreCompleto}"
 									rendered="#{administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.id!=null}" />
+									<br/>
 									
 								<p:outputLabel
 									value="[#{mensaje.administradorL}]"
 									rendered="#{administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.id!=null and administrarSesionCliente.personalSesion.tipoUsuario=='A'}" />
 									
 								<p:outputLabel
-									value="[#{mensaje.clienteL}]"
+									value="[#{mensaje.clienteLL}]"
 									rendered="#{administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.id!=null and administrarSesionCliente.personalSesion.tipoUsuario=='C'}" />
 									
 								<p:outputLabel

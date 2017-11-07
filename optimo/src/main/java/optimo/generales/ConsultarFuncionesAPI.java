@@ -13,11 +13,13 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -51,6 +53,50 @@ public class ConsultarFuncionesAPI implements Serializable {
 
 	// PRIVADOS
 
+	/**
+	 * Hora Colombia
+	 * 
+	 * @return fecha
+	 */
+	public Date getFechaHoraMinutoActualGmtColombia() {
+		Date fecha = null;
+		try {
+			SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MMM-dd HH:mm");
+			dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT-5"));
+
+			// Local time zone
+			SimpleDateFormat dateFormatLocal = new SimpleDateFormat("yyyy-MMM-dd HH:mm");
+
+			fecha = dateFormatLocal.parse(dateFormatGmt.format(new Date()));
+		} catch (Exception e) {
+
+		}
+		// Time in GMT
+		return fecha;
+	}
+
+	/**
+	 * Hora Colombia
+	 * 
+	 * @return fecha
+	 */
+	public Date getFechaHoraMinutoSegundoActualGmtColombia() {
+		Date fecha = null;
+		try {
+			SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+			dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT-5"));
+
+			// Local time zone
+			SimpleDateFormat dateFormatLocal = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+
+			fecha = dateFormatLocal.parse(dateFormatGmt.format(new Date()));
+		} catch (Exception e) {
+
+		}
+		// Time in GMT
+		return fecha;
+	}
+
 	public URL getUrl(String aPosibleRuta) {
 		URL url = null;
 		try {
@@ -63,7 +109,7 @@ public class ConsultarFuncionesAPI implements Serializable {
 	}
 
 	private String getHoraactual() {
-		return "" + new Date().getTime();
+		return "" + getFechaHoraMinutoActualGmtColombia().getTime();
 	}
 
 	/**
@@ -237,7 +283,8 @@ public class ConsultarFuncionesAPI implements Serializable {
 							print = JasperFillManager.fillReport(this.getPath(IConstantes.PAQUETE_MODULO_REPORTES + aReporte), aParametros, aDataSource);
 							// bytes = JasperExportManager.exportReportToPdf(print);
 
-							/// this.nombre = "INFORME-" + formato.format(new Date()) +
+							/// this.nombre = "INFORME-" +
+							/// formato.format(getFechaHoraMinutoActualGmtColombia()) +
 							/// ".pdf";
 							/// path = this.getPath("/tmp/") + "/" + nombre;
 							///// JasperExportManager.exportReportToPdfFile(print, path);
@@ -260,7 +307,8 @@ public class ConsultarFuncionesAPI implements Serializable {
 							// + aReporte), aParametros, new JREmptyDataSource());
 							// // bytes = JasperExportManager.exportReportToPdf(print);
 							//
-							// this.nombre = "INFORME-" + formato.format(new Date()) + ".pdf";
+							// this.nombre = "INFORME-" +
+							// formato.format(getFechaHoraMinutoActualGmtColombia()) + ".pdf";
 							// path = this.getPath("/tmp/") + "/" + nombre;
 							// JasperExportManager.exportReportToPdfFile(print, path);
 							// // bytes = JasperExportManager.exportReportToPdf(print);
@@ -288,7 +336,12 @@ public class ConsultarFuncionesAPI implements Serializable {
 
 					servletOutputStream.flush();
 					servletOutputStream.close();
+
+					// FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("document.getElementById('nonAjaxLoad').style.display=\"none\"");
 					FacesContext.getCurrentInstance().responseComplete();
+
+					//RequestContext requestContext = RequestContext.getCurrentInstance();  
+				  //requestContext.execute("alert('ok')");
 
 					// this.abrirModal("panelVistaPreviaDocumento");
 
@@ -315,7 +368,9 @@ public class ConsultarFuncionesAPI implements Serializable {
 					// }
 					//
 					// IEmail.enviarCorreoMasivoAdjunto(this.getMensaje("mensajeInforme"),
-					// "INFORME SOFTWARE " + formato.format(new Date()), correos, path);
+					// "INFORME SOFTWARE " +
+					// formato.format(getFechaHoraMinutoActualGmtColombia()), correos,
+					// path);
 					//
 					//
 					// }
@@ -401,6 +456,12 @@ public class ConsultarFuncionesAPI implements Serializable {
 	 */
 	public String getFechaHoraColombia(Date aFechaHora) {
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+		return aFechaHora != null ? formato.format(aFechaHora) : "";
+
+	}
+
+	public String getFechaHoraMilitar(Date aFechaHora) {
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		return aFechaHora != null ? formato.format(aFechaHora) : "";
 
 	}

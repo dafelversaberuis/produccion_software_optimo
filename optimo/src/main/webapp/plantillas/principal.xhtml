@@ -35,6 +35,15 @@
 .ui-growl-message p {
 	font: 16px "Lucida Console", Monaco, monospace;
 }
+
+#nonAjaxLoad {
+	/* width: 50px;
+    height: 50px;*/
+	text-align: center; position : fixed;
+	top: 2px;
+	right: 50%;
+	position: fixed;
+}
 </style>
 
 
@@ -60,8 +69,51 @@
 
 			<ul>
 
+
 				<h:panelGroup
-					rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and (administrarSesionCliente.personalSesion.equipos or administrarSesionCliente.personalSesion.cronograma or administrarSesionCliente.personalSesion.informeMantenimiento or administrarSesionCliente.personalSesion.reporteFallas or administrarSesionCliente.personalSesion.indicadoresGestion)}">
+					rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.tipoUsuario.trim()=='C' and (administrarSesionCliente.personalSesion.equipos or administrarSesionCliente.personalSesion.cronograma or administrarSesionCliente.personalSesion.informeMantenimiento or administrarSesionCliente.personalSesion.reporteFallas or administrarSesionCliente.personalSesion.indicadoresGestion)}">
+
+					<li><p:commandLink value="#{mensaje.equipos}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
+							title="#{mensaje.equipos}"
+							action="/equipos/crearEquipo.xhtml?faces-redirect=true"
+							ajax="false" /></li>
+
+					<li><p:commandLink value="#{mensaje.cronograma}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
+							title="#{mensaje.cronograma}" 
+							action="/equipos/crearCronograma.xhtml?faces-redirect=true"
+							ajax="false" /></li>
+
+
+
+
+
+					<li><p:commandLink value="#{mensaje.reporteFallas}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
+							title="#{mensaje.reporteFallas}"
+							action="/equipos/crearReporteFalla.xhtml?faces-redirect=true"
+							ajax="false" /></li>
+
+
+					<li class=""><a href="#" class="">#{mensaje.indicadores}</a>
+						<ul class="">
+
+							<li><p:commandLink value="#{mensaje.cumplimientoCronograma}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
+									title="#{mensaje.cumplimientoCronograma}"
+									action="/equipos/consultarCumplimientoCronograma.xhtml?faces-redirect=true"
+									ajax="false" /></li>
+
+							<li><p:commandLink value="#{mensaje.indicadoresGestion}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
+									title="#{mensaje.indicadoresGestion}"
+									action="/equipos/consultarIndicadores.xhtml?faces-redirect=true"
+									ajax="false" /></li>
+
+						</ul></li>
+
+
+				</h:panelGroup>
+
+
+				<h:panelGroup
+					rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.tipoUsuario.trim()!='C' and (administrarSesionCliente.personalSesion.equipos or administrarSesionCliente.personalSesion.cronograma or administrarSesionCliente.personalSesion.informeMantenimiento or administrarSesionCliente.personalSesion.reporteFallas or administrarSesionCliente.personalSesion.indicadoresGestion)}">
 
 					<li class=""><a href="#" class="">#{mensaje.equipos}</a>
 						<ul class="">
@@ -70,17 +122,16 @@
 							<h:panelGroup
 								rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.equipos}">
 
-								<li><p:commandLink value="#{mensaje.equipos}"
-										title="#{mensaje.equipos}"
-										action="/equipos/crearEquipo.xhtml?faces-redirect=true"
-										ajax="false" /></li>
+								<li><p:commandLink value="#{mensaje.equipos}" onclick="PrimeFaces.monitorDownload(startp, stopp);" 
+										title="#{mensaje.equipos}" ajax="false"
+										action="/equipos/crearEquipo.xhtml?faces-redirect=true" /></li>
 							</h:panelGroup>
 
 
 							<h:panelGroup
 								rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.cronograma}">
 
-								<li><p:commandLink value="#{mensaje.cronograma}"
+								<li><p:commandLink value="#{mensaje.cronograma}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 										title="#{mensaje.cronograma}"
 										action="/equipos/crearCronograma.xhtml?faces-redirect=true"
 										ajax="false" /></li>
@@ -90,7 +141,7 @@
 							<h:panelGroup
 								rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.informeMantenimiento}">
 
-								<li><p:commandLink value="#{mensaje.informeMantenimiento}"
+								<li><p:commandLink value="#{mensaje.informeMantenimiento}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 										title="#{mensaje.cronograma}"
 										action="/equipos/realizarMantenimiento.xhtml?faces-redirect=true"
 										ajax="false" /></li>
@@ -100,7 +151,7 @@
 							<h:panelGroup
 								rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null and administrarSesionCliente.personalSesion.reporteFallas}">
 
-								<li><p:commandLink value="#{mensaje.reporteFallas}"
+								<li><p:commandLink value="#{mensaje.reporteFallas}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 										title="#{mensaje.reporteFallas}"
 										action="/equipos/crearReporteFalla.xhtml?faces-redirect=true"
 										ajax="false" /></li>
@@ -114,13 +165,13 @@
 								<li class=""><a href="#" class="">#{mensaje.indicadores}</a>
 									<ul class="">
 
-										<li><p:commandLink
+										<li><p:commandLink onclick="PrimeFaces.monitorDownload(startp, stopp);"
 												value="#{mensaje.cumplimientoCronograma}"
 												title="#{mensaje.cumplimientoCronograma}"
 												action="/equipos/consultarCumplimientoCronograma.xhtml?faces-redirect=true"
 												ajax="false" /></li>
 
-										<li><p:commandLink value="#{mensaje.indicadoresGestion}"
+										<li><p:commandLink value="#{mensaje.indicadoresGestion}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 												title="#{mensaje.indicadoresGestion}"
 												action="/equipos/consultarIndicadores.xhtml?faces-redirect=true"
 												ajax="false" /></li>
@@ -137,23 +188,23 @@
 							<ul class="">
 
 								<li><p:commandLink
-										value="#{mensaje.clasesSoporteBiomedico}"
+										value="#{mensaje.clasesSoporteBiomedico}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 										title="#{mensaje.clasesSoporteBiomedico}"
 										action="/tablasSoporte/crearClaseSoporteBiomedico.xhtml?faces-redirect=true"
 										ajax="false" /></li>
 
 								<li><p:commandLink
-										value="#{mensaje.clasificacionesBiomedicas}"
+										value="#{mensaje.clasificacionesBiomedicas}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 										title="#{mensaje.clasificacionesBiomedicas}"
 										action="/tablasSoporte/crearClasificacionBiomedica.xhtml?faces-redirect=true"
 										ajax="false" /></li>
 
-								<li><p:commandLink value="#{mensaje.clasificacionesRiesgo}"
+								<li><p:commandLink value="#{mensaje.clasificacionesRiesgo}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 										title="#{mensaje.clasificacionesRiesgo}"
 										action="/tablasSoporte/crearClasificacionRiesgo.xhtml?faces-redirect=true"
 										ajax="false" /></li>
 
-								<li><p:commandLink value="#{mensaje.clasesDocumentos}"
+								<li><p:commandLink value="#{mensaje.clasesDocumentos}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 										title="#{mensaje.clasesDocumentos}"
 										action="/tablasSoporte/crearClaseDocumento.xhtml?faces-redirect=true"
 										ajax="false" /></li>
@@ -170,17 +221,38 @@
 							<ul class="">
 
 								<li><p:commandLink
-										value="#{mensaje.administradoresSoftware}"
+										value="#{mensaje.administradoresSoftware}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 										title="#{mensaje.administradoresSoftware}"
 										action="/roles/crearAdministrador.xhtml?faces-redirect=true"
 										ajax="false" /></li>
 
-								<li><p:commandLink value="#{mensaje.clientes}"
-										title="#{mensaje.administradoresSoftware}"
-										action="/roles/crearCliente.xhtml?faces-redirect=true"
-										ajax="false" /></li>
 
-								<li><p:commandLink value="#{mensaje.tecnicos}"
+
+
+
+								<li class=""><a href="#" class="">#{mensaje.clientes}</a>
+									<ul class="">
+
+
+
+										<li><p:commandLink value="Personas externas" onclick="PrimeFaces.monitorDownload(startp, stopp);"
+												title="Personas externas"
+												action="/roles/crearPersonaAcceso.xhtml?faces-redirect=true"
+												ajax="false" /></li>
+
+										<li><p:commandLink
+												value="Empresas (Clientes) y personas con acceso a éste" onclick="PrimeFaces.monitorDownload(startp, stopp);"
+												title="Empresas (Clientes) y personas con acceso a éste"
+												action="/roles/crearCliente.xhtml?faces-redirect=true"
+												ajax="false" /></li>
+
+									</ul></li>
+
+
+
+
+
+								<li><p:commandLink value="#{mensaje.tecnicos}" onclick="PrimeFaces.monitorDownload(startp, stopp);"
 										title="#{mensaje.tecnicos}"
 										action="/roles/crearTecnico.xhtml?faces-redirect=true"
 										ajax="false" /></li>
@@ -198,7 +270,7 @@
 
 
 
-				<li class="current-menu-item"><p:commandLink
+				<li class="current-menu-item"><p:commandLink onclick="PrimeFaces.monitorDownload(startp, stopp);"
 						value="#{administrarSesionCliente.personalSesion.nombreCompleto} #{mensaje.cerrarSesion}"
 						ajax="false" title="#{mensaje.cerrarSesion}"
 						action="#{administrarSesionCliente.getCerrarSesion()}" /></li>
@@ -208,6 +280,10 @@
 
 			</nav>
 		</div>
+
+
+
+
 	</h:form> </header>
 	<div id="wrapper" align="center">
 
@@ -221,6 +297,12 @@
 		<img src="/optimo/imagenes/logo_inferior.png" alt="Óptimo software" />
 		<br />
 		#{mensaje.disenadoPor} </section> </footer>
+		<p:dialog modal="true" widgetVar="statusDialog"  showHeader="false" 
+			draggable="false" closable="false" resizable="false">
+			<img src="/optimo/imagenes/cargandoPagina.gif" />
+			<br/>   
+			Cargando página
+		</p:dialog>
 	</div>
 
 
@@ -235,6 +317,29 @@
 	<script src="/optimo/plantillas/js/fancybox/jquery.fancybox.pack.js"></script>
 	<script src="/optimo/plantillas/js/config.js"></script>
 	<script src="/optimo/plantillas/js/custom.js"></script>
+	<script>
+/*
+<div id="nonAjaxLoad">
+<img src="../imagenes/cargandoPagina.gif" />
+</div>
+  $(document).ready(function(){
+        $('#nonAjaxLoad').hide(); 
+    });
+
+    $(window).bind('beforeunload', function() {
+        $('#nonAjaxLoad').show(); 
+    });*/
+</script>
+	<script type="text/javascript">
+function startp() {
+    PF('statusDialog').show();
+}
+ 
+function stopp() {
+   PF('statusDialog').hide();
+}
+</script>
+
 
 
 </body>

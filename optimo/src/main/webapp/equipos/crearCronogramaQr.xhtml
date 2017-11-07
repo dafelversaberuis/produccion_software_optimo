@@ -457,11 +457,11 @@
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estado == 'P'}" />
 								<p:outputLabel
-									value="#{mensaje.atendidoTecnico}, #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}"
+									value="#{mensaje.atendidoTecnico}, #{consultarFuncionesAPI.getFechaHoraMilitar(loc.fechaHoraAtencion)}"
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estado == 'T'}" />
 								<p:outputLabel
-									value="#{mensaje.aprobado}, fecha atención: #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}, fecha aprobación: #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}"
+									value="#{mensaje.aprobado}, fecha atención: #{consultarFuncionesAPI.getFechaHoraMilitar(loc.fechaHoraAtencion)}, fecha aprobación: #{consultarFuncionesAPI.getFechaHoraMilitar(loc.fechaHoraAtencion)}"
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estado == 'C'}" />
 

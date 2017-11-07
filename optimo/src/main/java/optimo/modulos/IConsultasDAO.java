@@ -24,6 +24,8 @@ import optimo.beans.Equipo;
 import optimo.beans.FotoEquipo;
 import optimo.beans.InformeMantenimiento;
 import optimo.beans.MaterialFotografico;
+import optimo.beans.PermisoCliente;
+import optimo.beans.PersonaAcceso;
 import optimo.beans.ReporteFalla;
 import optimo.beans.RepuestoEquipo;
 import optimo.beans.Tecnico;
@@ -375,7 +377,8 @@ public interface IConsultasDAO {
 				actividad.setRecomendaciones((String) rs.getObject("recomendaciones"));
 				actividad.settFotoDecodificada((String) rs.getObject("foto_decodificada"));
 				actividad.setArchivo(rs.getBytes("archivo"));
-				//actividad.setArchivoDecodificado((String) rs.getObject("archivo_decodificado"));
+				// actividad.setArchivoDecodificado((String)
+				// rs.getObject("archivo_decodificado"));
 
 				actividad.getActividadInformeEquipo().setId((Integer) rs.getObject("id_actividad"));
 				actividad.getActividadInformeEquipo().setActividad((String) rs.getObject("actividad"));
@@ -438,6 +441,8 @@ public interface IConsultasDAO {
 				bateria.setNumeroBateria((Integer) rs.getObject("numero_bateria"));
 				bateria.getInformeMantenimiento().getCronograma().setId((Integer) rs.getObject("id_cronograma"));
 				bateria.setVoltaje((BigDecimal) rs.getObject("voltaje"));
+
+				bateria.setUnidades((String) rs.getObject("unidades"));
 
 				baterias.add(bateria);
 
@@ -508,7 +513,21 @@ public interface IConsultasDAO {
 				informeMantenimiento.setCargoClienteMomento((String) rs.getObject("cargo_cliente_momento"));
 
 				informeMantenimiento.setRecomendaciones((String) rs.getObject("recomendaciones"));
-				informeMantenimiento.setRepuestosRequeridos((String) rs.getObject("repuestos_requeridos"));
+				informeMantenimiento.setRepuestosRequeridos((String) rs.getObject("repuestos_requeridos")); 
+				
+				
+
+				informeMantenimiento.setUnidadesFase1A2((String) rs.getObject("unidades_fase_1_2"));
+				informeMantenimiento.setUnidadesFase1A3((String) rs.getObject("unidades_fase_1_3"));
+				informeMantenimiento.setUnidadesFase1Tierra((String) rs.getObject("unidades_fase_1_tierra"));
+				informeMantenimiento.setUnidadesFase2A3((String) rs.getObject("unidades_fase_2_3"));
+				informeMantenimiento.setUnidadesFase2Tierra((String) rs.getObject("unidades_fase_2_tierra"));
+				informeMantenimiento.setUnidadesFaseNeutro((String) rs.getObject("unidades_fase_neutro"));
+				informeMantenimiento.setUnidadesFaseTierra((String) rs.getObject("unidades_fase_tierra"));
+				informeMantenimiento.setUnidadesNeutroTierra((String) rs.getObject("unidades_neutro_tierra"));
+
+				
+				
 
 			}
 
@@ -921,6 +940,60 @@ public interface IConsultasDAO {
 			if (rs != null) {
 				rs.close();
 			}
+
+		}
+		return actividades;
+
+	}
+
+	public static List<PermisoCliente> getPermisos(PermisoCliente aActividadInformeEquipo) throws Exception {
+		List<PermisoCliente> actividades = new ArrayList<PermisoCliente>();
+		List<Object> prametros = new ArrayList<Object>();
+		PermisoCliente actividad = null;
+		Conexion conexion = new Conexion();
+		ResultSet rs = null;
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("  SELECT p.*, pa.nombres, pa.correo_electronico");
+			sql.append("  FROM permisos_cliente p");
+			sql.append("  INNER JOIN personas_acceso pa ON pa.id = p.id_persona");
+			sql.append("  WHERE 1=1 ");
+
+			if (aActividadInformeEquipo != null && aActividadInformeEquipo.getId() != null) {
+				sql.append("  AND p.id =  ? ");
+				prametros.add(aActividadInformeEquipo.getId());
+			}
+
+			if (aActividadInformeEquipo != null && aActividadInformeEquipo.getCliente() != null && aActividadInformeEquipo.getCliente().getId() != null) {
+				sql.append("  AND p.id_cliente =  ? ");
+				prametros.add(aActividadInformeEquipo.getCliente().getId());
+			}
+
+			sql.append("  ORDER BY pa.nombres");
+
+			rs = conexion.consultarBD(sql.toString(), prametros);
+
+			while (rs.next()) {
+
+				actividad = new PermisoCliente();
+				actividad.setId((Integer) rs.getObject("id"));
+				actividad.getCliente().setId((Integer) rs.getObject("id_cliente"));
+				actividad.getPersonaAcceso().setId((Integer) rs.getObject("id_persona"));
+				actividad.getPersonaAcceso().setNombres((String) rs.getObject("nombres"));
+				actividad.getPersonaAcceso().setCorreoElectronico((String) rs.getObject("correo_electronico"));
+				actividades.add(actividad);
+			}
+
+		} catch (Exception e) {
+			throw new Exception(e);
+
+		} finally {
+
+			if (rs != null) {
+				rs.close();
+			}
+			conexion.cerrarConexion();
 
 		}
 		return actividades;
@@ -1347,7 +1420,7 @@ public interface IConsultasDAO {
 		try {
 
 			StringBuilder sql = new StringBuilder();
-			sql.append("  SELECT p.*, c.nit, c.cliente, c.ubicacion, c.estado_vigencia, e.codigo_qr, e.nombre_equipo, e.estado estado_vigencia_equipo, t.nombres, t.documento, e.id_cliente, c.representante, c.firma, c.cargo, t.cargo cargo_tecnico, t.firma firma_tecnico, p.id_reporte_falla, r.fecha_falla, r.descripcion_falla");
+			sql.append("  SELECT p.*, c.nit, c.cliente, c.ubicacion, c.estado_vigencia, e.codigo_qr, e.nombre_equipo, e.estado estado_vigencia_equipo, t.nombres, t.documento, e.id_cliente, c.representante, c.firma, c.cargo, t.cargo cargo_tecnico, t.firma firma_tecnico, p.id_reporte_falla, r.fecha_falla, r.descripcion_falla, r.fecha_atencion");
 			sql.append("  FROM cronograma p");
 			sql.append("  INNER JOIN equipos e ON p.id_equipo = e.id");
 			sql.append("  INNER JOIN clientes c ON e.id_cliente = c.id");
@@ -1410,7 +1483,7 @@ public interface IConsultasDAO {
 				prametros.add(aCronograma.getTipoMantenimiento());
 			}
 
-			sql.append("  ORDER BY p.fecha_programacion, c.cliente, e.nombre_equipo");
+			sql.append("  ORDER BY p.fecha_programacion DESC, c.cliente, e.nombre_equipo");
 
 			rs = conexion.consultarBD(sql.toString(), prametros);
 
@@ -1455,6 +1528,7 @@ public interface IConsultasDAO {
 				cronograma.getReporteFalla().setId((Integer) rs.getObject("id_reporte_falla"));
 				cronograma.getReporteFalla().setDescripcionFalla((String) rs.getObject("descripcion_falla"));
 				cronograma.getReporteFalla().setFechaFalla((Date) rs.getObject("fecha_falla"));
+				cronograma.getReporteFalla().setFechaHoraAtencion((Date) rs.getObject("fecha_atencion"));
 
 				cronogramas.add(cronograma);
 			}
@@ -1666,6 +1740,12 @@ public interface IConsultasDAO {
 			sql.append("  LEFT JOIN clases_soportes_biomedicos sb ON p.id_clase_soporte_biomedico = sb.id");
 			sql.append("  WHERE 1=1 ");
 
+			// nuevo
+			if (aEquipo != null && aEquipo.getCliente() != null && aEquipo.getCliente().getId() != null) {
+				sql.append("  AND p.id_cliente =  ? ");
+				prametros.add(aEquipo.getCliente().getId());
+			}
+
 			if (aEquipo != null && aEquipo.getId() != null) {
 				sql.append("  AND p.id =  ? ");
 				prametros.add(aEquipo.getId());
@@ -1848,6 +1928,66 @@ public interface IConsultasDAO {
 
 		}
 		return exiteQR;
+
+	}
+
+	public static List<PersonaAcceso> getPersonasLimitados(PersonaAcceso aPersonaAcceso) throws Exception {
+		List<PersonaAcceso> personas = new ArrayList<PersonaAcceso>();
+		List<Object> prametros = new ArrayList<Object>();
+		PersonaAcceso persona = null;
+		Conexion conexion = new Conexion();
+		ResultSet rs = null;
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("  SELECT *");
+			sql.append("  FROM personas_acceso p");
+			sql.append("  WHERE 1=1 ");
+
+			if (aPersonaAcceso.getNombres() != null) {
+				sql.append("  AND UPPER(p.nombres) LIKE  ? ");
+				prametros.add("%" + aPersonaAcceso.getNombres().trim().toUpperCase() + "%");
+			}
+
+			if (aPersonaAcceso != null && aPersonaAcceso.getEstadoVigencia() != null && !aPersonaAcceso.getEstadoVigencia().trim().equals("")) {
+				sql.append("  AND p.estado_vigencia = ?   ");
+				prametros.add(aPersonaAcceso.getEstadoVigencia().trim());
+			}
+
+			if (aPersonaAcceso != null && aPersonaAcceso.getId() != null) {
+				sql.append("  AND p.id = ?   ");
+				prametros.add(aPersonaAcceso.getId());
+			}
+
+			sql.append("  ORDER BY p.nombres");
+
+			rs = conexion.consultarBD(sql.toString(), prametros);
+			rs.setFetchSize(100);
+
+			while (rs.next()) {
+
+				persona = new PersonaAcceso();
+				persona.setId((Integer) rs.getObject("id"));
+				persona.setNombres((String) rs.getObject("nombres"));
+				persona.setCorreoElectronico((String) rs.getObject("correo_electronico"));
+				persona.setClave((String) rs.getObject("clave"));
+				persona.setEstadoVigencia((String) rs.getObject("estado_vigencia"));
+
+				personas.add(persona);
+			}
+
+		} catch (Exception e) {
+			throw new Exception(e);
+
+		} finally {
+
+			if (rs != null) {
+				rs.close();
+			}
+			conexion.cerrarConexion();
+
+		}
+		return personas;
 
 	}
 
@@ -2237,6 +2377,89 @@ public interface IConsultasDAO {
 
 	}
 
+	public static List<Cliente> getClientesPermiso(PersonaAcceso aPersonaAcceso) throws Exception {
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		List<Object> prametros = new ArrayList<Object>();
+		Cliente cliente = null;
+		Conexion conexion = new Conexion();
+		ResultSet rs = null;
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("  SELECT DISTINCT p.*, pa.correo_electronico correo_persona, pa.nombres nombre_persona, pe.id_persona");
+			sql.append("  FROM clientes p");
+			sql.append("  INNER JOIN permisos_cliente pe ON pe.id_cliente = p.id");
+			sql.append("  INNER JOIN personas_acceso pa ON pa.id = pe.id_persona");
+			sql.append("  WHERE 1=1 ");
+
+			if (aPersonaAcceso != null && aPersonaAcceso.getId() != null) {
+				sql.append("  AND pe.id_persona =  ? ");
+				prametros.add(aPersonaAcceso.getId());
+			}
+
+			if (aPersonaAcceso != null && aPersonaAcceso.getEstadoVigencia() != null && !aPersonaAcceso.getEstadoVigencia().trim().equals("")) {
+				sql.append("  AND pa.estado_vigencia = ?");
+				prametros.add(aPersonaAcceso.getEstadoVigencia().trim());
+			}
+
+			if (aPersonaAcceso != null && aPersonaAcceso.getCorreoElectronico() != null && !aPersonaAcceso.getCorreoElectronico().trim().equals("")) {
+				sql.append("  AND UPPER(pa.correo_electronico) = ?");
+				prametros.add(aPersonaAcceso.getCorreoElectronico().trim().toUpperCase());
+			}
+
+			if (aPersonaAcceso != null && aPersonaAcceso.getClave() != null && !aPersonaAcceso.getClave().trim().equals("")) {
+				sql.append("  AND pa.clave = ?");
+				prametros.add(aPersonaAcceso.getClave().trim());
+			}
+
+			sql.append("ORDER BY cliente");
+
+			rs = conexion.consultarBD(sql.toString(), prametros);
+
+			while (rs.next()) {
+				cliente = new Cliente();
+				cliente.setId((Integer) rs.getObject("id_persona")); // pa
+				cliente.setCliente((String) rs.getObject("cliente")); // pa
+				cliente.setNit((String) rs.getObject("nit"));
+				cliente.setRepresentante((String) rs.getObject("nombre_persona")); ////// de
+																																						////// pa
+				cliente.setCorreoElectronico((String) rs.getObject("correo_persona")); /// de
+																																								/// pa
+				// cliente.setClave((String) rs.getObject("clave"));
+				cliente.setTelefono((String) rs.getObject("telefono"));
+				cliente.setDireccionFisica((String) rs.getObject("direccion_fisica"));
+				cliente.setUbicacion((String) rs.getObject("ubicacion"));
+				cliente.setCargo((String) rs.getObject("cargo"));
+				cliente.setEstadoVigencia((String) rs.getObject("estado_vigencia"));
+
+				// cliente.setInformeMantenimiento((String)
+				// rs.getObject("informe_mantenimiento"));
+				// cliente.setReporteFallas((String) rs.getObject("reporte_fallas"));
+				// cliente.setCronograma((String) rs.getObject("cronograma"));
+				// cliente.setHojaVida((String) rs.getObject("hoja_vida"));
+				// cliente.setIndicadoresGestion((String)
+				// rs.getObject("indicadores_gestion"));
+
+				cliente.setFirma((String) rs.getObject("firma"));
+
+				clientes.add(cliente);
+			}
+
+		} catch (Exception e) {
+			throw new Exception(e);
+
+		} finally {
+
+			if (rs != null) {
+				rs.close();
+			}
+			conexion.cerrarConexion();
+
+		}
+		return clientes;
+
+	}
+
 	/**
 	 * Obtiene el listado de clientes
 	 * 
@@ -2253,8 +2476,10 @@ public interface IConsultasDAO {
 		try {
 
 			StringBuilder sql = new StringBuilder();
-			sql.append("  SELECT *");
+			sql.append("  SELECT p.*, COUNT(pe.id) numero_permisos");
 			sql.append("  FROM clientes p");
+			// nuevo la relación
+			sql.append("  LEFT JOIN permisos_cliente pe ON pe.id_cliente = p.id");
 			sql.append("  WHERE 1=1 ");
 
 			if (aCliente != null && aCliente.getId() != null) {
@@ -2287,7 +2512,7 @@ public interface IConsultasDAO {
 				prametros.add(aCliente.getClave().trim());
 			}
 
-			sql.append("  ORDER BY cliente");
+			sql.append("  GROUP BY p.id ORDER BY cliente");
 
 			rs = conexion.consultarBD(sql.toString(), prametros);
 
@@ -2312,6 +2537,8 @@ public interface IConsultasDAO {
 				cliente.setIndicadoresGestion((String) rs.getObject("indicadores_gestion"));
 
 				cliente.setFirma((String) rs.getObject("firma"));
+
+				cliente.settNumeroPermisos((Long) rs.getObject("numero_permisos"));
 				clientes.add(cliente);
 			}
 
@@ -2518,6 +2745,64 @@ public interface IConsultasDAO {
 
 		}
 		return tecnicos;
+
+	}
+
+	public static List<PersonaAcceso> getPersonasAcceso(PersonaAcceso aAdministrador) throws Exception {
+		List<PersonaAcceso> administradores = new ArrayList<PersonaAcceso>();
+		List<Object> prametros = new ArrayList<Object>();
+		PersonaAcceso administrador = null;
+		Conexion conexion = new Conexion();
+		ResultSet rs = null;
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("  SELECT *");
+			sql.append("  FROM personas_acceso p");
+			sql.append("  WHERE 1=1 ");
+
+			if (aAdministrador != null && aAdministrador.getCorreoElectronico() != null && !aAdministrador.getCorreoElectronico().trim().equals("")) {
+				sql.append("  AND UPPER(p.correo_electronico) = ?");
+				prametros.add(aAdministrador.getCorreoElectronico().trim().toUpperCase());
+			}
+
+			if (aAdministrador != null && aAdministrador.getClave() != null && !aAdministrador.getClave().trim().equals("")) {
+				sql.append("  AND p.clave = ?");
+				prametros.add(aAdministrador.getClave().trim());
+			}
+
+			if (aAdministrador != null && aAdministrador.getEstadoVigencia() != null && !aAdministrador.getEstadoVigencia().trim().equals("")) {
+				sql.append("  AND p.estado_vigencia = ?");
+				prametros.add(aAdministrador.getEstadoVigencia().trim());
+			}
+
+			sql.append("  ORDER BY nombres");
+
+			rs = conexion.consultarBD(sql.toString(), prametros);
+
+			while (rs.next()) {
+				administrador = new PersonaAcceso();
+				administrador.setId((Integer) rs.getObject("id"));
+				administrador.setNombres((String) rs.getObject("nombres"));
+				administrador.setCorreoElectronico((String) rs.getObject("correo_electronico"));
+				administrador.setClave((String) rs.getObject("clave"));
+				administrador.setEstadoVigencia((String) rs.getObject("estado_vigencia"));
+
+				administradores.add(administrador);
+			}
+
+		} catch (Exception e) {
+			throw new Exception(e);
+
+		} finally {
+
+			if (rs != null) {
+				rs.close();
+			}
+			conexion.cerrarConexion();
+
+		}
+		return administradores;
 
 	}
 

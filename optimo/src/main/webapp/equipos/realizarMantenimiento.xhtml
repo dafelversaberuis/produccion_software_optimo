@@ -439,7 +439,7 @@ input[disabled] {
 									<p:tooltip for="btnIrEditar2a" value="#{mensaje.editar}"
 										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
 										trackMouse="true" />
-  
+
 									<p:commandButton id="btnIrEliminar2a"
 										rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C' and realizarMantenimiento.informeMantenimiento.tActividadesNoPreventivas!=null and realizarMantenimiento.informeMantenimiento.tActividadesNoPreventivas.size()>1}"
 										style="background-origin: content-box; background-image: url('../imagenes/borrar.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
@@ -597,17 +597,32 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}">
-											<p:inputText id="txtValor1" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.voltajeFaseNeutro}"
-												label="#{mensaje.valor}"
-												title="#{mensaje.voltajeFaseNeutro}"
-												style="width:100px; font-size:14px; ; text-align:right">
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
 
-												<p:ajax event="change" process="@this" />
+												<p:inputText id="txtValor1" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.voltajeFaseNeutro}"
+													label="#{mensaje.valor}"
+													title="#{mensaje.voltajeFaseNeutro}"
+													style="width:100px; font-size:14px; ; text-align:right">
 
-											</p:inputText>
-											<p:message for="txtValor1" />
+													<p:ajax event="change" process="@this" />
+
+												</p:inputText>
+												<p:message for="txtValor1" />
+
+
+												<p:selectOneMenu label="unidades" required="true" disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													style="width:100%; font-size:14px;"
+													value="#{realizarMantenimiento.informeMantenimiento.unidadesFaseNeutro}">
+													<f:selectItem itemValue="" itemLabel="Tipo medición..." />
+													<f:selectItem itemValue="VAC" itemLabel="VAC" />
+													<f:selectItem itemValue="VDC" itemLabel="VDC" />
+
+												</p:selectOneMenu>
+
+											</p:panelGrid>
+
 										</p:outputPanel>
 
 										<p:outputLabel value="V(F-T)" style="font-weight:normal"
@@ -615,15 +630,26 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}">
-											<p:inputText id="txtValor2" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.voltajeFaseTierra}"
-												label="#{mensaje.valor}"
-												title="#{mensaje.voltajeFaseTierra}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor2" />
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+												<p:inputText id="txtValor2" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.voltajeFaseTierra}"
+													label="#{mensaje.valor}"
+													title="#{mensaje.voltajeFaseTierra}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor2" />
+
+												<p:selectOneMenu label="unidades" required="true" disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													style="width:100%; font-size:14px;"
+													value="#{realizarMantenimiento.informeMantenimiento.unidadesFaseTierra}">
+													<f:selectItem itemValue="" itemLabel="Tipo medición..." />
+													<f:selectItem itemValue="VAC" itemLabel="VAC" />
+													<f:selectItem itemValue="VDC" itemLabel="VDC" />
+
+												</p:selectOneMenu>
+											</p:panelGrid>
 										</p:outputPanel>
 
 										<p:outputLabel value="V(N-T)" style="font-weight:normal"
@@ -631,15 +657,30 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}">
-											<p:inputText id="txtValor3" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.voltajeNeutroTierra}"
-												label="#{mensaje.valor}"
-												title="#{mensaje.voltajeNeutroTierra}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor3" />
+
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+
+												<p:inputText id="txtValor3" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.voltajeNeutroTierra}"
+													label="#{mensaje.valor}"
+													title="#{mensaje.voltajeNeutroTierra}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor3" />
+
+												<p:selectOneMenu label="unidades" required="true" disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													style="width:100%; font-size:14px;"
+													value="#{realizarMantenimiento.informeMantenimiento.unidadesNeutroTierra}">
+													<f:selectItem itemValue="" itemLabel="Tipo medición..." />
+													<f:selectItem itemValue="VAC" itemLabel="VAC" />
+													<f:selectItem itemValue="VDC" itemLabel="VDC" />
+
+												</p:selectOneMenu>
+
+
+											</p:panelGrid>
 										</p:outputPanel>
 
 
@@ -648,15 +689,19 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==1}">
-											<p:inputText id="txtValor4" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase}"
-												label="#{mensaje.valor}" title="#{mensaje.corrienteFase}"
-												style="width:100px; font-size:14px; ; text-align:right">
 
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor4" />
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+												<p:inputText id="txtValor4" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.corrienteFase}"
+													label="#{mensaje.valor}" title="#{mensaje.corrienteFase}"
+													style="width:100px; font-size:14px; ; text-align:right">
+
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor4" />
+											(A)
+											</p:panelGrid>
 										</p:outputPanel>
 
 
@@ -668,14 +713,24 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}">
-											<p:inputText id="txtValor21" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1A2}"
-												label="#{mensaje.valor}" title="#{mensaje.voltajeFase12}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor21" />
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+												<p:inputText id="txtValor21" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1A2}"
+													label="#{mensaje.valor}" title="#{mensaje.voltajeFase12}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor21" />
+												<p:selectOneMenu label="unidades" required="true" disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													style="width:100%; font-size:14px;"
+													value="#{realizarMantenimiento.informeMantenimiento.unidadesFase1A2}">
+													<f:selectItem itemValue="" itemLabel="Tipo medición..." />
+													<f:selectItem itemValue="VAC" itemLabel="VAC" />
+													<f:selectItem itemValue="VDC" itemLabel="VDC" />
+
+												</p:selectOneMenu>
+											</p:panelGrid>
 										</p:outputPanel>
 
 										<p:outputLabel value="V(F1-T)" style="font-weight:normal"
@@ -683,14 +738,26 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}">
-											<p:inputText id="txtValor22" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1Tierra}"
-												label="#{mensaje.valor}" title="#{mensaje.voltajeFase1T}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor22" />
+
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+												<p:inputText id="txtValor22" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1Tierra}"
+													label="#{mensaje.valor}" title="#{mensaje.voltajeFase1T}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor22" />
+												<p:selectOneMenu label="unidades" required="true" disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													style="width:100%; font-size:14px;"
+													value="#{realizarMantenimiento.informeMantenimiento.unidadesFase1Tierra}">
+													<f:selectItem itemValue="" itemLabel="Tipo medición..." />
+													<f:selectItem itemValue="VAC" itemLabel="VAC" />
+													<f:selectItem itemValue="VDC" itemLabel="VDC" />
+
+												</p:selectOneMenu>
+
+											</p:panelGrid>
 										</p:outputPanel>
 
 										<p:outputLabel value="V(F2-T)" style="font-weight:normal"
@@ -698,30 +765,48 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}">
-											<p:inputText id="txtValor23" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase2Tierra}"
-												label="#{mensaje.valor}" title="#{mensaje.voltajeFase2T}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor23" />
+
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+												<p:inputText id="txtValor23" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.voltajeFase2Tierra}"
+													label="#{mensaje.valor}" title="#{mensaje.voltajeFase2T}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor23" />
+												<p:selectOneMenu label="unidades" required="true" disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													style="width:100%; font-size:14px;"
+													value="#{realizarMantenimiento.informeMantenimiento.unidadesFase2Tierra}">
+													<f:selectItem itemValue="" itemLabel="Tipo medición..." />
+													<f:selectItem itemValue="VAC" itemLabel="VAC" />
+													<f:selectItem itemValue="VDC" itemLabel="VDC" />
+
+												</p:selectOneMenu>
+
+											</p:panelGrid>
 										</p:outputPanel>
 
 
 										<p:outputLabel value="IF1" style="font-weight:normal"
 											for="txtValor24"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}" />
+
+
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}">
-											<p:inputText id="txtValor24" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase1}"
-												label="#{mensaje.valor}" title="#{mensaje.corrienteFase1}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor24" />
+
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+												<p:inputText id="txtValor24" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.corrienteFase1}"
+													label="#{mensaje.valor}" title="#{mensaje.corrienteFase1}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor24" />
+											(A)
+											</p:panelGrid>
 										</p:outputPanel>
 
 										<p:outputLabel value="IF2" style="font-weight:normal"
@@ -729,15 +814,19 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==2}">
-											<p:inputText id="txtValor25" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase2}"
-												label="#{mensaje.valor}" title="#{mensaje.corrienteFase2}"
-												style="width:100px; font-size:14px; ; text-align:right">
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
 
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor25" />
+												<p:inputText id="txtValor25" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.corrienteFase2}"
+													label="#{mensaje.valor}" title="#{mensaje.corrienteFase2}"
+													style="width:100px; font-size:14px; ; text-align:right">
+
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor25" />
+											(A)
+											</p:panelGrid>
 										</p:outputPanel>
 
 
@@ -749,14 +838,26 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
-											<p:inputText id="txtValor31" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1A2}"
-												label="#{mensaje.valor}" title="#{mensaje.voltajeFase12}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor31" />
+
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+												<p:inputText id="txtValor31" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1A2}"
+													label="#{mensaje.valor}" title="#{mensaje.voltajeFase12}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor31" />
+												<p:selectOneMenu label="unidades" required="true" disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													style="width:100%; font-size:14px;"
+													value="#{realizarMantenimiento.informeMantenimiento.unidadesFase1A2}">
+													<f:selectItem itemValue="" itemLabel="Tipo medición..." />
+													<f:selectItem itemValue="VAC" itemLabel="VAC" />
+													<f:selectItem itemValue="VDC" itemLabel="VDC" />
+
+												</p:selectOneMenu>
+
+											</p:panelGrid>
 										</p:outputPanel>
 
 										<p:outputLabel value="V(F1-F3)" style="font-weight:normal"
@@ -764,14 +865,26 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
-											<p:inputText id="txtValor32" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1A3}"
-												label="#{mensaje.valor}" title="#{mensaje.voltajeFase13}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor32" />
+
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+												<p:inputText id="txtValor32" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.voltajeFase1A3}"
+													label="#{mensaje.valor}" title="#{mensaje.voltajeFase13}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor32" />
+												<p:selectOneMenu label="unidades" required="true" disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													style="width:100%; font-size:14px;"
+													value="#{realizarMantenimiento.informeMantenimiento.unidadesFase1A3}">
+													<f:selectItem itemValue="" itemLabel="Tipo medición..." />
+													<f:selectItem itemValue="VAC" itemLabel="VAC" />
+													<f:selectItem itemValue="VDC" itemLabel="VDC" />
+
+												</p:selectOneMenu>
+
+											</p:panelGrid>
 										</p:outputPanel>
 
 										<p:outputLabel value="V(F2-F3)" style="font-weight:normal"
@@ -779,14 +892,27 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
-											<p:inputText id="txtValor33" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.voltajeFase2A3}"
-												label="#{mensaje.valor}" title="#{mensaje.voltajeFase23}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor33" />
+
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+												<p:inputText id="txtValor33" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.voltajeFase2A3}"
+													label="#{mensaje.valor}" title="#{mensaje.voltajeFase23}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor33" />
+												<p:selectOneMenu label="unidades" required="true" disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													style="width:100%; font-size:14px;"
+													value="#{realizarMantenimiento.informeMantenimiento.unidadesFase2A3}">
+													<f:selectItem itemValue="" itemLabel="Tipo medición..." />
+													<f:selectItem itemValue="VAC" itemLabel="VAC" />
+													<f:selectItem itemValue="VDC" itemLabel="VDC" />
+
+												</p:selectOneMenu>
+
+											</p:panelGrid>
+
 										</p:outputPanel>
 
 
@@ -795,14 +921,19 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
-											<p:inputText id="txtValor34" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase1}"
-												label="#{mensaje.valor}" title="#{mensaje.corrienteFase1}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor34" />
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+
+												<p:inputText id="txtValor34" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.corrienteFase1}"
+													label="#{mensaje.valor}" title="#{mensaje.corrienteFase1}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor34" />
+											(A)
+											
+											</p:panelGrid>
 										</p:outputPanel>
 
 										<p:outputLabel value="IF2" style="font-weight:normal"
@@ -810,14 +941,18 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
-											<p:inputText id="txtValor35" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase2}"
-												label="#{mensaje.valor}" title="#{mensaje.corrienteFase2}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor35" />
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+
+												<p:inputText id="txtValor35" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.corrienteFase2}"
+													label="#{mensaje.valor}" title="#{mensaje.corrienteFase2}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor35" />
+											(A)
+											</p:panelGrid>
 										</p:outputPanel>
 
 										<p:outputLabel value="IF3" style="font-weight:normal"
@@ -825,14 +960,18 @@ input[disabled] {
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}" />
 										<p:outputPanel style="text-align:center"
 											rendered="#{realizarMantenimiento.informeMantenimiento.numeroFasesMomento.intValue()==3}">
-											<p:inputText id="txtValor36" required="true"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												value="#{realizarMantenimiento.informeMantenimiento.corrienteFase3}"
-												label="#{mensaje.valor}" title="#{mensaje.corrienteFase3}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtValor36" />
+
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank">
+												<p:inputText id="txtValor36" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													value="#{realizarMantenimiento.informeMantenimiento.corrienteFase3}"
+													label="#{mensaje.valor}" title="#{mensaje.corrienteFase3}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtValor36" />
+											(A)
+											</p:panelGrid>
 										</p:outputPanel>
 
 
@@ -861,14 +1000,24 @@ input[disabled] {
 										</p:column>
 
 										<p:column style="text-align:center">
+											<p:panelGrid columns="3" styleClass="ui-panelgrid-blank" style="width:100%" >
+												<p:inputText id="txtVoltaje" value="#{loc.voltaje}"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													required="true" label="#{mensaje.valorVoltaje}"
+													style="width:100px; font-size:14px; ; text-align:right">
+													<p:ajax event="change" process="@this" />
+												</p:inputText>
+												<p:message for="txtVoltaje" />
+												<p:selectOneMenu label="unidades" required="true"
+													disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
+													style="width:100%; font-size:14px;" value="#{loc.unidades}">
+													<f:selectItem itemValue="" itemLabel="Tipo medición..." />
+													<f:selectItem itemValue="VAC" itemLabel="VAC" />
+													<f:selectItem itemValue="VDC" itemLabel="VDC" />
 
-											<p:inputText id="txtVoltaje" value="#{loc.voltaje}"
-												disabled="#{realizarMantenimiento.informeMantenimiento.cronograma.estado=='C'}"
-												required="true" label="#{mensaje.valorVoltaje}"
-												style="width:100px; font-size:14px; ; text-align:right">
-												<p:ajax event="change" process="@this" />
-											</p:inputText>
-											<p:message for="txtVoltaje" />
+												</p:selectOneMenu>
+
+											</p:panelGrid>
 
 										</p:column>
 
@@ -967,8 +1116,7 @@ input[disabled] {
 														rendered="#{realizarMantenimiento.informeMantenimiento.cronograma.estado!='C'}"
 														style="background-origin: content-box; background-image: url('../imagenes/agregar_detalle.png'); background-size: cover; background-repeat:no-repeat; width:18px; height:18px; vertical-align:bottom; border:0; background-color:transparent"
 														action="#{realizarMantenimiento.asignarCreacionMaterialFotografico()}"
-														value=""
-														process=":form:pnlDltRegistros:dtlRegistros2b"
+														value="" process=":form:pnlDltRegistros:dtlRegistros2b"
 														update=":formEditarMaterialFotografico, :form:messages" />
 
 

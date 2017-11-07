@@ -1,7 +1,5 @@
 package optimo.generales;
 
-
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -47,10 +45,9 @@ public class FirmaComoImagen {
 		byte[] archivo = null;
 		try {
 			archivo = redrawSignature(extractSignature(aSarta));
-		} catch (IOException e) {
+		} catch (Exception e) {
 
 		}
-
 		return archivo;
 
 	}
@@ -66,7 +63,11 @@ public class FirmaComoImagen {
 	 *           if a problem writing the signature
 	 */
 	public static void generateSignature(String jsonEncoding, OutputStream output) throws IOException {
-		output.write(redrawSignature(extractSignature(jsonEncoding)));
+		try {
+			output.write(redrawSignature(extractSignature(jsonEncoding)));
+		} catch (Exception e) {
+		
+		}
 		output.close();
 	}
 
@@ -100,27 +101,31 @@ public class FirmaComoImagen {
 	 * @throws IOException
 	 *           if a problem generating the signature
 	 */
-	private static byte[] redrawSignature(List<List<Point>> lines) throws IOException {
-		BufferedImage signature = new BufferedImage(SIGNATURE_WIDTH, SIGNATURE_HEIGHT, BufferedImage.TYPE_BYTE_GRAY);
-		Graphics2D g = (Graphics2D) signature.getGraphics();
-		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, signature.getWidth(), signature.getHeight());
-		g.setColor(Color.BLACK);
-		g.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		Point lastPoint = null;
-		for (List<Point> line : lines) {
-			for (Point point : line) {
-				if (lastPoint != null) {
-					g.drawLine(lastPoint.x, lastPoint.y, point.x, point.y);
+	private static byte[] redrawSignature(List<List<Point>> lines) throws Exception {
+		try {
+			BufferedImage signature = new BufferedImage(SIGNATURE_WIDTH, SIGNATURE_HEIGHT, BufferedImage.TYPE_BYTE_GRAY);
+			Graphics2D g = (Graphics2D) signature.getGraphics();
+			g.setColor(Color.WHITE);
+			g.fillRect(0, 0, signature.getWidth(), signature.getHeight());
+			g.setColor(Color.BLACK);
+			g.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			Point lastPoint = null;
+			for (List<Point> line : lines) {
+				for (Point point : line) {
+					if (lastPoint != null) {
+						g.drawLine(lastPoint.x, lastPoint.y, point.x, point.y);
+					}
+					lastPoint = point;
 				}
-				lastPoint = point;
+				lastPoint = null;
 			}
-			lastPoint = null;
+			ByteArrayOutputStream output = new ByteArrayOutputStream();
+			ImageIO.write(signature, IMAGE_FORMAT, output);
+			ImageIO.write(signature, IMAGE_FORMAT, output);
+			return output.toByteArray();
+		} catch (Exception e) {
+			throw new Exception(e);
 		}
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		ImageIO.write(signature, IMAGE_FORMAT, output);
-		ImageIO.write(signature, IMAGE_FORMAT, output);
-		return output.toByteArray();
 	}
 }

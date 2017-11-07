@@ -2,7 +2,6 @@ package optimo.modulos.personal;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +10,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.event.SelectEvent;
+
 import optimo.Conexion;
 import optimo.beans.Administrador;
 import optimo.beans.Cliente;
+import optimo.beans.PermisoCliente;
+import optimo.beans.PersonaAcceso;
 import optimo.beans.Tecnico;
 import optimo.generales.ConsultarFuncionesAPI;
 import optimo.generales.IConstantes;
@@ -27,22 +30,28 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 	/**   
 	 * 
 	 */
-	private static final long		serialVersionUID	= 3335261820496774072L;
-	private Administrador				administrador;
-	private Administrador				administradorTransaccion;
-	private Tecnico							tecnico;
-	private Tecnico							tecnicoTransaccion;
-	private Cliente							clienteConsulta;
-	private Cliente							cliente;
-	private Cliente							clienteTransaccion;
-	private List<Administrador>	administradores;
-	private List<Tecnico>				tecnicos;
-	private List<Cliente>				clientes;
+	private static final long			serialVersionUID	= 3335261820496774072L;
+	private Administrador					administrador;
+	private Administrador					administradorTransaccion;
+
+	private PersonaAcceso					personaAcceso;
+	private PersonaAcceso					personaAccesoTransaccion;
+
+	private PermisoCliente				permisoCliente;
+	private PermisoCliente				permisoClienteTransaccion;
+
+	private Tecnico								tecnico;
+	private Tecnico								tecnicoTransaccion;
+	private Cliente								clienteConsulta;
+	private Cliente								cliente;
+	private Cliente								clienteTransaccion;
+	private List<Administrador>		administradores;
+	private List<PersonaAcceso>		personasAcceso;
+	private List<Tecnico>					tecnicos;
+	private List<Cliente>					clientes;
+	private List<PermisoCliente>	permisos;
 
 	// privados
-	
-	
-
 
 	/**
 	 * Obtiene una clave aleatoria numérica de n dígitos
@@ -63,6 +72,53 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 		}
 		return clave;
 
+	}
+
+	/**
+	 * Valida si una persona tiene acceso o no al software para administrar uno de
+	 * sus clientes
+	 * 
+	 * @param aTransaccion
+	 * @return ok
+	 */
+	private boolean isValidoPersonaAcceso(String aTransaccion) {
+		boolean ok = true;
+
+		if (aTransaccion.equals("C")) {
+			if (this.personasAcceso != null && this.personasAcceso.size() > 0 && this.personasAcceso.stream().anyMatch(i -> i.getCorreoElectronico().trim().toLowerCase().equals(this.personaAcceso.getCorreoElectronico().trim().toLowerCase()))) {
+				ok = false;
+				this.mostrarMensajeGlobal("correoExistenteAdministrador", "advertencia");
+			}
+			if (this.isVacio(this.personaAcceso.getNombres())) {
+				ok = false;
+				this.mostrarMensajeGlobal("nombresVacios", "advertencia");
+			}
+
+			if (this.isVacio(this.personaAcceso.getCorreoElectronico())) {
+				ok = false;
+				this.mostrarMensajeGlobal("correoVacio", "advertencia");
+			}
+
+		} else {
+
+			if (this.personasAcceso != null && this.personasAcceso.size() > 0 && this.personasAcceso.stream().anyMatch(i -> i.getId() != this.personaAccesoTransaccion.getId() && i.getCorreoElectronico().trim().toLowerCase().equals(this.personaAccesoTransaccion.getCorreoElectronico().trim().toLowerCase()))) {
+				ok = false;
+				this.mostrarMensajeGlobalPersonalizado("YA EXISTE UNA PERSONA CON DICHO CORREO", "advertencia");
+			}
+
+			if (this.isVacio(this.personaAccesoTransaccion.getNombres())) {
+				ok = false;
+				this.mostrarMensajeGlobal("nombresVacios", "advertencia");
+			}
+
+			if (this.isVacio(this.personaAccesoTransaccion.getCorreoElectronico())) {
+				ok = false;
+				this.mostrarMensajeGlobal("correoVacio", "advertencia");
+			}
+
+		}
+
+		return ok;
 	}
 
 	/**
@@ -158,8 +214,9 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 
 					if (clientes != null && clientes.size() > 0 && clientes.stream().anyMatch(i -> i.getCorreoElectronico().trim().toLowerCase().equals(this.cliente.getCorreoElectronico().trim().toLowerCase()))) {
 						if (!clienteExistente) {
-							ok = false;
-							this.mostrarMensajeGlobal("correoExistenteCliente", "advertencia");
+							//// ok = false;
+							//// this.mostrarMensajeGlobal("correoExistenteCliente",
+							//// "advertencia");
 						}
 					}
 
@@ -208,8 +265,9 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 					clientes = IConsultasDAO.getClientes(clienteTemp);
 
 					if (!this.clienteTransaccion.getCorreoElectronico().trim().toLowerCase().equals(this.clienteTransaccion.gettCopiaCorreo().trim().toLowerCase()) && clientes != null && clientes.size() > 0 && clientes.stream().anyMatch(i -> i.getId().intValue() != this.clienteTransaccion.getId().intValue() && i.getCorreoElectronico().trim().toLowerCase().equals(this.clienteTransaccion.getCorreoElectronico().trim().toLowerCase()))) {
-						ok = false;
-						this.mostrarMensajeGlobal("correoExistenteCliente", "advertencia");
+						///// ok = false;
+						//// this.mostrarMensajeGlobal("correoExistenteCliente",
+						///// "advertencia");
 					}
 
 				}
@@ -346,7 +404,8 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 
 				Cliente clienteTemp = new Cliente();
 				clienteTemp.setCorreoElectronico(this.cliente.getCorreoElectronico().trim());
-				List<Cliente> clientes = IConsultasDAO.getClientes(clienteTemp);
+				//////// List<Cliente> clientes =
+				//////// IConsultasDAO.getClientes(clienteTemp);
 
 				conexion.setAutoCommitBD(false);
 
@@ -357,11 +416,11 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 				this.cliente.setTelefono(this.cliente.getTelefono().trim());
 				this.cliente.setEstadoVigencia(IConstantes.ACTIVO);
 
-				if (clientes != null && clientes.size() > 0) {
-					this.cliente.setClave(clientes.get(0).getClave());
-				} else {
-					this.cliente.setClave(this.getClaveAleatoria());
-				}
+				///// if (clientes != null && clientes.size() > 0) {
+				///// this.cliente.setClave(clientes.get(0).getClave());
+				//// } else {
+				//// this.cliente.setClave(this.getClaveAleatoria());
+				//// }
 
 				this.cliente.getCamposBD();
 
@@ -375,25 +434,32 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 
 				this.cliente.setId(conexion.getUltimoSerialTransaccion(this.cliente.getEstructuraTabla().getTabla()));
 
-				this.cliente.getCamposBD();
-
-				Map<String, Object> permisos = new HashMap<String, Object>();
-				if (this.cliente.gettPermisos() != null && this.cliente.gettPermisos().length > 0) {
-
-					for (String p : this.cliente.gettPermisos()) {
-						permisos.put(p, IConstantes.AFIRMACION);
-					}
-
-					conexion.actualizarBD(this.cliente.getEstructuraTabla().getTabla(), permisos, this.cliente.getEstructuraTabla().getLlavePrimaria(), null);
-				}
+				// this.cliente.getCamposBD();
+				//
+				// Map<String, Object> permisos = new HashMap<String, Object>();
+				// if (this.cliente.gettPermisos() != null &&
+				// this.cliente.gettPermisos().length > 0) {
+				//
+				// for (String p : this.cliente.gettPermisos()) {
+				// permisos.put(p, IConstantes.AFIRMACION);
+				// }
+				//
+				// conexion.actualizarBD(this.cliente.getEstructuraTabla().getTabla(),
+				// permisos, this.cliente.getEstructuraTabla().getLlavePrimaria(),
+				// null);
+				// }
 
 				conexion.commitBD();
 
 				this.mostrarMensajeGlobal("creacionExitosa", "exito");
 				this.mostrarMensajeGlobalPersonalizado(this.getMensaje("claveAleatoria", this.cliente.getClave()), "exito");
 
-				IEmail.enviarCorreo(this.getMensaje("mensajeClaveAleatoria", this.cliente.getCliente(), this.cliente.getClave()), this.getMensaje("asuntoClaveAleatoria"), this.cliente.getCorreoElectronico());
-				this.mostrarMensajeGlobalPersonalizado(this.getMensaje("claveCorreoExitoso", this.cliente.getCorreoElectronico()), "exito");
+				// IEmail.enviarCorreo(this.getMensaje("mensajeClaveAleatoria",
+				// this.cliente.getCliente(), this.cliente.getClave()),
+				// this.getMensaje("asuntoClaveAleatoria"),
+				// this.cliente.getCorreoElectronico());
+				// this.mostrarMensajeGlobalPersonalizado(this.getMensaje("claveCorreoExitoso",
+				// this.cliente.getCorreoElectronico()), "exito");
 
 				// reseteo de variables
 
@@ -512,6 +578,49 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 	}
 
 	/**
+	 * Crea una persona con acceso
+	 */
+	public void crearPersonaAcceso() {
+		Conexion conexion = new Conexion();
+
+		try {
+			if (isValidoPersonaAcceso("C")) {
+				conexion.setAutoCommitBD(false);
+
+				this.personaAcceso.setEstadoVigencia(IConstantes.ACTIVO);
+				this.personaAcceso.setNombres(this.getSinEspacios(this.personaAcceso.getNombres()));
+
+				this.personaAcceso.setCorreoElectronico(this.personaAcceso.getCorreoElectronico().trim());
+				this.personaAcceso.setClave(this.getClaveAleatoria());
+
+				this.personaAcceso.getCamposBD();
+
+				conexion.insertarBD(this.personaAcceso.getEstructuraTabla().getTabla(), this.personaAcceso.getEstructuraTabla().getPersistencia());
+				conexion.commitBD();
+
+				this.mostrarMensajeGlobal("creacionExitosa", "exito");
+				this.mostrarMensajeGlobalPersonalizado(this.getMensaje("claveAleatoria", this.personaAcceso.getClave()), "exito");
+
+				IEmail.enviarCorreo(this.getMensaje("mensajeClaveAleatoria", this.personaAcceso.getNombres(), this.personaAcceso.getClave()), this.getMensaje("asuntoClaveAleatoria"), this.personaAcceso.getCorreoElectronico());
+				this.mostrarMensajeGlobalPersonalizado(this.getMensaje("claveCorreoExitoso", this.personaAcceso.getCorreoElectronico()), "exito");
+
+				// reseteo de variables
+				this.personaAcceso = null;
+				this.getPersonaAcceso();
+				this.personasAcceso = null;
+				this.getPersonasAcceso();
+			}
+
+		} catch (Exception e) {
+			conexion.rollbackBD();
+			this.mostrarMensajeGlobal("transaccionFallida", "error");
+		} finally {
+			conexion.cerrarConexion();
+		}
+
+	}
+
+	/**
 	 * Crea un nuevo administrador del software
 	 */
 	public void crearAdministrador() {
@@ -543,6 +652,58 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 				this.getAdministrador();
 				this.administradores = null;
 				this.getAdministradores();
+			}
+
+		} catch (Exception e) {
+			conexion.rollbackBD();
+			this.mostrarMensajeGlobal("transaccionFallida", "error");
+		} finally {
+			conexion.cerrarConexion();
+		}
+
+	}
+
+	public void generarClavePersonaAcceso() {
+
+		Conexion conexion = new Conexion();
+
+		try {
+			boolean ok = true;
+			if (this.personaAccesoTransaccion != null && this.personaAccesoTransaccion.gettTipoClave() != null && this.personaAccesoTransaccion.gettTipoClave().equals("A")) {
+
+				this.personaAccesoTransaccion.setClave(this.getClaveAleatoria());
+
+			} else {
+
+				if (this.isVacio(this.personaAccesoTransaccion.getClave())) {
+					ok = false;
+				}
+
+			}
+			if (ok) {
+				conexion.setAutoCommitBD(false);
+
+				this.personaAccesoTransaccion.getCamposBD();
+
+				conexion.actualizarBD(this.personaAccesoTransaccion.getEstructuraTabla().getTabla(), this.personaAccesoTransaccion.getEstructuraTabla().getPersistencia(), this.personaAccesoTransaccion.getEstructuraTabla().getLlavePrimaria(), null);
+				conexion.commitBD();
+
+				this.mostrarMensajeGlobalPersonalizado(this.getMensaje("claveAleatoria", this.personaAccesoTransaccion.getClave()), "exito");
+
+				IEmail.enviarCorreo(this.getMensaje("mensajeClaveAleatoria", this.personaAccesoTransaccion.getNombres(), this.personaAccesoTransaccion.getClave()), this.getMensaje("asuntoClaveAleatoria"), this.personaAccesoTransaccion.getCorreoElectronico());
+				this.mostrarMensajeGlobalPersonalizado(this.getMensaje("claveCorreoExitoso", this.personaAccesoTransaccion.getCorreoElectronico()), "exito");
+
+				this.cerrarModal("panelClaveAdministrador");
+
+				// reseteo de variables
+				this.personaAccesoTransaccion = null;
+				this.getPersonaAccesoTransaccion();
+				this.personasAcceso = null;
+				this.getPersonasAcceso();
+
+			} else {
+
+				this.mostrarMensajeGlobal("claveEnBlanco", "error");
 			}
 
 		} catch (Exception e) {
@@ -726,6 +887,68 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 	}
 
 	/**
+	 * Obtiene un método de autocompletar para el nombre de la persona
+	 * 
+	 * @param aTexto
+	 * @return clientes
+	 */
+	public List<String> usarAutocompletar(String aTexto) {
+		final List<String> personas = new ArrayList<String>();
+		try {
+
+			if (aTexto != null && !aTexto.equals("")) {
+				PersonaAcceso personaAcceso = new PersonaAcceso();
+
+				// texto buscado en nit, cliente, ubicación
+				personaAcceso.setNombres(aTexto.trim().toUpperCase());
+				personaAcceso.setEstadoVigencia(IConstantes.ACTIVO);
+				List<PersonaAcceso> listadoPersonas = IConsultasDAO.getPersonasLimitados(personaAcceso);
+
+				if (listadoPersonas != null && listadoPersonas.size() > 0) {
+
+					listadoPersonas.forEach(p -> personas.add(p.getNombres() + " ##id=" + p.getId()));
+				}
+
+			}
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+		return personas;
+	}
+
+	public void editarPersonaAcceso() {
+		Conexion conexion = new Conexion();
+
+		try {
+			if (isValidoPersonaAcceso("E")) {
+				conexion.setAutoCommitBD(false);
+
+				this.personaAccesoTransaccion.setNombres(this.getSinEspacios(this.personaAccesoTransaccion.getNombres()));
+
+				this.personaAccesoTransaccion.getCamposBD();
+				conexion.actualizarBD(this.personaAccesoTransaccion.getEstructuraTabla().getTabla(), this.personaAccesoTransaccion.getEstructuraTabla().getPersistencia(), this.personaAccesoTransaccion.getEstructuraTabla().getLlavePrimaria(), null);
+				conexion.commitBD();
+				this.mostrarMensajeGlobal("edicionExitosa", "exito");
+				this.mostrarMensajeGlobal("algunosCambios", "advertencia");
+				this.cerrarModal("panelEdicionAdministrador");
+
+				// reseteo de variables
+				this.personaAccesoTransaccion = null;
+				this.getPersonaAccesoTransaccion();
+				this.personasAcceso = null;
+				this.getPersonasAcceso();
+			}
+
+		} catch (Exception e) {
+			conexion.rollbackBD();
+			this.mostrarMensajeGlobal("transaccionFallida", "error");
+		} finally {
+			conexion.cerrarConexion();
+		}
+
+	}
+
+	/**
 	 * Edita un registro de administrador de software
 	 */
 	public void editarAdministrador() {
@@ -778,23 +1001,32 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 
 				this.clienteTransaccion.getCamposBD();
 
-				this.clienteTransaccion.getEstructuraTabla().getPersistencia().put("informe_mantenimiento", IConstantes.NEGACION);
-				this.clienteTransaccion.getEstructuraTabla().getPersistencia().put("reporte_fallas", IConstantes.NEGACION);
-				this.clienteTransaccion.getEstructuraTabla().getPersistencia().put("cronograma", IConstantes.NEGACION);
-				this.clienteTransaccion.getEstructuraTabla().getPersistencia().put("indicadores_gestion", IConstantes.NEGACION);
-				this.clienteTransaccion.getEstructuraTabla().getPersistencia().put("hoja_vida", IConstantes.NEGACION);
+				// this.clienteTransaccion.getEstructuraTabla().getPersistencia().put("informe_mantenimiento",
+				// IConstantes.NEGACION);
+				// this.clienteTransaccion.getEstructuraTabla().getPersistencia().put("reporte_fallas",
+				// IConstantes.NEGACION);
+				// this.clienteTransaccion.getEstructuraTabla().getPersistencia().put("cronograma",
+				// IConstantes.NEGACION);
+				// this.clienteTransaccion.getEstructuraTabla().getPersistencia().put("indicadores_gestion",
+				// IConstantes.NEGACION);
+				// this.clienteTransaccion.getEstructuraTabla().getPersistencia().put("hoja_vida",
+				// IConstantes.NEGACION);
 
 				conexion.actualizarBD(this.clienteTransaccion.getEstructuraTabla().getTabla(), this.clienteTransaccion.getEstructuraTabla().getPersistencia(), this.clienteTransaccion.getEstructuraTabla().getLlavePrimaria(), null);
 
-				Map<String, Object> permisos = new HashMap<String, Object>();
-				if (this.clienteTransaccion.gettPermisos() != null && this.clienteTransaccion.gettPermisos().length > 0) {
-
-					for (String p : this.clienteTransaccion.gettPermisos()) {
-						permisos.put(p, IConstantes.AFIRMACION);
-					}
-
-					conexion.actualizarBD(this.clienteTransaccion.getEstructuraTabla().getTabla(), permisos, this.clienteTransaccion.getEstructuraTabla().getLlavePrimaria(), null);
-				}
+				// Map<String, Object> permisos = new HashMap<String, Object>();
+				// if (this.clienteTransaccion.gettPermisos() != null &&
+				// this.clienteTransaccion.gettPermisos().length > 0) {
+				//
+				// for (String p : this.clienteTransaccion.gettPermisos()) {
+				// permisos.put(p, IConstantes.AFIRMACION);
+				// }
+				//
+				// conexion.actualizarBD(this.clienteTransaccion.getEstructuraTabla().getTabla(),
+				// permisos,
+				// this.clienteTransaccion.getEstructuraTabla().getLlavePrimaria(),
+				// null);
+				// }
 
 				conexion.commitBD();
 				this.mostrarMensajeGlobal("edicionExitosa", "exito");
@@ -862,6 +1094,153 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 	}
 
 	/**
+	 * Elimina una actividad permiso
+	 */
+	public void eliminarActividad() {
+
+		Conexion conexion = new Conexion();
+
+		try {
+
+			conexion.setAutoCommitBD(false);
+			this.permisoClienteTransaccion.getCamposBD();
+			conexion.eliminarBD(this.permisoClienteTransaccion.getEstructuraTabla().getTabla(), this.permisoClienteTransaccion.getEstructuraTabla().getLlavePrimaria());
+
+			conexion.commitBD();
+			this.mostrarMensajeGlobal("eliminacionExitosa", "exito");
+
+			this.cerrarModal("panelEliminacionActividad");
+
+		} catch (Exception e) {
+			conexion.rollbackBD();
+			this.mostrarMensajeGlobal("transaccionFallida", "error");
+			this.mostrarMensajeGlobal("eliminacionFallida", "error");
+
+		} finally {
+			conexion.cerrarConexion();
+		}
+
+		// reseteo de variables
+		this.permisoClienteTransaccion = null;
+		this.getPermisoClienteTransaccion();
+		this.permisos = null;
+		this.getPermisos();
+
+	}
+
+	/**
+	 * Permite crear una actividad para un equipo
+	 */
+	public void crearActividad() {
+		Conexion conexion = new Conexion();
+
+		try {
+
+			if (this.permisos != null && this.permisos.size() > 0 && this.permisos.stream().anyMatch(p -> p.getPersonaAcceso().getId().intValue() == this.permisoCliente.getPersonaAcceso().getId().intValue())) {
+				this.mostrarMensajeGlobalPersonalizado("PERSONA YA SE ENCUENTRA AGREGADA", "advertencia");
+				return;
+			}
+
+			conexion.setAutoCommitBD(false);
+
+			this.permisoCliente.getCamposBD();
+			conexion.insertarBD(this.permisoCliente.getEstructuraTabla().getTabla(), this.permisoCliente.getEstructuraTabla().getPersistencia());
+			conexion.commitBD();
+			this.mostrarMensajeGlobal("creacionExitosa", "exito");
+
+			// reseteo de variables
+			this.permisoCliente = null;
+			this.getPermisoCliente();
+			this.permisos = null;
+			this.getPermisos();
+
+		} catch (Exception e) {
+			conexion.rollbackBD();
+			this.mostrarMensajeGlobal("transaccionFallida", "error");
+		} finally {
+			conexion.cerrarConexion();
+		}
+
+	}
+
+	/**
+	 * Cancela la edición de una actividad
+	 * 
+	 * @param aVista
+	 */
+	public void cancelarActividadTransaccion(String aVista) {
+		try {
+
+			this.permisoClienteTransaccion = null;
+			this.getPermisoClienteTransaccion();
+			this.permisos = null;
+			this.getPermisos();
+
+			if (aVista != null && aVista.equals("MODAL_EDITAR_ACTIVIDAD")) {
+				this.cerrarModal("panelEdicionActividad");
+
+			} else if (aVista != null && aVista.equals("MODAL_ELIMINAR_ACTIVIDAD")) {
+				this.cerrarModal("panelEliminacionActividad");
+
+			}
+		} catch (Exception e) {
+
+			IConstantes.log.error(e, e);
+
+		}
+
+	}
+
+	/**
+	 * Cancela una actividad
+	 */
+	public void cancelarActividad() {
+
+		try {
+			this.permisoCliente = null;
+			this.getPermisoCliente();
+			this.permisoClienteTransaccion = null;
+			this.getPermisoClienteTransaccion();
+			this.permisos = null;
+			this.getPermisos();
+
+			this.cerrarModal("panelVerActividad");
+
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+
+	}
+
+	/**
+	 * Asigna una actividad para ser editada o eliminada
+	 * 
+	 * @param aActividad
+	 * @param aVista
+	 */
+	public void asignarActividad(PermisoCliente aActividad, String aVista) {
+
+		try {
+
+			this.permisoClienteTransaccion = aActividad;
+
+			if (aVista != null && aVista.equals("MODAL_EDITAR_ACTIVIDAD")) {
+
+				this.abrirModal("panelEdicionActividad");
+
+			} else {
+
+				this.abrirModal("panelEliminacionActividad");
+
+			}
+
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+
+	}
+
+	/**
 	 * Elimina un cliente
 	 */
 	public void eliminarCliente() {
@@ -922,6 +1301,33 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 
 	}
 
+	public void eliminarPersonaAcceso() {
+
+		Conexion conexion = new Conexion();
+		try {
+
+			conexion.setAutoCommitBD(false);
+			this.personaAccesoTransaccion.getCamposBD();
+			conexion.eliminarBD(this.personaAccesoTransaccion.getEstructuraTabla().getTabla(), this.personaAccesoTransaccion.getEstructuraTabla().getLlavePrimaria());
+			conexion.commitBD();
+			this.mostrarMensajeGlobal("eliminacionExitosa", "exito");
+
+		} catch (Exception e) {
+			conexion.rollbackBD();
+			this.mostrarMensajeGlobal("transaccionFallida", "error");
+			this.mostrarMensajeGlobal("eliminacionFallida", "error");
+
+		} finally {
+			conexion.cerrarConexion();
+		}
+
+		// reseteo de variables
+		this.personaAccesoTransaccion = null;
+		this.personasAcceso = null;
+		this.getPersonasAcceso();
+
+	}
+
 	/**
 	 * Elimina un registro de adminiistador
 	 */
@@ -949,6 +1355,22 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 		this.administradorTransaccion = null;
 		this.administradores = null;
 		this.getAdministradores();
+
+	}
+
+	/**
+	 * Cancela una persona con acceso
+	 */
+	public void cancelarPersonaAcceso() {
+
+		try {
+			this.personaAcceso = new PersonaAcceso();
+
+			this.personasAcceso = null;
+			this.getPersonasAcceso();
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
 
 	}
 
@@ -1062,6 +1484,32 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 
 	}
 
+	public void cancelarPersonaTransaccion(String aVista) {
+		try {
+
+			this.personaAccesoTransaccion = new PersonaAcceso();
+			this.personasAcceso = null;
+			this.getPersonasAcceso();
+
+			if (aVista != null && aVista.equals("MODAL_EDITAR_ADMINISTRADOR")) {
+				this.cerrarModal("panelEdicionAdministrador");
+
+			} else if (aVista != null && aVista.equals("MODAL_CLAVE_ADMINISTRADOR")) {
+				this.cerrarModal("panelClaveAdministrador");
+
+			} else if (aVista != null && aVista.equals("MODAL_ELIMINAR_ADMINISTRADOR")) {
+				this.cerrarModal("panelEliminacionAdministrador");
+
+			}
+
+		} catch (Exception e) {
+
+			IConstantes.log.error(e, e);
+
+		}
+
+	}
+
 	/**
 	 * Este método borra el formulario de edición de un administrador en
 	 * transacción
@@ -1093,6 +1541,44 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 	}
 
 	/**
+	 * Método que me selecciona el nombre del cliente, lo busca y llena el nit y
+	 * otros
+	 * 
+	 * @param event
+	 */
+	public void onItemSelect(SelectEvent event) {
+
+		try {
+
+			if (event != null && event.getObject() != null && !event.getObject().toString().trim().equals("") && this.permisoCliente != null) {
+
+				String[] separado = event.getObject().toString().trim().split("##id=");
+
+				PersonaAcceso temp = new PersonaAcceso();
+				temp.setId(Integer.parseInt(separado[1]));
+				
+		
+
+				List<PersonaAcceso> personas = IConsultasDAO.getPersonasLimitados(temp);
+
+				PersonaAcceso persona = personas != null && personas.size() > 0 ? personas.get(0) : null;
+
+				if (persona != null && persona.getId() != null) {
+					this.permisoCliente.getPersonaAcceso().setId(persona.getId());
+					this.permisoCliente.getPersonaAcceso().setNombres(persona.getNombres());
+					this.permisoCliente.getPersonaAcceso().settClienteAutocompletado(this.permisoCliente.getPersonaAcceso().getNombres());
+
+				}
+
+			}
+
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+
+	}
+
+	/**
 	 * Asigna un cliente para realizar una transacción
 	 * 
 	 * @param aCliente
@@ -1104,34 +1590,57 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 
 			this.clienteTransaccion = aCliente;
 
-			List<String> temp = new ArrayList<String>();
-			this.clienteTransaccion.settPermisos(null);
-			if (this.clienteTransaccion.getCronograma() != null && this.clienteTransaccion.getCronograma().equals(IConstantes.AFIRMACION)) {
-				temp.add("cronograma");
-			}
-			if (this.clienteTransaccion.getInformeMantenimiento() != null && this.clienteTransaccion.getInformeMantenimiento().equals(IConstantes.AFIRMACION)) {
-				temp.add("informe_mantenimiento");
-			}
-			if (this.clienteTransaccion.getReporteFallas() != null && this.clienteTransaccion.getReporteFallas().equals(IConstantes.AFIRMACION)) {
-				temp.add("reporte_fallas");
-			}
-			if (this.clienteTransaccion.getIndicadoresGestion() != null && this.clienteTransaccion.getIndicadoresGestion().equals(IConstantes.AFIRMACION)) {
-				temp.add("indicadores_gestion");
-			}
-			if (this.clienteTransaccion.getHojaVida() != null && this.clienteTransaccion.getHojaVida().equals(IConstantes.AFIRMACION)) {
-				temp.add("hoja_vida");
-			}
+			// List<String> temp = new ArrayList<String>();
+			// this.clienteTransaccion.settPermisos(null);
+			// if (this.clienteTransaccion.getCronograma() != null &&
+			// this.clienteTransaccion.getCronograma().equals(IConstantes.AFIRMACION))
+			// {
+			// temp.add("cronograma");
+			// }
+			// if (this.clienteTransaccion.getInformeMantenimiento() != null &&
+			// this.clienteTransaccion.getInformeMantenimiento().equals(IConstantes.AFIRMACION))
+			// {
+			// temp.add("informe_mantenimiento");
+			// }
+			// if (this.clienteTransaccion.getReporteFallas() != null &&
+			// this.clienteTransaccion.getReporteFallas().equals(IConstantes.AFIRMACION))
+			// {
+			// temp.add("reporte_fallas");
+			// }
+			// if (this.clienteTransaccion.getIndicadoresGestion() != null &&
+			// this.clienteTransaccion.getIndicadoresGestion().equals(IConstantes.AFIRMACION))
+			// {
+			// temp.add("indicadores_gestion");
+			// }
+			// if (this.clienteTransaccion.getHojaVida() != null &&
+			// this.clienteTransaccion.getHojaVida().equals(IConstantes.AFIRMACION)) {
+			// temp.add("hoja_vida");
+			// }
 
-			if (temp.size() > 0) {
-				this.clienteTransaccion.settPermisos(temp.toArray(new String[temp.size()]));
-			}
+			// if (temp.size() > 0) {
+			// this.clienteTransaccion.settPermisos(temp.toArray(new
+			// String[temp.size()]));
+			// }
 
 			if (aVista != null && aVista.equals("MODAL_EDITAR_CLIENTE")) {
 				// que en realidad es copia de correo
 				this.clienteTransaccion.settCopiaCorreo(aCliente.getCorreoElectronico());
 
 				this.abrirModal("panelEdicionCliente");
-			} else if (aVista != null && aVista.equals("MODAL_CLAVE_CLIENTE")) {
+			} else if (aVista != null && aVista.equals("MODAL_VER_ACTIVIDADES")) {
+
+				this.permisoCliente = null;
+				this.getPermisoCliente();
+				this.permisoClienteTransaccion = null;
+				this.getPermisoClienteTransaccion();
+				this.permisos = null;
+				this.getPermisos();
+
+				this.abrirModal("panelVerActividad");
+
+			}
+
+			else if (aVista != null && aVista.equals("MODAL_CLAVE_CLIENTE")) {
 				this.abrirModal("panelClaveCliente");
 			} else if (aVista != null && aVista.equals("MODAL_VER_CLIENTE")) {
 				this.abrirModal("panelVerCliente");
@@ -1198,6 +1707,30 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 
 	}
 
+	public void asignarPersonaAcceso(PersonaAcceso aPersonaAcceso, String aVista) {
+
+		try {
+
+			this.personaAccesoTransaccion = aPersonaAcceso;
+
+			if (aVista != null && aVista.equals("MODAL_EDITAR_ADMINISTRADOR")) {
+				this.abrirModal("panelEdicionAdministrador");
+
+			} else if (aVista != null && aVista.equals("MODAL_CLAVE_ADMINISTRADOR")) {
+				this.abrirModal("panelClaveAdministrador");
+
+			} else {
+
+				this.abrirModal("panelEliminacionAdministrador");
+
+			}
+
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+
+	}
+
 	/**
 	 * Asigna un administrador para realizar una acción
 	 * 
@@ -1249,6 +1782,7 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 			if (this.tecnicos == null) {
 
 				this.tecnicos = IConsultasDAO.getTecnicos(null);
+		
 
 			}
 		} catch (Exception e) {
@@ -1327,6 +1861,46 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 
 	public void setAdministrador(Administrador administrador) {
 		this.administrador = administrador;
+	}
+
+	public PersonaAcceso getPersonaAcceso() {
+		try {
+			if (this.personaAcceso == null) {
+				this.personaAcceso = new PersonaAcceso();
+
+			}
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+		return personaAcceso;
+	}
+
+	public void setPersonaAcceso(PersonaAcceso personaAcceso) {
+		this.personaAcceso = personaAcceso;
+	}
+
+	public PersonaAcceso getPersonaAccesoTransaccion() {
+		return personaAccesoTransaccion;
+	}
+
+	public void setPersonaAccesoTransaccion(PersonaAcceso personaAccesoTransaccion) {
+		this.personaAccesoTransaccion = personaAccesoTransaccion;
+	}
+
+	public List<PersonaAcceso> getPersonasAcceso() {
+		try {
+			if (this.personasAcceso == null) {
+
+				this.personasAcceso = IConsultasDAO.getPersonasAcceso(null);
+			}
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+		return personasAcceso;
+	}
+
+	public void setPersonasAcceso(List<PersonaAcceso> personasAcceso) {
+		this.personasAcceso = personasAcceso;
 	}
 
 	public Tecnico getTecnico() {
@@ -1460,6 +2034,56 @@ public class AdministrarRol extends ConsultarFuncionesAPI implements Serializabl
 		itemsPermisos.add(new SelectItem("indicadores_gestion", this.getMensaje("indicadoresGestion")));
 
 		return itemsPermisos;
+	}
+
+	public PermisoCliente getPermisoCliente() {
+		try {
+			if (this.permisoCliente == null) {
+				this.permisoCliente = new PermisoCliente();
+				this.permisoCliente.getCliente().setId(this.clienteTransaccion.getId());
+			}
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+		return permisoCliente;
+	}
+
+	public void setPermisoCliente(PermisoCliente permisoCliente) {
+		this.permisoCliente = permisoCliente;
+	}
+
+	public PermisoCliente getPermisoClienteTransaccion() {
+		try {
+			if (this.permisoClienteTransaccion == null) {
+				this.permisoClienteTransaccion = new PermisoCliente();
+				this.permisoClienteTransaccion.getCliente().setId(this.permisoClienteTransaccion.getId());
+			}
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+		return permisoClienteTransaccion;
+	}
+
+	public void setPermisoClienteTransaccion(PermisoCliente permisoClienteTransaccion) {
+		this.permisoClienteTransaccion = permisoClienteTransaccion;
+	}
+
+	public List<PermisoCliente> getPermisos() {
+		try {
+			if (this.permisos == null && this.clienteTransaccion != null && this.clienteTransaccion.getId() != null) {
+				PermisoCliente actividad = new PermisoCliente();
+				actividad.getCliente().setId(this.clienteTransaccion.getId());
+				this.permisos = IConsultasDAO.getPermisos(actividad);
+
+			}
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+		return permisos;
+	}
+
+	public void setPermisos(List<PermisoCliente> permisos) {
+		this.permisos = permisos;
 	}
 
 }

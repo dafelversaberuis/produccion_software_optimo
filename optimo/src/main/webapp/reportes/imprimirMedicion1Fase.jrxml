@@ -77,33 +77,33 @@
 				</textElement>
 				<text><![CDATA[I(F)]]></text>
 			</staticText>
-			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="5f54126a-9d66-4dce-b5b4-e465300218e7" x="98" y="21" width="92" height="17"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeFaseNeutro]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeFaseNeutro+( $P{informeMantenimiento}.unidadesFaseNeutro!=null ? " "+$P{informeMantenimiento}.unidadesFaseNeutro : "" )]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="5d9b5d62-b61d-4eb1-a887-f216fbb491d7" x="98" y="40" width="92" height="17"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.corrienteFase]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.corrienteFase+" A"]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="382d13b7-e496-4f6b-935b-48ecfbb116e5" x="288" y="21" width="92" height="17"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeFaseTierra]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeFaseTierra+( $P{informeMantenimiento}.unidadesFaseTierra!=null ? " "+$P{informeMantenimiento}.unidadesFaseTierra : "" )]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="f0d94ee2-c142-4b1e-bebc-8eb9c05e6b36" x="478" y="21" width="92" height="17"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeNeutroTierra]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{informeMantenimiento}.voltajeNeutroTierra+( $P{informeMantenimiento}.unidadesNeutroTierra!=null ? " "+$P{informeMantenimiento}.unidadesNeutroTierra : "" )]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

@@ -15,6 +15,8 @@
 	<parameter name="repuestos" class="java.util.List"/>
 	<parameter name="observaciones" class="java.util.List"/>
 	<parameter name="materiales" class="java.util.List"/>
+	<parameter name="okTecnico" class="java.lang.String"/>
+	<parameter name="okCliente" class="java.lang.String"/>
 	<field name="id" class="java.lang.Integer"/>
 	<field name="estadoInicial" class="java.lang.String"/>
 	<field name="estadoFinal" class="java.lang.String"/>
@@ -455,68 +457,6 @@
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource((java.util.List)$P{baterias})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "imprimirBaterias.jasper"]]></subreportExpression>
 			</subreport>
-			<staticText>
-				<reportElement uuid="6bb61dfa-0df3-4309-94df-b565f4d5cf42" positionType="Float" x="25" y="131" width="150" height="15"/>
-				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[EJECUTOR]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="f2d02c55-410a-4c4f-b9ae-19a1b186b445" positionType="Float" x="384" y="131" width="150" height="15"/>
-				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[CLIENTE]]></text>
-			</staticText>
-			<textField>
-				<reportElement uuid="a61c5983-a033-4a7c-b773-d8c4a7cf03b0" positionType="Float" x="25" y="143" width="150" height="15"/>
-				<textElement textAlignment="Center" markup="none">
-					<font size="9" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["DOCUMENTO/TP: "+$P{informeMantenimiento}.cronograma.tecnico.documento]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="d631b236-660b-4512-8533-5e52fe80504f" positionType="Float" x="384" y="143" width="150" height="15"/>
-				<textElement textAlignment="Center" markup="none">
-					<font size="9" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["NIT/DOCUMENTO: "+$P{informeMantenimiento}.cronograma.equipo.cliente.nit]]></textFieldExpression>
-			</textField>
-			<image scaleImage="RealSize" hAlign="Center" vAlign="Bottom" onErrorType="Blank">
-				<reportElement uuid="7800c6d7-d0c4-43bc-8aeb-e55cde8afc4f" positionType="Float" x="26" y="92" width="149" height="35">
-					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
-				</reportElement>
-				<imageExpression><![CDATA[$P{rutaFirmas}+"consultor"+$P{informeMantenimiento}.cronograma.tecnico.id+".png"]]></imageExpression>
-			</image>
-			<image scaleImage="RealSize" hAlign="Center" vAlign="Bottom" onErrorType="Blank">
-				<reportElement uuid="7800c6d7-d0c4-43bc-8aeb-e55cde8afc4f" positionType="Float" x="382" y="92" width="149" height="35">
-					<printWhenExpression><![CDATA[1==2 && $P{informeMantenimiento}.cronograma.estado.equals("C")]]></printWhenExpression>
-				</reportElement>
-				<imageExpression><![CDATA[$P{rutaFirmas}+"cliente"+$P{informeMantenimiento}.cronograma.equipo.cliente.id+".png"]]></imageExpression>
-			</image>
-			<line>
-				<reportElement uuid="cabc1a06-4f3e-449b-a8c4-b6018d22f982" positionType="Float" x="25" y="127" width="150" height="1"/>
-			</line>
-			<line>
-				<reportElement uuid="0a94e6f0-fdce-4227-9bb1-68bfe982a8f6" positionType="Float" x="381" y="128" width="150" height="1"/>
-			</line>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="786e5b08-cc3d-4948-8ba8-b61e760e30c6" positionType="Float" x="369" y="104" width="183" height="15">
-					<printWhenExpression><![CDATA[$P{informeMantenimiento}.cronograma.estado.equals("C")]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Center" markup="none">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.responsableClienteMomento]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="8e924373-7269-4178-862c-609cfccef4fb" positionType="Float" x="4" y="104" width="183" height="15"/>
-				<textElement textAlignment="Center" markup="none">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.tecnico.nombres]]></textFieldExpression>
-			</textField>
 			<subreport>
 				<reportElement uuid="b3558634-48ae-45f8-b3c7-65a61ef8c2b5" positionType="Float" x="0" y="23" width="572" height="4">
 					<printWhenExpression><![CDATA[$P{recomendaciones}!=null && $P{recomendaciones}.size()>0]]></printWhenExpression>
@@ -557,6 +497,73 @@
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource((java.util.List)$P{observaciones})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "imprimirObservaciones.jasper"]]></subreportExpression>
 			</subreport>
+			<frame>
+				<reportElement uuid="523d3f64-f727-4f22-a150-dcaee834f6db" positionType="Float" x="2" y="72" width="568" height="99"/>
+				<staticText>
+					<reportElement uuid="6bb61dfa-0df3-4309-94df-b565f4d5cf42" positionType="Float" x="25" y="54" width="150" height="15"/>
+					<textElement textAlignment="Center">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[EJECUTOR]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="f2d02c55-410a-4c4f-b9ae-19a1b186b445" positionType="Float" x="384" y="54" width="150" height="15"/>
+					<textElement textAlignment="Center">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CLIENTE]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="a61c5983-a033-4a7c-b773-d8c4a7cf03b0" positionType="Float" x="25" y="66" width="150" height="15"/>
+					<textElement textAlignment="Center" markup="none">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["DOCUMENTO/TP: "+$P{informeMantenimiento}.cronograma.tecnico.documento]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="d631b236-660b-4512-8533-5e52fe80504f" positionType="Float" x="384" y="66" width="150" height="15"/>
+					<textElement textAlignment="Center" markup="none">
+						<font size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["NIT/DOCUMENTO: "+$P{informeMantenimiento}.cronograma.equipo.cliente.nit]]></textFieldExpression>
+				</textField>
+				<image scaleImage="RetainShape" hAlign="Center" vAlign="Top" onErrorType="Blank">
+					<reportElement uuid="7800c6d7-d0c4-43bc-8aeb-e55cde8afc4f" positionType="Float" x="26" y="0" width="149" height="50">
+						<printWhenExpression><![CDATA[$P{okTecnico}!=null && $P{okTecnico}.trim().equals("S")]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{rutaFirmas}+"tecnico"+$P{informeMantenimiento}.cronograma.tecnico.id+".png"]]></imageExpression>
+				</image>
+				<image scaleImage="RetainShape" hAlign="Center" vAlign="Top" onErrorType="Blank">
+					<reportElement uuid="7800c6d7-d0c4-43bc-8aeb-e55cde8afc4f" positionType="Float" x="382" y="0" width="149" height="50">
+						<printWhenExpression><![CDATA[$P{okCliente}!=null && $P{okCliente}.trim().equals("S") && $P{informeMantenimiento}.cronograma.estado.equals("C")]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{rutaFirmas}+"cliente"+$P{informeMantenimiento}.cronograma.equipo.cliente.id+".png"]]></imageExpression>
+				</image>
+				<line>
+					<reportElement uuid="cabc1a06-4f3e-449b-a8c4-b6018d22f982" positionType="Float" x="25" y="51" width="150" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="0a94e6f0-fdce-4227-9bb1-68bfe982a8f6" positionType="Float" x="381" y="51" width="150" height="1"/>
+				</line>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="786e5b08-cc3d-4948-8ba8-b61e760e30c6" positionType="Float" x="369" y="27" width="183" height="15">
+						<printWhenExpression><![CDATA[$P{okCliente}!=null && $P{okCliente}.trim().equals("N") && $P{informeMantenimiento}.cronograma.estado.equals("C")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" markup="none">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{informeMantenimiento}.responsableClienteMomento]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="8e924373-7269-4178-862c-609cfccef4fb" positionType="Float" x="4" y="27" width="183" height="15">
+						<printWhenExpression><![CDATA[$P{okTecnico}!=null && $P{okTecnico}.trim().equals("N")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" markup="none">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{informeMantenimiento}.cronograma.tecnico.nombres]]></textFieldExpression>
+				</textField>
+			</frame>
 		</band>
 	</summary>
 </jasperReport>

@@ -456,13 +456,23 @@
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estado == 'P'}" />
 								<p:outputLabel
-									value="#{mensaje.atendidoTecnico}, #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}"
+									value="#{mensaje.atendidoTecnico}, #{consultarFuncionesAPI.getFechaHoraMilitar(loc.fechaHoraAtencion)}"
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estado == 'T'}" />
 								<p:outputLabel
-									value="#{mensaje.aprobado}, fecha atención: #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}, fecha aprobación: #{consultarFuncionesAPI.getFechaColombia(loc.fechaHoraAtencion)}"
+									value="#{mensaje.aprobado}, fecha atención técnico: #{consultarFuncionesAPI.getFechaHoraMilitar(loc.fechaHoraAtencion)}, fecha aprobación cliente: #{consultarFuncionesAPI.getFechaHoraMilitar(loc.fechaHoraAtencion)}"
 									style="font-weight:normal; font-size:12px"
 									rendered="#{loc.estado == 'C'}" />
+									
+								<p:outputLabel
+									value=", fecha falla: #{consultarFuncionesAPI.getFechaHoraMilitar(loc.reporteFalla.fechaFalla)}, fecha cierre falla: #{consultarFuncionesAPI.getFechaHoraMilitar(loc.reporteFalla.fechaHoraAtencion)}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estado == 'C' and loc.tipoMantenimiento=='C'}" />
+									
+								<p:outputLabel
+									value=", fecha falla: #{consultarFuncionesAPI.getFechaHoraMilitar(loc.reporteFalla.fechaFalla)}"
+									style="font-weight:normal; font-size:12px"
+									rendered="#{loc.estado != 'C' and loc.tipoMantenimiento=='C'}" />	
 
 							</p:column>
 
@@ -475,7 +485,7 @@
 									value="#{loc.equipo.codigoQr} #{loc.equipo.nombreEquipo}"
 									style="font-weight:normal; font-size:12px" />
 
-						
+
 
 							</p:column>
 
@@ -576,13 +586,13 @@
 							<p:column headerText="#{mensaje.acciones}"
 								style="font-size:14px; text-align:center;">
 
-							
+
 
 
 								<p:commandButton id="btnIrImprimirInforme"
 									style="background-origin: content-box; background-image: url('../imagenes/pdf.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
 									action="#{realizarMantenimiento.diligenciarImprimirInforme(loc)}"
-									immediate="true" ajax="false" rendered="#{loc.estado!='P'}"
+									immediate="true" ajax="false" rendered="#{loc.estado!='P'}" 
 									value="" process="@this"
 									update=":formVerDocumento, :form:messages" />
 
@@ -594,6 +604,35 @@
 								<p:blockUI block=":form" trigger="btnIrImprimirInforme">
 									<p:graphicImage value="../imagenes/cargando.gif" />
 								</p:blockUI>
+
+
+								<p:commandButton id="btnIrFechas"
+									style="background-origin: content-box; background-image: url('../imagenes/calendario.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarCronograma.asignarCronograma(loc,'MODAL_EDITAR_FECHAS')}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									value="" process=":form:pnlDtlCronogramas"
+									update=":formEditarFechas" />
+
+
+								<p:tooltip for="btnIrFechas" value="Editar fechas"
+									rendered="#{administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A' }"
+									trackMouse="true" />
+									
+									
+									
+									<p:commandButton id="btnIrEstados"
+									style="background-origin: content-box; background-image: url('../imagenes/cambio.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarCronograma.asignarCronograma(loc,'MODAL_EDITAR_ANTERIOR')}"
+									rendered="#{administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A' and loc.estado != 'P'}"
+									value="" process=":form:pnlDtlCronogramas"
+									update=":formEditarAnterior" />
+
+
+								<p:tooltip for="btnIrEstados" value="Cambiar estado informe"
+									rendered="#{administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A' and loc.estado != 'P'}"
+									trackMouse="true" />
+
+
 
 
 								<p:commandButton id="btnIrEditar"
@@ -620,19 +659,6 @@
 									rendered="#{loc.estado=='P' and administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
 									trackMouse="true" />
 
-
-								<p:commandButton id="btnIrInformeEliminar"
-									rendered="#{loc.estado=='T' and administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
-									style="background-origin: content-box; background-image: url('../imagenes/restringido.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
-									action="#{administrarCronograma.asignarCronograma(loc,'MODAL_ELIMINAR_INFORME')}"
-									value="" process=":form:pnlDtlCronogramas"
-									update=":formEliminarInforme" />
-
-
-								<p:tooltip for="btnIrInformeEliminar"
-									value="#{mensaje.eliminarInformeMantenimiento}"
-									rendered="#{loc.estado=='T' and administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
-									trackMouse="true" />
 
 
 								<p:commandButton id="btnIrInformeAprobacion"
@@ -666,6 +692,20 @@
 									rendered="#{ !(loc.tipoMantenimiento=='C') and !(loc.estado=='T') and  !(loc.estado=='T' and administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A') and !(loc.estado!='P') and !(loc.estado=='P' and administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A') and !(loc.estado=='P' and administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A')}" />
 
 
+								<p:spacer width="13" rendered="#{loc.estado=='T' and administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"/>
+								<p:commandButton id="btnIrInformeEliminar"
+									rendered="#{loc.estado=='T' and administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									style="background-origin: content-box; background-image: url('../imagenes/restringido.png'); background-size: cover; background-repeat:no-repeat; width:16px; height:16px; vertical-align:bottom; border:0; background-color:transparent"
+									action="#{administrarCronograma.asignarCronograma(loc,'MODAL_ELIMINAR_INFORME')}"
+									value="" process=":form:pnlDtlCronogramas"
+									update=":formEliminarInforme" />
+
+
+								<p:tooltip for="btnIrInformeEliminar"
+									value="#{mensaje.eliminarInformeMantenimiento}"
+									rendered="#{loc.estado=='T' and administrarSesionCliente!=null and administrarSesionCliente.personalSesion!=null  and administrarSesionCliente.personalSesion.tipoUsuario=='A'}"
+									trackMouse="true" />
+
 							</p:column>
 
 
@@ -685,7 +725,7 @@
 									<p:column style="text-align:right; font-size:14px"
 										footerText=" " />
 
-  
+
 								</p:row>
 
 
@@ -702,6 +742,7 @@
 		</h:form>
 
 		<ui:include src="/equipos/editarCronograma.xhtml" />
+		<ui:include src="/equipos/editarEstadoAnterior.xhtml" />
 		<ui:include src="/equipos/eliminarCronograma.xhtml" />
 		<ui:include src="/equipos/eliminarInformeMantenimiento.xhtml" />
 		<ui:include src="/equipos/aprobarInformeDesdeCronograma.xhtml" />
@@ -709,6 +750,9 @@
 
 
 		<ui:include src="/equipos/verDocumentoSeleccionado.xhtml" />
+
+
+		<ui:include src="/equipos/editarFechas.xhtml" />
 
 		<p:spacer height="1000" />
 

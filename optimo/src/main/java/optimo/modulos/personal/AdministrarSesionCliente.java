@@ -11,6 +11,7 @@ import javax.faces.model.SelectItem;
 
 import optimo.beans.Administrador;
 import optimo.beans.Cliente;
+import optimo.beans.PersonaAcceso;
 import optimo.beans.Personal;
 import optimo.beans.Tecnico;
 import optimo.generales.ConsultarFuncionesAPI;
@@ -217,18 +218,21 @@ public class AdministrarSesionCliente extends ConsultarFuncionesAPI implements S
 
 				} else if (this.personal.getTipoUsuario() != null && this.personal.getTipoUsuario().equals(IConstantes.ROL_CLIENTE)) {
 
-					Cliente cliente = new Cliente();
-					cliente.setClave(this.personal.getClave());
-					cliente.setCorreoElectronico(this.personal.getCorreoElectronico().trim());
-					cliente.setEstadoVigencia(IConstantes.ACTIVO);
+					PersonaAcceso pa = new PersonaAcceso();
+					pa.setClave(this.personal.getClave());
+					pa.setCorreoElectronico(this.personal.getCorreoElectronico().trim());
+					pa.setEstadoVigencia(IConstantes.ACTIVO);
 
-					clientes = IConsultasDAO.getClientes(cliente);
+					clientes = IConsultasDAO.getClientesPermiso(pa);
 
 					if (clientes != null && clientes.size() > 0 && clientes.get(0) != null && clientes.get(0).getId() != null) {
 
 						this.personalSesion = new Personal();
 						this.personalSesion.setCorreoElectronico(clientes.get(0).getCorreoElectronico().trim());
-						this.personalSesion.setNombreCompleto(clientes.get(0).getCliente().trim());
+						this.personalSesion.setNombreCompleto(clientes.get(0).getRepresentante().trim()); // nombre
+																																												// de
+																																												// quien
+																																												// igresa
 						this.personalSesion.setTipoUsuario(this.personal.getTipoUsuario());
 						this.personalSesion.setId(clientes.get(0).getId());
 
@@ -238,21 +242,13 @@ public class AdministrarSesionCliente extends ConsultarFuncionesAPI implements S
 						this.personalSesion.setCronograma(false);
 						this.personalSesion.setIndicadoresGestion(false);
 
-						if (clientes.stream().anyMatch(p -> p.getHojaVida() != null && p.getHojaVida().trim().equals(IConstantes.AFIRMACION))) {
-							this.personalSesion.setEquipos(true);
-						}
+						this.personalSesion.setEquipos(true);
 
-						if (clientes.stream().anyMatch(p -> p.getReporteFallas() != null && p.getReporteFallas().trim().equals(IConstantes.AFIRMACION))) {
-							this.personalSesion.setReporteFallas(true);
-						}
+						this.personalSesion.setReporteFallas(true);
 
-						if (clientes.stream().anyMatch(p -> p.getCronograma() != null && p.getCronograma().trim().equals(IConstantes.AFIRMACION))) {
-							this.personalSesion.setCronograma(true);
-						}
+						this.personalSesion.setCronograma(true);
 
-						if (clientes.stream().anyMatch(p -> p.getIndicadoresGestion() != null && p.getIndicadoresGestion().trim().equals(IConstantes.AFIRMACION))) {
-							this.personalSesion.setIndicadoresGestion(true);
-						}
+						this.personalSesion.setIndicadoresGestion(true);
 
 						this.mostrarMensajeGlobal("ingresoCorrecto", "exito");
 						this.personal = null;
@@ -372,18 +368,21 @@ public class AdministrarSesionCliente extends ConsultarFuncionesAPI implements S
 
 				} else if (this.personal.getTipoUsuario() != null && this.personal.getTipoUsuario().equals(IConstantes.ROL_CLIENTE)) {
 
-					Cliente cliente = new Cliente();
-					cliente.setClave(this.personal.getClave());
-					cliente.setCorreoElectronico(this.personal.getCorreoElectronico().trim());
-					cliente.setEstadoVigencia(IConstantes.ACTIVO);
+					PersonaAcceso pa = new PersonaAcceso();
+					pa.setClave(this.personal.getClave());
+					pa.setCorreoElectronico(this.personal.getCorreoElectronico().trim());
+					pa.setEstadoVigencia(IConstantes.ACTIVO);
 
-					clientes = IConsultasDAO.getClientes(cliente);
+					clientes = IConsultasDAO.getClientesPermiso(pa);
 
 					if (clientes != null && clientes.size() > 0 && clientes.get(0) != null && clientes.get(0).getId() != null) {
 
 						this.personalSesion = new Personal();
 						this.personalSesion.setCorreoElectronico(clientes.get(0).getCorreoElectronico().trim());
-						this.personalSesion.setNombreCompleto(clientes.get(0).getCliente().trim());
+						this.personalSesion.setNombreCompleto(clientes.get(0).getRepresentante().trim()); // nombre
+						// de
+						// quien
+						// igresa
 						this.personalSesion.setTipoUsuario(this.personal.getTipoUsuario());
 						this.personalSesion.setId(clientes.get(0).getId());
 
@@ -393,21 +392,13 @@ public class AdministrarSesionCliente extends ConsultarFuncionesAPI implements S
 						this.personalSesion.setCronograma(false);
 						this.personalSesion.setIndicadoresGestion(false);
 
-						if (clientes.stream().anyMatch(p -> p.getHojaVida() != null && p.getHojaVida().trim().equals(IConstantes.AFIRMACION))) {
-							this.personalSesion.setEquipos(true);
-						}
+						this.personalSesion.setEquipos(true);
 
-						if (clientes.stream().anyMatch(p -> p.getReporteFallas() != null && p.getReporteFallas().trim().equals(IConstantes.AFIRMACION))) {
-							this.personalSesion.setReporteFallas(true);
-						}
+						this.personalSesion.setReporteFallas(true);
 
-						if (clientes.stream().anyMatch(p -> p.getCronograma() != null && p.getCronograma().trim().equals(IConstantes.AFIRMACION))) {
-							this.personalSesion.setCronograma(true);
-						}
+						this.personalSesion.setCronograma(true);
 
-						if (clientes.stream().anyMatch(p -> p.getIndicadoresGestion() != null && p.getIndicadoresGestion().trim().equals(IConstantes.AFIRMACION))) {
-							this.personalSesion.setIndicadoresGestion(true);
-						}
+						this.personalSesion.setIndicadoresGestion(true);
 
 						this.mostrarMensajeGlobal("ingresoCorrecto", "exito");
 						this.personal = null;
@@ -420,7 +411,7 @@ public class AdministrarSesionCliente extends ConsultarFuncionesAPI implements S
 
 					} else {
 
-						this.mostrarMensajeGlobal("noCoincideCredenciales", "advertencia");
+						this.mostrarMensajeGlobal("noCoincideCredencialesNoCliente", "advertencia");
 					}
 
 				} else {
@@ -501,10 +492,13 @@ public class AdministrarSesionCliente extends ConsultarFuncionesAPI implements S
 		List<SelectItem> itemsClientes = new ArrayList<SelectItem>();
 		try {
 			if (this.personalSesion != null && this.personalSesion.getId() != null && this.personalSesion.getTipoUsuario().equals(IConstantes.ROL_CLIENTE)) {
-				Cliente cliente = new Cliente();
-				cliente.setEstadoVigencia(IConstantes.ACTIVO);
-				cliente.setCorreoElectronico(this.personalSesion.getCorreoElectronico());
-				List<Cliente> clientes = IConsultasDAO.getClientes(cliente);
+				PersonaAcceso pa = new PersonaAcceso();
+				pa.setEstadoVigencia(IConstantes.ACTIVO);
+				pa.setId(this.personalSesion.getId());
+				// List<Cliente> clientes = IConsultasDAO.getClientes(cliente);
+
+				List<Cliente> clientes = IConsultasDAO.getClientesPermiso(pa);
+
 				if (clientes != null && clientes.size() > 0) {
 
 					if (clientes.size() > 1) {
@@ -532,8 +526,5 @@ public class AdministrarSesionCliente extends ConsultarFuncionesAPI implements S
 	public void setQr(String qr) {
 		this.qr = qr;
 	}
-	
-	
-	
 
 }

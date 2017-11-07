@@ -41,13 +41,13 @@
 
 
 								<p:outputLabel for="calFechaInicialAnalisis2"
-									value="#{mensaje.fechaInicialAnalisis}"
+									value="Fecha-hora inicial análisis"
 									style="font-weight:bold; font-size:14px" />
 
 								<p:calendar id="calFechaInicialAnalisis2"
-									label="#{mensaje.fechaInicialAnalisis}" required="true"
-									value="#{administrarCronograma.cronogramaConsulta.tFechaDesde}"
-									pattern="dd/MM/yyyy" mask="true"
+									label="Fecha-hora inicial análisis" required="true"
+									value="#{administrarCronograma.cronogramaConsultaIndi.tFechaDesde}"
+									pattern="dd/MM/yyyy HH:mm" mask="true"
 									style="font-size:14px;  " />
 
 
@@ -55,13 +55,13 @@
 
 
 								<p:outputLabel for="calFechaFinalAnalisis2"
-									value="#{mensaje.fechaFinalAnalisis}"
+									value="Fecha-hora final análisis"
 									style="font-weight:bold; font-size:14px" />
 
 								<p:calendar id="calFechaFinalAnalisis2" required="true"
-									label="#{mensaje.fechaFinalAnalisis}"
-									value="#{administrarCronograma.cronogramaConsulta.tFechaHasta}"
-									pattern="dd/MM/yyyy" mask="true"
+									label="Fecha-hora final análisis"
+									value="#{administrarCronograma.cronogramaConsultaIndi.tFechaHasta}"
+									pattern="dd/MM/yyyy  HH:mm" mask="true"
 									style="font-size:14px;  " />
 
 

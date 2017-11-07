@@ -90,6 +90,7 @@ public class AdministrarHojaVida extends ConsultarFuncionesAPI implements Serial
 	private List<SelectItem>							itemsClasesSoporteActivos;
 	private List<SelectItem>							itemsClasificacionesBiomedicasActivas;
 	private List<SelectItem>							itemsClasificacionesRiesgoActivas;
+	private List<SelectItem>							itemsEquipos;
 
 	// privados
 
@@ -105,6 +106,114 @@ public class AdministrarHojaVida extends ConsultarFuncionesAPI implements Serial
 		} catch (final IOException ioe) {
 			throw new UncheckedIOException(ioe);
 		}
+	}
+
+	/**
+	 * Método que me selecciona el nombre del cliente, lo busca y llena el nit y
+	 * otros
+	 * 
+	 * @param event
+	 */
+	public void onItemSelectConsulta(SelectEvent event) {
+
+		try {
+
+			if (event != null && event.getObject() != null && !event.getObject().toString().trim().equals("") && this.equipoConsulta != null) {
+
+				String[] separado = event.getObject().toString().trim().split("##id=");
+
+				Cliente temp = new Cliente();
+				temp.setId(Integer.parseInt(separado[1]));
+
+				List<Cliente> clientes = IConsultasDAO.getClientes(temp);
+
+				Cliente cliente = clientes != null && clientes.size() > 0 ? clientes.get(0) : null;
+
+				if (cliente != null && cliente.getNit() != null) {
+					this.equipoConsulta.getCliente().setId(cliente.getId());
+					this.equipoConsulta.getCliente().setNit(cliente.getNit());
+					this.equipoConsulta.getCliente().setCliente(cliente.getCliente());
+					this.equipoConsulta.getCliente().setUbicacion(cliente.getUbicacion());
+
+					this.equipoConsulta.getCliente().settClienteAutocompletado(this.equipoConsulta.getCliente().getCliente() + ", " + this.equipoConsulta.getCliente().getUbicacion());
+
+				}
+
+			}
+
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+
+	}
+
+	/**
+	 * Obtiene un listado de los equipos consulta
+	 * 
+	 * @return itemsEquipos
+	 */
+	public List<SelectItem> getItemsEquipos() {
+		try {
+
+			this.itemsEquipos = new ArrayList<SelectItem>();
+			this.itemsEquipos.add(new SelectItem("", this.getMensaje("comboVacio")));
+
+			if (this.equipoConsulta != null  && this.equipoConsulta.getCliente() != null && this.equipoConsulta.getCliente().getId() != null) {
+				Equipo equipo = new Equipo();
+				equipo.getCliente().setId(this.equipoConsulta.getCliente().getId());
+
+				List<Equipo> equipos = IConsultasDAO.getEquipos(equipo);
+				equipos.forEach(p -> this.itemsEquipos.add(new SelectItem(p.getId(), p.getNombreEquipo() + " - " + p.getCodigoQr())));
+
+			}
+
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+		return itemsEquipos;
+	}
+
+	/**
+	 * Establece los equipos según cliente seleccionado
+	 * 
+	 * @param itemsEquipos
+	 */
+	public void setItemsEquipos(List<SelectItem> itemsEquipos) {
+		this.itemsEquipos = itemsEquipos;
+	}
+
+	/**
+	 * Obtiene un método de autocompletar para el nombre cuando es consulta
+	 * 
+	 * @param aTexto
+	 * @return clientes
+	 */
+	public List<String> usarAutocompletarConsulta(String aTexto) {
+		final List<String> clientes = new ArrayList<String>();
+		try {
+
+			if (aTexto != null && !aTexto.equals("")) {
+				Cliente cliente = new Cliente();
+
+				// texto buscado en nit, cliente, ubicación
+				cliente.setCliente(aTexto.trim().toUpperCase());
+
+				List<Cliente> listadoClientes = IConsultasDAO.getClientesLimitados(cliente);
+
+				if (listadoClientes != null && listadoClientes.size() > 0) {
+
+					listadoClientes.forEach(p -> clientes.add(p.getCliente() + ", " + p.getUbicacion() + " ##id=" + p.getId()));
+				}
+
+			} else {
+
+				this.equipoConsulta.setCliente(new Cliente());
+
+			}
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+		return clientes;
 	}
 
 	/**
@@ -143,7 +252,7 @@ public class AdministrarHojaVida extends ConsultarFuncionesAPI implements Serial
 
 			HttpServletResponse response = (HttpServletResponse) ext.getResponse();
 			response.setContentType(aContentType);
-			response.setHeader("Content-Disposition", "attachment; filename=" + formato.format(new Date()) + "." + aExtension.toLowerCase());
+			response.setHeader("Content-Disposition", "attachment; filename=" + formato.format(getFechaHoraMinutoActualGmtColombia()) + "." + aExtension.toLowerCase());
 			response.setContentLength(aArchivo.length);
 			ServletOutputStream servletOutputStream = response.getOutputStream();
 
@@ -942,8 +1051,8 @@ public class AdministrarHojaVida extends ConsultarFuncionesAPI implements Serial
 
 			parametros.put("pUrl", "" + this.getMensaje("urlSistema"));
 			parametros.put("pUrlTarjeta", "" + this.getMensaje("urlTarjeta"));
-
-			this.generarListado(new JRBeanCollectionDataSource(this.equipos), IConstantes.REPORTE_QR, formato.format(new Date()), "pdf", parametros);
+			parametros.put("pLogo", this.getPath(IConstantes.PAQUETE_IMAGENES) + "/");
+			this.generarListado(new JRBeanCollectionDataSource(this.equipos), IConstantes.REPORTE_QR, formato.format(getFechaHoraMinutoActualGmtColombia()), "pdf", parametros);
 
 		} catch (Exception e) {
 
@@ -2193,7 +2302,7 @@ public class AdministrarHojaVida extends ConsultarFuncionesAPI implements Serial
 					this.equipoTransaccion.setModelo(e.getModelo());
 					this.equipoTransaccion.setNumeroSerie(e.getNumeroSerie());
 					if (this.equipoTransaccion.getEquipoBiomedico() != null && this.equipoTransaccion.getEquipoBiomedico().equals(IConstantes.AFIRMACION)) {
-						
+
 						this.equipoTransaccion.setServicio(e.getServicio());
 					}
 

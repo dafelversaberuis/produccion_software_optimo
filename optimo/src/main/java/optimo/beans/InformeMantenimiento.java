@@ -36,6 +36,15 @@ public class InformeMantenimiento implements Serializable {
 	private String												recomendaciones;
 	private String												repuestosRequeridos;
 
+	private String												unidadesFaseNeutro;
+	private String												unidadesFaseTierra;
+	private String												unidadesNeutroTierra;
+	private String												unidadesFase1A2;
+	private String												unidadesFase1Tierra;
+	private String												unidadesFase2Tierra;
+	private String												unidadesFase1A3;
+	private String												unidadesFase2A3;
+
 	private List<BateriaMantenimiento>		tBaterias;
 	private List<ActividadMantenimiento>	tActividades;
 	private List<MaterialFotografico>			tMaterialesFotograficos;
@@ -73,6 +82,17 @@ public class InformeMantenimiento implements Serializable {
 
 		this.estructuraTabla.getPersistencia().put("recomendaciones", this.recomendaciones);
 		this.estructuraTabla.getPersistencia().put("repuestos_requeridos", this.repuestosRequeridos);
+
+		this.estructuraTabla.getPersistencia().put("unidades_fase_neutro", this.unidadesFaseNeutro);
+		this.estructuraTabla.getPersistencia().put("unidades_fase_tierra", this.unidadesFaseTierra);
+		this.estructuraTabla.getPersistencia().put("unidades_neutro_tierra", this.unidadesNeutroTierra);
+
+		this.estructuraTabla.getPersistencia().put("unidades_fase_1_2", this.unidadesFase1A2);
+		this.estructuraTabla.getPersistencia().put("unidades_fase_1_Tierra", this.unidadesFase1Tierra);
+		this.estructuraTabla.getPersistencia().put("unidades_fase_2_tierra", this.unidadesFase2Tierra);
+
+		this.estructuraTabla.getPersistencia().put("unidades_fase_1_3", this.unidadesFase1A3);
+		this.estructuraTabla.getPersistencia().put("unidades_fase_2_3", this.unidadesFase2A3);
 
 		if (this.cronograma != null && this.cronograma.getId() != null) {
 			this.estructuraTabla.getLlavePrimaria().put("id_cronograma", this.cronograma.getId());
@@ -296,6 +316,70 @@ public class InformeMantenimiento implements Serializable {
 
 	public void settMaterialesFotograficos(List<MaterialFotografico> tMaterialesFotograficos) {
 		this.tMaterialesFotograficos = tMaterialesFotograficos;
+	}
+
+	public String getUnidadesFaseNeutro() {
+		return unidadesFaseNeutro;
+	}
+
+	public void setUnidadesFaseNeutro(String unidadesFaseNeutro) {
+		this.unidadesFaseNeutro = unidadesFaseNeutro;
+	}
+
+	public String getUnidadesFaseTierra() {
+		return unidadesFaseTierra;
+	}
+
+	public void setUnidadesFaseTierra(String unidadesFaseTierra) {
+		this.unidadesFaseTierra = unidadesFaseTierra;
+	}
+
+	public String getUnidadesNeutroTierra() {
+		return unidadesNeutroTierra;
+	}
+
+	public void setUnidadesNeutroTierra(String unidadesNeutroTierra) {
+		this.unidadesNeutroTierra = unidadesNeutroTierra;
+	}
+
+	public String getUnidadesFase1A2() {
+		return unidadesFase1A2;
+	}
+
+	public void setUnidadesFase1A2(String unidadesFase1A2) {
+		this.unidadesFase1A2 = unidadesFase1A2;
+	}
+
+	public String getUnidadesFase1Tierra() {
+		return unidadesFase1Tierra;
+	}
+
+	public void setUnidadesFase1Tierra(String unidadesFase1Tierra) {
+		this.unidadesFase1Tierra = unidadesFase1Tierra;
+	}
+
+	public String getUnidadesFase2Tierra() {
+		return unidadesFase2Tierra;
+	}
+
+	public void setUnidadesFase2Tierra(String unidadesFase2Tierra) {
+		this.unidadesFase2Tierra = unidadesFase2Tierra;
+	}
+
+	public String getUnidadesFase1A3() {
+		return unidadesFase1A3;
+	}
+
+	public void setUnidadesFase1A3(String unidadesFase1A3) {
+		this.unidadesFase1A3 = unidadesFase1A3;
+	}
+
+	public String getUnidadesFase2A3() {
+		return unidadesFase2A3;
+	}
+
+	public void setUnidadesFase2A3(String unidadesFase2A3) {
+		this.unidadesFase2A3 = unidadesFase2A3;
 	}
 
 }

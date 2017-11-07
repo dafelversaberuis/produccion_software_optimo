@@ -76,7 +76,7 @@ public interface IConstantes {
 	public static final String	SMTP_HOST_NAME														= "smtp.gmail.com";
 	public static final int			SMTP_HOST_PORT														= 465;
 	public static final String	SMTP_AUTH_USER														= "contacto@spicol.com";
-	public static final String	SMTP_AUTH_PWD															= "SPI*2017";
+	public static final String	SMTP_AUTH_PWD															= "dadadad"; //Sp1*c0l0mb14
 
 	public static String				ID_USUARIO_SESION													= "dafelver";
 

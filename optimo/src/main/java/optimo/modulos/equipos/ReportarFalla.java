@@ -105,7 +105,10 @@ public class ReportarFalla extends ConsultarFuncionesAPI implements Serializable
 
 			if (aTransaccion.equals("C")) {
 
-				this.reporteFalla.setFechaFalla(this.getFechaCeroHoras(new Date()));
+				// this.reporteFalla.setFechaFalla(this.getFechaCeroHoras(getFechaHoraMinutoActualGmtColombia()));
+
+				this.reporteFalla.setFechaFalla(getFechaHoraMinutoActualGmtColombia());
+
 				if (this.isVacio(this.reporteFalla.getDescripcionFalla())) {
 					ok = false;
 					this.mostrarMensajeGlobal("campoEstaVacio", "advertencia");
@@ -452,7 +455,7 @@ public class ReportarFalla extends ConsultarFuncionesAPI implements Serializable
 				}
 
 				conexion.setAutoCommitBD(false);
-				this.reporteFalla.setFechaFalla(new Date());
+				this.reporteFalla.setFechaFalla(getFechaHoraMinutoActualGmtColombia());
 				this.reporteFalla.setEstado(IConstantes.ESTADO_ABIERTO);
 
 				this.reporteFalla.getCamposBD();
@@ -532,7 +535,7 @@ public class ReportarFalla extends ConsultarFuncionesAPI implements Serializable
 				this.reporteFalla.setEquipo(IConsultasDAO.getEquipos(equipo).get(0));
 
 				conexion.setAutoCommitBD(false);
-				this.reporteFalla.setFechaFalla(new Date());
+				this.reporteFalla.setFechaFalla(getFechaHoraMinutoActualGmtColombia());
 				this.reporteFalla.setEstado(IConstantes.ESTADO_ABIERTO);
 
 				this.reporteFalla.getCamposBD();
@@ -606,12 +609,13 @@ public class ReportarFalla extends ConsultarFuncionesAPI implements Serializable
 				conexion.setAutoCommitBD(false);
 
 				this.reporteFallaTransaccion.setEstado(IConstantes.ESTADO_CERRADO);
-				this.reporteFallaTransaccion.setFechaHoraAtencion(new Date());
+				this.reporteFallaTransaccion.setFechaHoraAtencion(getFechaHoraMinutoActualGmtColombia());
 				// campos que va actualizar
 
 				Map<String, Object> campos = new HashMap<String, Object>();
 				campos.put("estado", this.reporteFallaTransaccion.getEstado());
-				campos.put("reporteFallaTransaccion", this.reporteFallaTransaccion.getFechaHoraAtencion());
+				campos.put("fecha_atencion", this.reporteFallaTransaccion.getFechaHoraAtencion());
+				campos.put("concepto_cierre_manual", this.reporteFallaTransaccion.getConceptoCierreManual());
 				this.reporteFallaTransaccion.getCamposBD();
 				conexion.actualizarBD(this.reporteFallaTransaccion.getEstructuraTabla().getTabla(), campos, this.reporteFallaTransaccion.getEstructuraTabla().getLlavePrimaria(), null);
 

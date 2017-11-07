@@ -37,10 +37,12 @@ public class Cronograma implements Serializable {
 	private Date							tFechaHasta;
 	private Date							tFechaEvaluacion;
 	private String						tObservaciones;
+	private String						tCopiaEstado;
 
 	private EstructuraTabla		estructuraTabla;
 
-	private Integer						tIntervaloAnalizado;
+	// private Integer tIntervaloAnalizado;
+	private BigDecimal				tIntervaloAnalizado;
 
 	public Cronograma() {
 		this.estructuraTabla = new EstructuraTabla();
@@ -237,11 +239,11 @@ public class Cronograma implements Serializable {
 		this.tObservaciones = tObservaciones;
 	}
 
-	public Integer gettIntervaloAnalizado() {
+	public BigDecimal gettIntervaloAnalizado() {
 		return tIntervaloAnalizado;
 	}
 
-	public void settIntervaloAnalizado(Integer tIntervaloAnalizado) {
+	public void settIntervaloAnalizado(BigDecimal tIntervaloAnalizado) {
 		this.tIntervaloAnalizado = tIntervaloAnalizado;
 	}
 
@@ -261,5 +263,12 @@ public class Cronograma implements Serializable {
 		this.versionReporte = versionReporte;
 	}
 
+	public String gettCopiaEstado() {
+		return tCopiaEstado;
+	}
+
+	public void settCopiaEstado(String tCopiaEstado) {
+		this.tCopiaEstado = tCopiaEstado;
+	}
 
 }

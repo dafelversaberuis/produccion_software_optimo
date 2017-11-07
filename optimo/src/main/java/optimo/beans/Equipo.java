@@ -58,7 +58,8 @@ public class Equipo implements Serializable {
 	private String									tCopiaNumeroInventario;
 	private String									tCopiaNumeroSerie;
 
-	private Integer									tTiempoFueraServicio;											// TFS
+	// private Integer tTiempoFueraServicio; // TFS
+	private BigDecimal							tTiempoFueraServicio;
 	private Integer									tTiempoParadasProgramadas;								// TPP
 	private Integer									tTiempoProgramadoMantenimientoCorrectivo;	// TPMC
 	private Integer									tNumeroFallas;														// NF
@@ -462,11 +463,11 @@ public class Equipo implements Serializable {
 		this.tCopiaNumeroSerie = tCopiaNumeroSerie;
 	}
 
-	public Integer gettTiempoFueraServicio() {
+	public BigDecimal gettTiempoFueraServicio() {
 		return tTiempoFueraServicio;
 	}
 
-	public void settTiempoFueraServicio(Integer tTiempoFueraServicio) {
+	public void settTiempoFueraServicio(BigDecimal tTiempoFueraServicio) {
 		this.tTiempoFueraServicio = tTiempoFueraServicio;
 	}
 

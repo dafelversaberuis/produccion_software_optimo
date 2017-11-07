@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,6 +55,7 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 	private Cronograma								cronograma;
 	private Cronograma								cronogramaTransaccion;
 	private Cronograma								cronogramaConsulta;
+	private Cronograma								cronogramaConsultaIndi;
 	private BarChartModel							graficoBarrasDisponibilidad;
 	private BarChartModel							graficoBarrasConfiabilidad;
 	private BarChartModel							graficoBarrasMantenibilidad;
@@ -123,30 +126,67 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 		return ok;
 	}
 
+	// /**
+	// * Obtiene el número de horas para dos fechas incluye extermos[]
+	// *
+	// * @param aFechaInicial
+	// * @param aFechaFinal
+	// * @return horas
+	// */
+	// private int getHorasEntreFechasIndicadores(Date aFechaInicial, Date
+	// aFechaFinal) {
+	// int horas = 0;
+	// try {
+	// SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+	//
+	// aFechaInicial = formato.parse(formato.format(aFechaInicial));
+	// aFechaFinal = formato.parse(formato.format(aFechaFinal));
+	//
+	// horas = (int) ((aFechaFinal.getTime() - aFechaInicial.getTime()) /
+	// 86400000);
+	// horas++;
+	// horas = IConstantes.HORAS_DIA_INDICADORES_GESTION.intValue() * horas;
+	//
+	// } catch (Exception e) {
+	// IConstantes.log.error(e, e);
+	// }
+	//
+	// return horas;
+	// }
+
 	/**
-	 * Obtiene el número de horas para dos fechas incluye extermos[]
+	 * Obtiene las horas entre fechas
 	 * 
 	 * @param aFechaInicial
 	 * @param aFechaFinal
-	 * @return horas
+	 * @return numeroHoras
 	 */
-	private int getHorasEntreFechasIndicadores(Date aFechaInicial, Date aFechaFinal) {
-		int horas = 0;
+	private BigDecimal getHorasEntreFechasIndicadores(Date aFechaInicial, Date aFechaFinal) {
+		BigDecimal numeroHoras = new BigDecimal(0);
+		SimpleDateFormat ano = new SimpleDateFormat("yyyy");
+		SimpleDateFormat mes = new SimpleDateFormat("MM");
+		SimpleDateFormat dia = new SimpleDateFormat("dd");
+		SimpleDateFormat hora = new SimpleDateFormat("HH");
+		SimpleDateFormat minuto = new SimpleDateFormat("mm");
+
 		try {
-			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+			LocalDateTime localDateTime1 = LocalDateTime.of(Integer.parseInt(ano.format(aFechaInicial)), Integer.parseInt(mes.format(aFechaInicial)), Integer.parseInt(dia.format(aFechaInicial)), 0, 0);
+			LocalDateTime localDateTime2 = LocalDateTime.of(Integer.parseInt(ano.format(aFechaFinal)), Integer.parseInt(mes.format(aFechaFinal)), Integer.parseInt(dia.format(aFechaFinal)), 0, 0);
+			Duration duration = Duration.between(localDateTime1, localDateTime2);
+			long milisegundos = duration.toMillis();
+			numeroHoras = new BigDecimal(milisegundos / 3600000.00);
 
-			aFechaInicial = formato.parse(formato.format(aFechaInicial));
-			aFechaFinal = formato.parse(formato.format(aFechaFinal));
+			// a las horas en fechas le sumamos la parte decimal
+			numeroHoras = numeroHoras.add(new BigDecimal(hora.format(aFechaFinal) + "." + minuto.format(aFechaFinal)).subtract(new BigDecimal(hora.format(aFechaInicial) + "." + minuto.format(aFechaInicial))));
 
-			horas = (int) ((aFechaFinal.getTime() - aFechaInicial.getTime()) / 86400000);
-			horas++;
-			horas = IConstantes.HORAS_DIA_INDICADORES_GESTION.intValue() * horas;
+			numeroHoras = this.getValorRedondeado(numeroHoras, IConstantes.DECIMALES_REDONDEAR);
 
 		} catch (Exception e) {
 			IConstantes.log.error(e, e);
 		}
 
-		return horas;
+		return numeroHoras;
+
 	}
 
 	// publicos
@@ -235,7 +275,7 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 							// porcentaje cumplimiento
 							p.settPorcentajeCumplimiento(new BigDecimal(0));
 							if (p.gettTotalIntervencionesProgramadas().intValue() > 0) {
-								p.settPorcentajeCumplimiento(this.getValorRedondeado((new BigDecimal(p.gettTotalIntervencionesRealizadas()).multiply(new BigDecimal(100))).divide(new BigDecimal(p.gettTotalIntervencionesProgramadas()), IConstantes.DECIMALES_REDONDEAR, RoundingMode.HALF_UP), IConstantes.DECIMALES_REDONDEAR));
+								p.settPorcentajeCumplimiento(this.getValorRedondeado((new BigDecimal(p.gettTotalIntervencionesRealizadas()).multiply(new BigDecimal(100))).divide(new BigDecimal(p.gettTotalIntervencionesProgramadas()), 10, RoundingMode.HALF_UP), IConstantes.DECIMALES_REDONDEAR));
 							}
 
 						}
@@ -273,16 +313,14 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 			List<Cronograma> mantenimientosPreventivos = null;
 			List<Cronograma> mantenimientosCorrectivos = null;
 			List<Cronograma> mantenimientos = null;
-			final List<ReporteFalla> reportesFallasSoloValidas = new ArrayList<ReporteFalla>();
-			final List<ReporteFalla> reportesFallasValidasConteo = new ArrayList<ReporteFalla>();
 
-			if (formato.format(this.cronogramaConsulta.gettFechaDesde()).compareTo(formato.format(this.cronogramaConsulta.gettFechaHasta())) <= 0) {
+			if (formato.format(this.cronogramaConsultaIndi.gettFechaDesde()).compareTo(formato.format(this.cronogramaConsultaIndi.gettFechaHasta())) <= 0) {
 
-				this.cronogramaConsulta.settFechaDesde(this.getFechaCeroHoras(this.cronogramaConsulta.gettFechaDesde()));
-				this.cronogramaConsulta.settFechaHasta(this.getFechaCeroHoras(this.cronogramaConsulta.gettFechaHasta()));
+				/// this.cronogramaConsulta.settFechaDesde(this.getFechaCeroHoras(this.cronogramaConsulta.gettFechaDesde()));
+				/// this.cronogramaConsulta.settFechaHasta(this.getFechaCeroHoras(this.cronogramaConsulta.gettFechaHasta()));
 
 				// IA
-				this.cronogramaConsulta.settIntervaloAnalizado(this.getHorasEntreFechasIndicadores(this.cronogramaConsulta.gettFechaDesde(), this.cronogramaConsulta.gettFechaHasta()));
+				this.cronogramaConsulta.settIntervaloAnalizado(this.getHorasEntreFechasIndicadores(this.cronogramaConsultaIndi.gettFechaDesde(), this.cronogramaConsultaIndi.gettFechaHasta()));
 
 				// EQUIPOS A MOSTRAR
 				equipo = new Equipo();
@@ -299,20 +337,23 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 						// TFS
 						reporteFalla = new ReporteFalla();
 						reporteFalla.getEquipo().setId(p.getId());
-						reporteFalla.settFechaDesde(this.cronogramaConsulta.gettFechaDesde());
-						reporteFalla.settFechaHasta(this.cronogramaConsulta.gettFechaHasta());
+						reporteFalla.settFechaDesde(this.cronogramaConsultaIndi.gettFechaDesde());
+						reporteFalla.settFechaHasta(this.cronogramaConsultaIndi.gettFechaHasta());
 						reporteFalla.setEstado(IConstantes.ABREVIATURA_CERRADA);
 
 						reportesFallas = IConsultasDAO.getReportesFallas(reporteFalla);
+						final List<ReporteFalla> reportesFallasSoloValidas = new ArrayList<ReporteFalla>();
 						if (reportesFallas != null && reportesFallas.size() > 0) {
-							// solo las válidas
+							// solo las válidas, es decir las anuladas se equivoco la persona
+							// al crear el reporte
 							reportesFallas.stream().filter(a -> !(a.getConceptoCierreManual() != null && !a.getConceptoCierreManual().trim().equals(""))).forEach(a -> reportesFallasSoloValidas.add(a));
 						}
 
-						p.settTiempoFueraServicio(0);
+						p.settTiempoFueraServicio(new BigDecimal(0));
+
 						if (reportesFallasSoloValidas != null && reportesFallasSoloValidas.size() > 0) {
 							for (ReporteFalla r : reportesFallasSoloValidas) {
-								p.settTiempoFueraServicio(p.gettTiempoFueraServicio().intValue() + this.getHorasEntreFechasIndicadores(r.getFechaFalla(), r.getFechaHoraAtencion()));
+								p.settTiempoFueraServicio(p.gettTiempoFueraServicio().add(this.getHorasEntreFechasIndicadores(r.getFechaFalla(), r.getFechaHoraAtencion())));
 							}
 						}
 
@@ -320,8 +361,8 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 						cronograma = new Cronograma();
 						cronograma.setTipoMantenimiento(IConstantes.MANTENIMIENTO_PREVENTIVO);
 						cronograma.getEquipo().setId(p.getId());
-						cronograma.settFechaDesde(this.cronogramaConsulta.gettFechaDesde());
-						cronograma.settFechaHasta(this.cronogramaConsulta.gettFechaHasta());
+						cronograma.settFechaDesde(this.cronogramaConsultaIndi.gettFechaDesde());
+						cronograma.settFechaHasta(this.cronogramaConsultaIndi.gettFechaHasta());
 						mantenimientosPreventivos = IConsultasDAO.getCronograma(cronograma);
 
 						p.settTiempoParadasProgramadas(0);
@@ -336,8 +377,8 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 						cronograma.setTipoMantenimiento(IConstantes.MANTENIMIENTO_CORRECTIVO);
 						cronograma.getEquipo().setId(p.getId());
 						cronograma.setEstado(IConstantes.ESTADO_APROBADO);
-						cronograma.settFechaDesde(this.cronogramaConsulta.gettFechaDesde());
-						cronograma.settFechaHasta(this.cronogramaConsulta.gettFechaHasta());
+						cronograma.settFechaDesde(this.cronogramaConsultaIndi.gettFechaDesde());
+						cronograma.settFechaHasta(this.cronogramaConsultaIndi.gettFechaHasta());
 						mantenimientosCorrectivos = IConsultasDAO.getCronograma(cronograma);
 
 						p.settTiempoProgramadoMantenimientoCorrectivo(0);
@@ -350,10 +391,11 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 						// NF (solo reportadas válidas)
 						reporteFalla = new ReporteFalla();
 						reporteFalla.getEquipo().setId(p.getId());
-						reporteFalla.settFechaDesde(this.cronogramaConsulta.gettFechaDesde());
-						reporteFalla.settFechaHasta(this.cronogramaConsulta.gettFechaHasta());
+						reporteFalla.settFechaDesde(this.cronogramaConsultaIndi.gettFechaDesde());
+						reporteFalla.settFechaHasta(this.cronogramaConsultaIndi.gettFechaHasta());
 
 						reportesFallas = IConsultasDAO.getReportesFallas(reporteFalla);
+						final List<ReporteFalla> reportesFallasValidasConteo = new ArrayList<ReporteFalla>();
 						if (reportesFallas != null && reportesFallas.size() > 0) {
 							// solo las válidas
 							reportesFallas.stream().filter(a -> !(a.getConceptoCierreManual() != null && !a.getConceptoCierreManual().trim().equals(""))).forEach(a -> reportesFallasValidasConteo.add(a));
@@ -366,25 +408,33 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 
 						// disponibilidad
 						p.settDisponibilidad(new BigDecimal(0));
-						if (this.cronogramaConsulta.gettIntervaloAnalizado().intValue() > 0) {
-							p.settDisponibilidad(this.getValorRedondeado((((new BigDecimal(this.cronogramaConsulta.gettIntervaloAnalizado()).subtract(new BigDecimal(p.gettTiempoParadasProgramadas())).subtract(new BigDecimal(p.gettTiempoFueraServicio()))).divide(new BigDecimal(this.cronogramaConsulta.gettIntervaloAnalizado()), IConstantes.DECIMALES_REDONDEAR, RoundingMode.HALF_UP)).multiply(new BigDecimal(100))), IConstantes.DECIMALES_REDONDEAR));
+						if (this.cronogramaConsulta.gettIntervaloAnalizado().compareTo(new BigDecimal(0)) > 0) {
+							p.settDisponibilidad((((this.cronogramaConsulta.gettIntervaloAnalizado().subtract(new BigDecimal(p.gettTiempoParadasProgramadas())).subtract(p.gettTiempoFueraServicio())).divide(this.cronogramaConsulta.gettIntervaloAnalizado(), 10, RoundingMode.HALF_UP)).multiply(new BigDecimal(100))));
 						}
+
 						// mantenibilidad
 						p.settMantenibilidad(new BigDecimal(0));
 						if (p.gettNumeroFallas().intValue() > 0) {
-							p.settMantenibilidad(this.getValorRedondeado((new BigDecimal(p.gettTiempoFueraServicio()).subtract(new BigDecimal(p.gettTiempoProgramadoMantenimientoCorrectivo()))).divide(new BigDecimal(p.gettNumeroFallas()), IConstantes.DECIMALES_REDONDEAR, RoundingMode.HALF_UP), IConstantes.DECIMALES_REDONDEAR));
+							p.settMantenibilidad((p.gettTiempoFueraServicio().subtract(new BigDecimal(p.gettTiempoProgramadoMantenimientoCorrectivo()))).divide(new BigDecimal(p.gettNumeroFallas()), 10, RoundingMode.HALF_UP));
 						}
 
 						// confiabilidad
 						p.settConfiabilidad(new BigDecimal(0));
-						if (p.gettDisponibilidad().doubleValue() != 100) {
-							p.settConfiabilidad(this.getValorRedondeado((p.gettMantenibilidad().multiply(new BigDecimal(p.gettNumeroFallas()).multiply(p.gettDisponibilidad().divide(new BigDecimal(100), IConstantes.DECIMALES_REDONDEAR, RoundingMode.HALF_UP))).divide((new BigDecimal(1).subtract(p.gettDisponibilidad().divide(new BigDecimal(100), IConstantes.DECIMALES_REDONDEAR, RoundingMode.HALF_UP))), IConstantes.DECIMALES_REDONDEAR, RoundingMode.HALF_UP)), IConstantes.DECIMALES_REDONDEAR));
+						if (!(p.gettDisponibilidad().compareTo(new BigDecimal(100)) == 0)) {
+							p.settConfiabilidad((p.gettMantenibilidad().multiply(new BigDecimal(p.gettNumeroFallas()).multiply(p.gettDisponibilidad().divide(new BigDecimal(100), 10, RoundingMode.HALF_UP))).divide((new BigDecimal(1).subtract(p.gettDisponibilidad().divide(new BigDecimal(100), 10, RoundingMode.HALF_UP))), 10, RoundingMode.HALF_UP)));
 						}
+
+						// analisis final
+						if (p.gettTiempoFueraServicio().compareTo(new BigDecimal(0)) == 0) {
+							p.settMantenibilidad(new BigDecimal(0));
+							p.settConfiabilidad(this.cronogramaConsulta.gettIntervaloAnalizado());
+						}
+
 						// costo
 						cronograma = new Cronograma();
 						cronograma.getEquipo().setId(p.getId());
-						cronograma.settFechaDesde(this.cronogramaConsulta.gettFechaDesde());
-						cronograma.settFechaHasta(this.cronogramaConsulta.gettFechaHasta());
+						cronograma.settFechaDesde(this.cronogramaConsultaIndi.gettFechaDesde());
+						cronograma.settFechaHasta(this.cronogramaConsultaIndi.gettFechaHasta());
 						mantenimientos = IConsultasDAO.getCronograma(cronograma);
 
 						p.settCosto(new BigDecimal(0));
@@ -394,6 +444,9 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 							}
 						}
 						p.settCosto(this.getValorRedondeado(p.gettCosto(), IConstantes.DECIMALES_REDONDEAR));
+						p.settDisponibilidad(this.getValorRedondeado(p.gettDisponibilidad(), IConstantes.DECIMALES_REDONDEAR));
+						p.settConfiabilidad(this.getValorRedondeado(p.gettConfiabilidad(), IConstantes.DECIMALES_REDONDEAR));
+						p.settMantenibilidad(this.getValorRedondeado(p.gettMantenibilidad(), IConstantes.DECIMALES_REDONDEAR));
 
 					}
 
@@ -655,6 +708,9 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 		this.cronogramaConsulta = null;
 		this.getCronogramaConsulta();
 
+		this.cronogramaConsultaIndi = null;
+		this.getCronogramaConsultaIndi();
+
 		this.cronogramas = null;
 		this.equipos = null;
 	}
@@ -702,6 +758,173 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 					this.cronogramaConsulta.getEquipo().setCodigoQr(this.cronogramas.get(0).getEquipo().getCodigoQr());
 
 				}
+
+			}
+
+		} catch (Exception e) {
+			conexion.rollbackBD();
+			this.mostrarMensajeGlobal("transaccionFallida", "error");
+		} finally {
+			conexion.cerrarConexion();
+		}
+
+	}
+
+	public void editarAnterior() {
+
+		Conexion conexion = new Conexion();
+
+		try {
+
+			conexion.setAutoCommitBD(false);
+
+			Map<String, Object> cambiar = new HashMap<String, Object>();
+
+			if (this.cronogramaTransaccion.getEstado() != null && this.cronogramaTransaccion.getEstado().trim().equals("T")) {
+				cambiar.put("fecha_hora_aprobacion_cliente", null);
+				cambiar.put("estado", "T");
+				this.cronogramaTransaccion.getCamposBD();
+				conexion.actualizarBD(this.cronogramaTransaccion.getEstructuraTabla().getTabla(), cambiar, this.cronogramaTransaccion.getEstructuraTabla().getLlavePrimaria(), null);
+
+			} else if (this.cronogramaTransaccion.getEstado() != null && this.cronogramaTransaccion.getEstado().trim().equals("P")) {
+				cambiar.put("fecha_hora_aprobacion_cliente", null);
+				cambiar.put("fecha_hora_atencion", null);
+				cambiar.put("estado", "P");
+				this.cronogramaTransaccion.getCamposBD();
+				conexion.actualizarBD(this.cronogramaTransaccion.getEstructuraTabla().getTabla(), cambiar, this.cronogramaTransaccion.getEstructuraTabla().getLlavePrimaria(), null);
+
+			}
+
+			// cambia el estado a abierta la falla
+			cambiar = new HashMap<String, Object>();
+			if (this.cronogramaTransaccion.getTipoMantenimiento() != null && this.cronogramaTransaccion.getTipoMantenimiento().trim().equals("C")) {
+				if (this.cronogramaTransaccion.getEstado() != null && !this.cronogramaTransaccion.getEstado().trim().equals("C")) {
+					cambiar.put("fecha_atencion", null);
+					cambiar.put("estado", IConstantes.ESTADO_ABIERTO);
+				}
+				this.cronogramaTransaccion.getReporteFalla().getCamposBD();
+				conexion.actualizarBD(this.cronogramaTransaccion.getReporteFalla().getEstructuraTabla().getTabla(), cambiar, this.cronogramaTransaccion.getReporteFalla().getEstructuraTabla().getLlavePrimaria(), null);
+			}
+
+			conexion.commitBD();
+			this.mostrarMensajeGlobal("edicionExitosa", "exito");
+			this.cerrarModal("panelEdicionAnterior");
+
+			// reseteo de variables
+			this.cronogramaTransaccion = null;
+			this.getCronogramaTransaccion();
+			this.cronogramas = null;
+			this.consultarCronograma();
+
+		} catch (Exception e) {
+			conexion.rollbackBD();
+			this.mostrarMensajeGlobal("transaccionFallida", "error");
+		} finally {
+			conexion.cerrarConexion();
+		}
+
+	}
+
+	public void editarFechas() {
+
+		Conexion conexion = new Conexion();
+		boolean ok = true;
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat formato2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		try {
+
+			if (this.cronogramaTransaccion.getTipoMantenimiento() != null && this.cronogramaTransaccion.getTipoMantenimiento().trim().equals("C")) {
+
+				if (formato.format(this.cronogramaTransaccion.getReporteFalla().getFechaFalla()).compareTo(formato.format(this.cronogramaTransaccion.getFechaProgramacion())) > 0) {
+					ok = false;
+					this.mostrarMensajeGlobalPersonalizado("LA FECHA DE REPORTE DE FALLA DEL EQUIPO DEBE SER MENOR O IGUAL A LA FECHA DE PROGRAMACION DEL MANTENIMIENTO", "advertencia");
+				}
+
+			}
+
+			if (this.cronogramaTransaccion.getEstado() != null && this.cronogramaTransaccion.getEstado().trim().equals("C")) {
+
+				if (formato2.format(this.cronogramaTransaccion.getFechaHoraAprobacionCliente()).compareTo(formato2.format(this.cronogramaTransaccion.getFechaHoraAtencion())) < 0) {
+					ok = false;
+					this.mostrarMensajeGlobalPersonalizado("LA FECHA DE APROBACION DEL CLIENTE DEBE SER MAYOR O IGUAL A LA DE ATENCION DEL TECNICO", "advertencia");
+				}
+				if (formato2.format(this.cronogramaTransaccion.getFechaHoraAtencion()).compareTo(formato2.format(this.cronogramaTransaccion.getFechaProgramacion())) < 0) {
+					ok = false;
+					this.mostrarMensajeGlobalPersonalizado("LA FECHA DE ATENCION DEL TECNICO DEBE SER MAYOR O IGUAL A LA PROGRAMADA", "advertencia");
+				}
+
+				if (this.cronogramaTransaccion.getTipoMantenimiento() != null && this.cronogramaTransaccion.getTipoMantenimiento().trim().equals("C")) {
+
+					if (formato2.format(this.cronogramaTransaccion.getReporteFalla().getFechaFalla()).compareTo(formato2.format(this.cronogramaTransaccion.getFechaHoraAtencion())) > 0) {
+						ok = false;
+						this.mostrarMensajeGlobalPersonalizado("LA FECHA DE REPORTE DE FALLA DEL EQUIPO DEBE SER MENOR O IGUAL A LA FECHA DE ATENCIÓN DEL MANTENIMIENTO", "advertencia");
+					}
+
+				}
+
+			} else if (this.cronogramaTransaccion.getEstado() != null && this.cronogramaTransaccion.getEstado().trim().equals("T")) {
+				if (formato2.format(this.cronogramaTransaccion.getFechaHoraAtencion()).compareTo(formato2.format(this.cronogramaTransaccion.getFechaProgramacion())) < 0) {
+					ok = false;
+					this.mostrarMensajeGlobalPersonalizado("LA FECHA DE ATENCION DEL TECNICO DEBE SER MAYOR O IGUAL A LA PROGRAMADA", "advertencia");
+				}
+
+				if (this.cronogramaTransaccion.getTipoMantenimiento() != null && this.cronogramaTransaccion.getTipoMantenimiento().trim().equals("C")) {
+
+					if (formato2.format(this.cronogramaTransaccion.getReporteFalla().getFechaFalla()).compareTo(formato2.format(this.cronogramaTransaccion.getFechaHoraAtencion())) > 0) {
+						ok = false;
+						this.mostrarMensajeGlobalPersonalizado("LA FECHA DE REPORTE DE FALLA DEL EQUIPO DEBE SER MENOR O IGUAL A LA FECHA DE ATENCIÓN DEL MANTENIMIENTO", "advertencia");
+					}
+
+				}
+
+			} else {
+				ok = true;
+
+			}
+
+			if (ok) {
+
+				conexion.setAutoCommitBD(false);
+
+				this.cronogramaTransaccion.setFechaDesdeHolgura(this.getFechaDiasSumados(this.cronogramaTransaccion.getFechaProgramacion(), -this.cronogramaTransaccion.getHolgura().intValue()));
+				this.cronogramaTransaccion.setFechaHastaHolgura(this.getFechaDiasSumados(this.cronogramaTransaccion.getFechaProgramacion(), this.cronogramaTransaccion.getHolgura()));
+
+				Map<String, Object> cambiar = new HashMap<String, Object>();
+				cambiar.put("fecha_programacion", this.cronogramaTransaccion.getFechaProgramacion());
+				cambiar.put("holgura", this.cronogramaTransaccion.getHolgura());
+				cambiar.put("fecha_hora_atencion", this.cronogramaTransaccion.getFechaHoraAtencion());
+				cambiar.put("fecha_hora_aprobacion_cliente", this.cronogramaTransaccion.getFechaHoraAprobacionCliente());
+				cambiar.put("fecha_desde_holgura", this.cronogramaTransaccion.getFechaDesdeHolgura());
+				cambiar.put("fecha_hasta_holgura", this.cronogramaTransaccion.getFechaHastaHolgura());
+
+				this.cronogramaTransaccion.getCamposBD();
+				conexion.actualizarBD(this.cronogramaTransaccion.getEstructuraTabla().getTabla(), cambiar, this.cronogramaTransaccion.getEstructuraTabla().getLlavePrimaria(), null);
+
+				if (this.cronogramaTransaccion.getTipoMantenimiento() != null && this.cronogramaTransaccion.getTipoMantenimiento().trim().equals("C")) {
+					// correctivo
+
+					cambiar = new HashMap<String, Object>();
+					cambiar.put("fecha_falla", this.cronogramaTransaccion.getReporteFalla().getFechaFalla());
+
+					if (this.cronogramaTransaccion.getEstado() != null && this.cronogramaTransaccion.getEstado().trim().equals("C")) {
+						cambiar.put("fecha_atencion", this.cronogramaTransaccion.getFechaHoraAprobacionCliente());
+						cambiar.put("estado", IConstantes.ESTADO_CERRADO);
+					}
+
+					this.cronogramaTransaccion.getReporteFalla().getCamposBD();
+					conexion.actualizarBD(this.cronogramaTransaccion.getReporteFalla().getEstructuraTabla().getTabla(), cambiar, this.cronogramaTransaccion.getReporteFalla().getEstructuraTabla().getLlavePrimaria(), null);
+
+				}
+
+				conexion.commitBD();
+				this.mostrarMensajeGlobal("edicionExitosa", "exito");
+				this.cerrarModal("panelEdicionFechas");
+
+				// reseteo de variables
+				this.cronogramaTransaccion = null;
+				this.getCronogramaTransaccion();
+				this.cronogramas = null;
+				this.consultarCronograma();
 
 			}
 
@@ -832,6 +1055,17 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 			informeMantenimiento.getCamposBD();
 			conexion.eliminarBD(informeMantenimiento.getEstructuraTabla().getTabla(), condiciones);
 
+			// Abre el reporte de falla
+			condiciones = new HashMap<String, Object>();
+			if (this.cronogramaTransaccion.getTipoMantenimiento() != null && this.cronogramaTransaccion.getTipoMantenimiento().trim().equals("C")) {
+				if (this.cronogramaTransaccion.getEstado() != null && !this.cronogramaTransaccion.getEstado().trim().equals("C")) {
+					condiciones.put("fecha_atencion", null);
+					condiciones.put("estado", IConstantes.ESTADO_ABIERTO);
+				}
+				this.cronogramaTransaccion.getReporteFalla().getCamposBD();
+				conexion.actualizarBD(this.cronogramaTransaccion.getReporteFalla().getEstructuraTabla().getTabla(), condiciones, this.cronogramaTransaccion.getReporteFalla().getEstructuraTabla().getLlavePrimaria(), null);
+			}
+
 			// actaliza datos del cronograma
 
 			this.cronogramaTransaccion.setEstado(IConstantes.ESTADO_PROGRAMADO);
@@ -922,8 +1156,7 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 
 			this.cronogramaTransaccion.getCamposBD();
 			conexion.eliminarBD(this.cronogramaTransaccion.getEstructuraTabla().getTabla(), this.cronogramaTransaccion.getEstructuraTabla().getLlavePrimaria());
-			
-			
+
 			conexion.commitBD();
 			this.mostrarMensajeGlobal("eliminacionExitosa", "exito");
 			this.cerrarModal("panelEliminacionCronograma");
@@ -977,6 +1210,18 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 				this.cronogramaTransaccion.getEquipo().getCliente().settClienteAutocompletado(this.cronogramaTransaccion.getEquipo().getCliente().getCliente() + ", " + this.cronogramaTransaccion.getEquipo().getCliente().getUbicacion());
 				this.abrirModal("panelAprobacionInforme");
 
+			} else if (aVista != null && aVista.equals("MODAL_EDITAR_FECHAS")) {
+
+				this.cronogramaTransaccion.getEquipo().getCliente().settClienteAutocompletado(this.cronogramaTransaccion.getEquipo().getCliente().getCliente() + ", " + this.cronogramaTransaccion.getEquipo().getCliente().getUbicacion());
+
+				this.abrirModal("panelEdicionFechas");
+
+			} else if (aVista != null && aVista.equals("MODAL_EDITAR_ANTERIOR")) {
+
+				this.cronogramaTransaccion.getEquipo().getCliente().settClienteAutocompletado(this.cronogramaTransaccion.getEquipo().getCliente().getCliente() + ", " + this.cronogramaTransaccion.getEquipo().getCliente().getUbicacion());
+				this.cronogramaTransaccion.settCopiaEstado(this.cronogramaTransaccion.getEstado());
+				this.abrirModal("panelEdicionAnterior");
+
 			} else {
 				this.cronogramaTransaccion.getEquipo().getCliente().settClienteAutocompletado(this.cronogramaTransaccion.getEquipo().getCliente().getCliente() + ", " + this.cronogramaTransaccion.getEquipo().getCliente().getUbicacion());
 				this.abrirModal("panelEliminacionCronograma");
@@ -1014,6 +1259,12 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 
 			} else if (aVista != null && aVista.equals("MODAL_ELIMINAR_INFORME")) {
 				this.cerrarModal("panelEliminacionInforme");
+
+			} else if (aVista != null && aVista.equals("MODAL_EDITAR_FECHAS")) {
+				this.cerrarModal("panelEdicionFechas");
+
+			} else if (aVista != null && aVista.equals("MODAL_EDITAR_ANTERIOR")) {
+				this.cerrarModal("panelEdicionAnterior");
 
 			}
 
@@ -1460,6 +1711,28 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 		return cronogramaConsulta;
 	}
 
+	public Cronograma getCronogramaConsultaIndi() {
+		try {
+			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat formato2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+			if (this.cronogramaConsultaIndi == null) {
+				this.cronogramaConsultaIndi = new Cronograma();
+
+				this.cronogramaConsultaIndi.settFechaDesde(formato2.parse(formato.format(this.getFechaHoraMinutoSegundoActualGmtColombia()) + " 00:00"));
+				this.cronogramaConsultaIndi.settFechaHasta(formato2.parse(formato.format(this.getFechaHoraMinutoSegundoActualGmtColombia()) + " 23:59"));
+
+			}
+		} catch (Exception e) {
+			IConstantes.log.error(e, e);
+		}
+		return cronogramaConsultaIndi;
+	}
+
+	public void setCronogramaConsultaIndi(Cronograma cronogramaConsultaIndi) {
+		this.cronogramaConsultaIndi = cronogramaConsultaIndi;
+	}
+
 	public void setCronogramaConsulta(Cronograma cronogramaConsulta) {
 		this.cronogramaConsulta = cronogramaConsulta;
 	}
@@ -1487,5 +1760,7 @@ public class AdministrarCronograma extends ConsultarFuncionesAPI implements Seri
 	public void setAdministrarSesionCliente(AdministrarSesionCliente administrarSesionCliente) {
 		this.administrarSesionCliente = administrarSesionCliente;
 	}
+	
+	
 
 }

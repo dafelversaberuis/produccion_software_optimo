@@ -3,6 +3,7 @@ package optimo.modulos.equipos;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
@@ -10,7 +11,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +41,7 @@ import optimo.beans.ReporteFalla;
 import optimo.beans.Tecnico;
 import optimo.generales.Basico;
 import optimo.generales.ConsultarFuncionesAPI;
+import optimo.generales.FirmaComoImagen;
 import optimo.generales.IConstantes;
 import optimo.generales.IEmail;
 import optimo.modulos.IConsultasDAO;
@@ -485,7 +486,9 @@ public class RealizarMantenimiento extends ConsultarFuncionesAPI implements Seri
 				if (temps1 != null && temps1.size() > 0) {
 					if (temps1.get(0).getFirma() != null && !temps1.get(0).getFirma().trim().equals("")) {
 						// firma del tecnico
-						this.guardarFirmaComoImagen(temps1.get(0).getFirma(), "consultor" + this.informeMantenimiento.getCronograma().getTecnico().getId());
+						// this.guardarFirmaComoImagen(temps1.get(0).getFirma(), "consultor"
+						// +
+						// this.informeMantenimiento.getCronograma().getTecnico().getId());
 					}
 
 				}
@@ -498,7 +501,8 @@ public class RealizarMantenimiento extends ConsultarFuncionesAPI implements Seri
 					if (temp2s.get(0).getFirma() != null && !temp2s.get(0).getFirma().trim().equals("")) {
 						// firma del tecnico
 						// firma del representante del cliente
-						this.guardarFirmaComoImagen(temp2s.get(0).getFirma(), "cliente" + this.informeMantenimiento.getCronograma().getEquipo().getCliente().getId());
+						// this.guardarFirmaComoImagen(temp2s.get(0).getFirma(), "cliente" +
+						// this.informeMantenimiento.getCronograma().getEquipo().getCliente().getId());
 					}
 
 				}
@@ -558,8 +562,9 @@ public class RealizarMantenimiento extends ConsultarFuncionesAPI implements Seri
 						a.setObjeto(null);
 						try {
 							if (a.gettFotoDecodificada() != null) {
-								//ByteBuffer outputBuffer =  Charset.forName("UTF-8").encode(a.gettFotoDecodificada());
-								byte[] imageBytes =  javax.xml.bind.DatatypeConverter.parseBase64Binary(a.gettFotoDecodificada());
+								// ByteBuffer outputBuffer =
+								// Charset.forName("UTF-8").encode(a.gettFotoDecodificada());
+								byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(a.gettFotoDecodificada());
 								BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));
 								a.setObjeto(new Object());
 								a.setObjeto(img);
@@ -570,10 +575,26 @@ public class RealizarMantenimiento extends ConsultarFuncionesAPI implements Seri
 						}
 					}
 				}
-				this.generarListado(new JRBeanCollectionDataSource(this.informeMantenimiento.gettActividades()), IConstantes.REPORTE_MANTENIMIENTO, "IM-" + formato.format(new Date()), "pdf", parametros);
+				this.generarListado(new JRBeanCollectionDataSource(this.informeMantenimiento.gettActividades()), IConstantes.REPORTE_MANTENIMIENTO, "IM-" + formato.format(getFechaHoraMinutoActualGmtColombia()), "pdf", parametros);
 
 			} else {
 
+				parametros.put("okTecnico", "N");
+				parametros.put("okCliente", "N");
+
+				if (this.informeMantenimiento.getCronograma().getTecnico().getFirma() != null && !this.informeMantenimiento.getCronograma().getTecnico().getFirma().trim().equals("")) {
+					boolean okTecnico = isGuardarFirmaComoImagen(this.informeMantenimiento.getCronograma().getTecnico().getFirma(), "tecnico" + this.informeMantenimiento.getCronograma().getTecnico().getId());
+					if (okTecnico) {
+						parametros.put("okTecnico", "S");
+					}
+				}
+
+				if (this.informeMantenimiento.getCronograma().getEquipo().getCliente().getFirma() != null && !this.informeMantenimiento.getCronograma().getEquipo().getCliente().getFirma().trim().equals("")) {
+					boolean okCliente = isGuardarFirmaComoImagen(this.informeMantenimiento.getCronograma().getEquipo().getCliente().getFirma(), "cliente" + this.informeMantenimiento.getCronograma().getEquipo().getCliente().getId());
+					if (okCliente) {
+						parametros.put("okCliente", "S");
+					}
+				}
 				// *********** versión 2 o nula *********/
 
 				if (this.informeMantenimiento.getRecomendaciones() != null && !this.informeMantenimiento.getRecomendaciones().trim().equals("")) {
@@ -652,7 +673,7 @@ public class RealizarMantenimiento extends ConsultarFuncionesAPI implements Seri
 						actividadTemp.setDescripcion(a.getObservaciones());
 						actividadesNoPreventivas.add(actividadTemp);
 					}
-					this.generarListado(new JRBeanCollectionDataSource(actividadesNoPreventivas), IConstantes.REPORTE_MANTENIMIENTO_V2, "IM-V2-" + formato.format(new Date()), "pdf", parametros);
+					this.generarListado(new JRBeanCollectionDataSource(actividadesNoPreventivas), IConstantes.REPORTE_MANTENIMIENTO_V2, "IM-V2-" + formato.format(getFechaHoraMinutoActualGmtColombia()), "pdf", parametros);
 
 				} else {
 					// preventivo
@@ -661,7 +682,7 @@ public class RealizarMantenimiento extends ConsultarFuncionesAPI implements Seri
 					this.informeMantenimiento.settActividades(new ArrayList<ActividadMantenimiento>());
 					this.informeMantenimiento.settActividades(IConsultasDAO.getActividadesMantenimiento(act));
 
-					this.generarListado(new JRBeanCollectionDataSource(this.informeMantenimiento.gettActividades()), IConstantes.REPORTE_MANTENIMIENTO_V2, "IM-V2-" + formato.format(new Date()), "pdf", parametros);
+					this.generarListado(new JRBeanCollectionDataSource(this.informeMantenimiento.gettActividades()), IConstantes.REPORTE_MANTENIMIENTO_V2, "IM-V2-" + formato.format(getFechaHoraMinutoActualGmtColombia()), "pdf", parametros);
 
 				}
 
@@ -670,6 +691,33 @@ public class RealizarMantenimiento extends ConsultarFuncionesAPI implements Seri
 		} catch (Exception e) {
 
 		}
+	}
+
+	/**
+	 * Guarda en disco como imagen una firma signature
+	 * 
+	 * @param aSignature
+	 * @param aNombreFirma
+	 */
+	public boolean isGuardarFirmaComoImagen(String aSignature, String aNombreFirma) {
+		boolean ok = false;
+		try {
+
+			FirmaComoImagen firma = new FirmaComoImagen();
+			byte[] archivo = firma.getImagenComoByte(aSignature);
+			File outputfile = new File(this.getPath(IConstantes.PAQUETE_IMAGENES) + "/fotosFirmas/" + aNombreFirma + ".png");
+
+			BufferedImage img = ImageIO.read(new ByteArrayInputStream(archivo));
+			if (img != null) {
+				ImageIO.write(img, "png", outputfile);
+				ok = true;
+			}
+
+		} catch (Exception e) {
+
+			ok = false;
+		}
+		return ok;
 	}
 
 	/**
@@ -1182,7 +1230,7 @@ public class RealizarMantenimiento extends ConsultarFuncionesAPI implements Seri
 			// cambiamos el estado del cronograma a atendido por el técnico y su
 			// fecha
 
-			this.informeMantenimiento.getCronograma().setFechaHoraAprobacionCliente(new Date());
+			this.informeMantenimiento.getCronograma().setFechaHoraAprobacionCliente(getFechaHoraMinutoActualGmtColombia());
 			this.informeMantenimiento.getCronograma().setEstado(IConstantes.ESTADO_APROBADO);
 			this.informeMantenimiento.getCronograma().getCamposBD();
 			conexion.actualizarBD(this.informeMantenimiento.getCronograma().getEstructuraTabla().getTabla(), this.informeMantenimiento.getCronograma().getEstructuraTabla().getPersistencia(), this.informeMantenimiento.getCronograma().getEstructuraTabla().getLlavePrimaria(), null);
@@ -1264,7 +1312,7 @@ public class RealizarMantenimiento extends ConsultarFuncionesAPI implements Seri
 				// cambiamos el estado del croograma a atendido por el técnico y su
 				// fecha
 
-				this.informeMantenimiento.getCronograma().setFechaHoraAtencion(new Date());
+				this.informeMantenimiento.getCronograma().setFechaHoraAtencion(getFechaHoraMinutoActualGmtColombia());
 				this.informeMantenimiento.getCronograma().setEstado(IConstantes.ESTADO_ATENDIDO);
 				this.informeMantenimiento.getCronograma().getCamposBD();
 				conexion.actualizarBD(this.informeMantenimiento.getCronograma().getEstructuraTabla().getTabla(), this.informeMantenimiento.getCronograma().getEstructuraTabla().getPersistencia(), this.informeMantenimiento.getCronograma().getEstructuraTabla().getLlavePrimaria(), null);
