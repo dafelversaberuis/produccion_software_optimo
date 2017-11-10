@@ -49,13 +49,13 @@ public class Conexion implements Serializable {
 //			 con = ds.getConnection();
 			// ***************************************************
 
-			// **************openshuftV2********************
-			// InitialContext ctx = new InitialContext();
-			// DataSource ds = (DataSource)
-			// ctx.lookup("java:jboss/datasources/dentalDS");
-			// java:jboss/datasources/PostgreSQLDS
-			// con = ds.getConnection();
-			// ***************************************************
+//			 **************openshuftV2********************
+//			 InitialContext ctx = new InitialContext();
+//			 DataSource ds = (DataSource)
+//			 ctx.lookup("java:jboss/datasources/dentalDS");
+//			 java:jboss/datasources/PostgreSQLDS
+//			 con = ds.getConnection();
+//			 ***************************************************
 			con.setAutoCommit(true);
 
 		} catch (Exception e) {

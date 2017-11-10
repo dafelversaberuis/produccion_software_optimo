@@ -501,11 +501,11 @@ public class AdministrarSesionCliente extends ConsultarFuncionesAPI implements S
 
 				if (clientes != null && clientes.size() > 0) {
 
-					if (clientes.size() > 1) {
+					//if (clientes.size() > 1) {
 						itemsClientes.add(new SelectItem("", this.getMensaje("comboVacio")));
-					}
+					//}
 
-					clientes.forEach(p -> itemsClientes.add(new SelectItem(p.getId(), p.getCliente() + "," + p.getUbicacion())));
+					clientes.forEach(p -> itemsClientes.add(new SelectItem(p.gettIdOriginalCliente(), p.getCliente() + "," + p.getUbicacion())));
 
 				}
 

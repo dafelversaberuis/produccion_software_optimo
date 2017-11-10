@@ -52,6 +52,23 @@ public class ConsultarFuncionesAPI implements Serializable {
 	private String						nombre;
 
 	// PRIVADOS
+	
+	public Date getFechaActualGmtColombia() {
+		Date fecha = null;
+		try {
+			SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MMM-dd");
+			dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT-5"));
+
+			// Local time zone
+			SimpleDateFormat dateFormatLocal = new SimpleDateFormat("yyyy-MMM-dd");
+
+			fecha = dateFormatLocal.parse(dateFormatGmt.format(new Date()));
+		} catch (Exception e) {
+
+		}
+		// Time in GMT
+		return fecha;
+	}
 
 	/**
 	 * Hora Colombia

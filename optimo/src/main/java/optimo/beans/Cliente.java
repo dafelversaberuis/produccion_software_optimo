@@ -39,6 +39,8 @@ public class Cliente implements Serializable {
 
 	private Long							tNumeroPermisos;
 
+	private Integer						tIdOriginalCliente;
+
 	private EstructuraTabla		estructuraTabla;
 
 	public Cliente() {
@@ -271,6 +273,14 @@ public class Cliente implements Serializable {
 
 	public void settNumeroPermisos(Long tNumeroPermisos) {
 		this.tNumeroPermisos = tNumeroPermisos;
+	}
+
+	public Integer gettIdOriginalCliente() {
+		return tIdOriginalCliente;
+	}
+
+	public void settIdOriginalCliente(Integer tIdOriginalCliente) {
+		this.tIdOriginalCliente = tIdOriginalCliente;
 	}
 
 }

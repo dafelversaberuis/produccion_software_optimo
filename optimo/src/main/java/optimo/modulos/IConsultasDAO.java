@@ -29,6 +29,7 @@ import optimo.beans.PersonaAcceso;
 import optimo.beans.ReporteFalla;
 import optimo.beans.RepuestoEquipo;
 import optimo.beans.Tecnico;
+import optimo.generales.ConsultarFuncionesAPI;
 
 public interface IConsultasDAO {
 
@@ -513,9 +514,7 @@ public interface IConsultasDAO {
 				informeMantenimiento.setCargoClienteMomento((String) rs.getObject("cargo_cliente_momento"));
 
 				informeMantenimiento.setRecomendaciones((String) rs.getObject("recomendaciones"));
-				informeMantenimiento.setRepuestosRequeridos((String) rs.getObject("repuestos_requeridos")); 
-				
-				
+				informeMantenimiento.setRepuestosRequeridos((String) rs.getObject("repuestos_requeridos"));
 
 				informeMantenimiento.setUnidadesFase1A2((String) rs.getObject("unidades_fase_1_2"));
 				informeMantenimiento.setUnidadesFase1A3((String) rs.getObject("unidades_fase_1_3"));
@@ -525,9 +524,6 @@ public interface IConsultasDAO {
 				informeMantenimiento.setUnidadesFaseNeutro((String) rs.getObject("unidades_fase_neutro"));
 				informeMantenimiento.setUnidadesFaseTierra((String) rs.getObject("unidades_fase_tierra"));
 				informeMantenimiento.setUnidadesNeutroTierra((String) rs.getObject("unidades_neutro_tierra"));
-
-				
-				
 
 			}
 
@@ -557,6 +553,7 @@ public interface IConsultasDAO {
 		List<Cronograma> cronogramas = new ArrayList<Cronograma>();
 		List<Object> prametros = new ArrayList<Object>();
 		Cronograma cronograma = null;
+		ConsultarFuncionesAPI funciones = new ConsultarFuncionesAPI();
 		Conexion conexion = new Conexion();
 		ResultSet rs = null;
 		try {
@@ -567,7 +564,7 @@ public interface IConsultasDAO {
 			sql.append("  INNER JOIN equipos eq ON eq.id = cr.id_equipo");
 			sql.append("  INNER JOIN clientes cl ON cl.id = eq.id_cliente");
 			sql.append("  INNER JOIN tecnicos t ON t.id = cr.id_tecnico");
-			sql.append("  WHERE CURRENT_DATE >= cr.fecha_desde_holgura AND CURRENT_DATE <= cr.fecha_hasta_holgura");
+			sql.append("  WHERE '" + funciones.getFechaActualGmtColombia() + "' >= cr.fecha_desde_holgura AND '" + funciones.getFechaActualGmtColombia() + "' <= cr.fecha_hasta_holgura");
 			sql.append("  AND cl.estado_vigencia = 'A'");
 			sql.append("  AND eq.estado = 'A'");
 
@@ -628,6 +625,7 @@ public interface IConsultasDAO {
 		Equipo equipo = null;
 		Conexion conexion = new Conexion();
 		ResultSet rs = null;
+		ConsultarFuncionesAPI funciones = new ConsultarFuncionesAPI();
 		try {
 
 			StringBuilder sql = new StringBuilder();
@@ -635,7 +633,7 @@ public interface IConsultasDAO {
 			sql.append("  FROM cronograma cr");
 			sql.append("  INNER JOIN equipos eq ON eq.id = cr.id_equipo");
 			sql.append("  INNER JOIN clientes cl ON cl.id = eq.id_cliente");
-			sql.append("  WHERE CURRENT_DATE >= cr.fecha_desde_holgura AND CURRENT_DATE <= cr.fecha_hasta_holgura");
+			sql.append("  WHERE '" + funciones.getFechaActualGmtColombia() + "' >= cr.fecha_desde_holgura AND '" + funciones.getFechaActualGmtColombia() + "' <= cr.fecha_hasta_holgura");
 			sql.append("  AND cl.estado_vigencia = 'A'");
 			sql.append("  AND eq.estado = 'A'");
 
@@ -688,6 +686,7 @@ public interface IConsultasDAO {
 		List<Object> prametros = new ArrayList<Object>();
 		Cliente cliente = null;
 		Conexion conexion = new Conexion();
+		ConsultarFuncionesAPI funciones = new ConsultarFuncionesAPI();
 		ResultSet rs = null;
 		try {
 
@@ -696,7 +695,7 @@ public interface IConsultasDAO {
 			sql.append("  FROM cronograma cr");
 			sql.append("  INNER JOIN equipos eq ON eq.id = cr.id_equipo");
 			sql.append("  INNER JOIN clientes cl ON cl.id = eq.id_cliente");
-			sql.append("  WHERE CURRENT_DATE >= cr.fecha_desde_holgura AND CURRENT_DATE <= cr.fecha_hasta_holgura");
+			sql.append("  WHERE '" + funciones.getFechaActualGmtColombia() + "' >= cr.fecha_desde_holgura AND '" + funciones.getFechaActualGmtColombia() + "' <= cr.fecha_hasta_holgura");
 			sql.append("  AND cl.estado_vigencia = 'A'");
 			sql.append("  AND eq.estado = 'A'");
 
@@ -2419,6 +2418,8 @@ public interface IConsultasDAO {
 			while (rs.next()) {
 				cliente = new Cliente();
 				cliente.setId((Integer) rs.getObject("id_persona")); // pa
+
+				cliente.settIdOriginalCliente((Integer) rs.getObject("id"));
 				cliente.setCliente((String) rs.getObject("cliente")); // pa
 				cliente.setNit((String) rs.getObject("nit"));
 				cliente.setRepresentante((String) rs.getObject("nombre_persona")); ////// de
